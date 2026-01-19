@@ -4723,7 +4723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62eb9667ac6fd74f8448714ac366b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
-  heldCard: {fileID: 11400000, guid: 142eb23a23b5fd843b318e32141855bd, type: 2}
+  heldCard: {fileID: 11400000, guid: 41f15981b0a11154297423eedff45b86, type: 2}
   contactFilter:
     useTriggers: 1
     useLayerMask: 0
