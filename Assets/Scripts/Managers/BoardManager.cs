@@ -26,9 +26,27 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && heldCard != null && CheckMouseTargeting() != null) DoCardAction();
+        else if (Input.GetMouseButtonUp(0) && heldCard != null) ResetHeldCard();
+    }
+
     private void FixedUpdate()
     {
         CheckCardTargeting(CheckMouseTargeting());
+    }
+
+    void DoCardAction()
+    {
+        ClearSpaces();
+        Manager.Instance.deckManager.DiscardOrUseCard(heldCard);
+        heldCard = null;
+    }
+    void ResetHeldCard()
+    {
+        ClearSpaces();
+        heldCard = null;
     }
 
     BoardSpace CheckMouseTargeting()
