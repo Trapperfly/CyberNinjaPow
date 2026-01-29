@@ -4,7 +4,6 @@ public class BoardSpace : MonoBehaviour
 {
     [HideInInspector] public SpriteRenderer spriteRenderer;
     public Vector2Int position;
-    public Enemy enemy;
     //public Hazard hazard;
     private void Awake()
     {

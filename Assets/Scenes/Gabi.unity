@@ -213,7 +213,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -2, y: 2}
-  enemy: {fileID: 0}
 --- !u!212 &22594128
 SpriteRenderer:
   serializedVersion: 2
@@ -367,7 +366,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -1, y: 2}
-  enemy: {fileID: 0}
 --- !u!212 &27421131
 SpriteRenderer:
   serializedVersion: 2
@@ -521,7 +519,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 1, y: 0}
-  enemy: {fileID: 0}
 --- !u!212 &65880297
 SpriteRenderer:
   serializedVersion: 2
@@ -581,6 +578,40 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &121886794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 121886795}
+  m_Layer: 0
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &121886795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121886794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1449922568}
+  - {fileID: 1063457595}
+  - {fileID: 827343019}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &182396589
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,7 +706,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 2, y: -2}
-  enemy: {fileID: 0}
 --- !u!212 &182396593
 SpriteRenderer:
   serializedVersion: 2
@@ -829,7 +859,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 1, y: 3}
-  enemy: {fileID: 0}
 --- !u!212 &217476348
 SpriteRenderer:
   serializedVersion: 2
@@ -983,7 +1012,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 2, y: 1}
-  enemy: {fileID: 0}
 --- !u!212 &276533302
 SpriteRenderer:
   serializedVersion: 2
@@ -1137,7 +1165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -2, y: 0}
-  enemy: {fileID: 0}
 --- !u!212 &335842158
 SpriteRenderer:
   serializedVersion: 2
@@ -1291,7 +1318,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -2, y: -1}
-  enemy: {fileID: 0}
 --- !u!212 &375909822
 SpriteRenderer:
   serializedVersion: 2
@@ -1445,7 +1471,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -2, y: 3}
-  enemy: {fileID: 0}
 --- !u!212 &383458917
 SpriteRenderer:
   serializedVersion: 2
@@ -1599,7 +1624,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 2, y: 0}
-  enemy: {fileID: 0}
 --- !u!212 &409897957
 SpriteRenderer:
   serializedVersion: 2
@@ -1753,7 +1777,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -2, y: -2}
-  enemy: {fileID: 0}
 --- !u!212 &478155861
 SpriteRenderer:
   serializedVersion: 2
@@ -1907,7 +1930,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 0, y: 3}
-  enemy: {fileID: 0}
 --- !u!212 &589575325
 SpriteRenderer:
   serializedVersion: 2
@@ -2061,7 +2083,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -1, y: 1}
-  enemy: {fileID: 0}
 --- !u!212 &684944848
 SpriteRenderer:
   serializedVersion: 2
@@ -2215,7 +2236,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 2, y: 2}
-  enemy: {fileID: 0}
 --- !u!212 &703930866
 SpriteRenderer:
   serializedVersion: 2
@@ -2369,7 +2389,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 1, y: 2}
-  enemy: {fileID: 0}
 --- !u!212 &737626297
 SpriteRenderer:
   serializedVersion: 2
@@ -2523,7 +2542,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 0, y: 0}
-  enemy: {fileID: 0}
 --- !u!212 &811855965
 SpriteRenderer:
   serializedVersion: 2
@@ -2583,6 +2601,110 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &827343018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 827343019}
+  - component: {fileID: 827343020}
+  m_Layer: 0
+  m_Name: Enemy (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &827343019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827343018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1223735331}
+  m_Father: {fileID: 121886795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &827343020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827343018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6409f59dec66ab749a643da2d296cb22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
+  position: {x: -1, y: 5}
+  enemy: {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  intentions: []
+  phase: 0
+  intention: 0
+  damageTaken: 0
+  effects: []
+--- !u!1 &1063457594
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1063457595}
+  - component: {fileID: 1063457596}
+  m_Layer: 0
+  m_Name: Enemy (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1063457595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063457594}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1962741256}
+  m_Father: {fileID: 121886795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1063457596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063457594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6409f59dec66ab749a643da2d296cb22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
+  position: {x: 1, y: 5}
+  enemy: {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  intentions: []
+  phase: 0
+  intention: 0
+  damageTaken: 0
+  effects: []
 --- !u!1 &1186628113
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,7 +2799,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 0, y: -2}
-  enemy: {fileID: 0}
 --- !u!212 &1186628117
 SpriteRenderer:
   serializedVersion: 2
@@ -2729,6 +2850,188 @@ SpriteRenderer:
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!1 &1223735330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1223735331}
+  - component: {fileID: 1223735332}
+  m_Layer: 0
+  m_Name: Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1223735331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223735330}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 827343019}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1223735332
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223735330}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Color: {r: 0.9245283, g: 0.30962977, b: 0.30962977, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!1 &1271649943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1271649944}
+  - component: {fileID: 1271649945}
+  m_Layer: 0
+  m_Name: Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1271649944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271649943}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1449922568}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1271649945
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271649943}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Color: {r: 0.9245283, g: 0.30962977, b: 0.30962977, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2831,7 +3134,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 2, y: 3}
-  enemy: {fileID: 0}
 --- !u!212 &1308003504
 SpriteRenderer:
   serializedVersion: 2
@@ -2985,7 +3287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 0, y: 2}
-  enemy: {fileID: 0}
 --- !u!212 &1329876572
 SpriteRenderer:
   serializedVersion: 2
@@ -3139,7 +3440,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 1, y: -1}
-  enemy: {fileID: 0}
 --- !u!212 &1380572602
 SpriteRenderer:
   serializedVersion: 2
@@ -3293,7 +3593,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -1, y: -1}
-  enemy: {fileID: 0}
 --- !u!212 &1409157269
 SpriteRenderer:
   serializedVersion: 2
@@ -3428,6 +3727,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1410855385}
   m_CullTransparentMesh: 1
+--- !u!1 &1449922567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1449922568}
+  - component: {fileID: 1449922569}
+  m_Layer: 0
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1449922568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449922567}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1271649944}
+  m_Father: {fileID: 121886795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1449922569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449922567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6409f59dec66ab749a643da2d296cb22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
+  position: {x: 0, y: 5}
+  enemy: {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  intentions: []
+  phase: 0
+  intention: 0
+  damageTaken: 0
+  effects: []
 --- !u!1 &1452836677
 GameObject:
   m_ObjectHideFlags: 0
@@ -3659,7 +4010,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 0, y: -1}
-  enemy: {fileID: 0}
 --- !u!212 &1670479958
 SpriteRenderer:
   serializedVersion: 2
@@ -3813,7 +4163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -2, y: 1}
-  enemy: {fileID: 0}
 --- !u!212 &1684374248
 SpriteRenderer:
   serializedVersion: 2
@@ -4081,7 +4430,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 1, y: -2}
-  enemy: {fileID: 0}
 --- !u!212 &1705223352
 SpriteRenderer:
   serializedVersion: 2
@@ -4296,7 +4644,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -1, y: 3}
-  enemy: {fileID: 0}
 --- !u!212 &1865510091
 SpriteRenderer:
   serializedVersion: 2
@@ -4450,7 +4797,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 0, y: 1}
-  enemy: {fileID: 0}
 --- !u!212 &1868466381
 SpriteRenderer:
   serializedVersion: 2
@@ -4604,7 +4950,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -1, y: -2}
-  enemy: {fileID: 0}
 --- !u!212 &1872346437
 SpriteRenderer:
   serializedVersion: 2
@@ -4798,6 +5143,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b050c50f5a477e45bb3b190cfe31140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  enemies: []
+--- !u!1 &1962741255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1962741256}
+  - component: {fileID: 1962741257}
+  m_Layer: 0
+  m_Name: Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1962741256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962741255}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1063457595}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1962741257
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962741255}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Color: {r: 0.9245283, g: 0.30962977, b: 0.30962977, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0
@@ -4995,7 +5432,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: -1, y: 0}
-  enemy: {fileID: 0}
 --- !u!212 &2027496983
 SpriteRenderer:
   serializedVersion: 2
@@ -5149,7 +5585,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 2, y: -1}
-  enemy: {fileID: 0}
 --- !u!212 &2106002283
 SpriteRenderer:
   serializedVersion: 2
@@ -5303,7 +5738,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoardSpace
   spriteRenderer: {fileID: 0}
   position: {x: 1, y: 1}
-  enemy: {fileID: 0}
 --- !u!212 &2107652847
 SpriteRenderer:
   serializedVersion: 2
@@ -5372,3 +5806,4 @@ SceneRoots:
   - {fileID: 1992698361}
   - {fileID: 1694401908}
   - {fileID: 1807019440}
+  - {fileID: 121886795}
