@@ -18,14 +18,10 @@ MonoBehaviour:
     specialAction: 0
     keepPreviousIntentions: 1
     intentions:
-    - movement: {x: 0, y: -2}
+    - movement: {x: 1, y: -1}
       attack: []
-    - movement: {x: 0, y: 0}
-      attack: []
-    - movement: {x: 0, y: 1}
-      attack: []
-    - movement: {x: 0, y: 0}
+    - movement: {x: -1, y: -1}
       attack: []
     effect: 
   sprite: {fileID: 0}
-  looping: 3
+  looping: 1

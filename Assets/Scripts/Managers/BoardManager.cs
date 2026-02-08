@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    public Vector2Int boardSize;
+    public GameObject boardSpacePrefab;
     public Dictionary<Vector2Int,BoardSpace> spaces = new();
     public Card heldCard = null;
     public ContactFilter2D contactFilter;
@@ -11,16 +13,24 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        Vector2Int key = new(-2, -2);
-        for (int i = 0; i < board.transform.childCount; i++)
+        BuildBoard();
+    }
+
+    private void BuildBoard()
+    {
+        Vector2Int key = new(0, 0);
+        while (key.y < boardSize.y)
         {
-            BoardSpace space = board.transform.GetChild(i).GetComponent<BoardSpace>();
-            space.position = key;
-            spaces.TryAdd(key, space);
+            Transform space = Instantiate(boardSpacePrefab, Vector3.zero, Quaternion.identity, board).transform;
+            space.localPosition = new(key.x - ((boardSize.x - 1) * 0.5f), key.y - ((boardSize.y - 1) * 0.5f), 0);
+
+            BoardSpace boardSpace = space.GetComponent<BoardSpace>();
+            boardSpace.position = key;
+            spaces.TryAdd(key, boardSpace);
             key.x += 1;
-            if (key.x == 3)
+            if (key.x == boardSize.x)
             {
-                key.x = -2;
+                key.x = 0;
                 key.y += 1;
             }
         }

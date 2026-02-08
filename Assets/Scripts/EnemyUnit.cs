@@ -16,6 +16,9 @@ public class EnemyUnit : MonoBehaviour
     {
         Manager.Instance.enemyManager.enemies.Add(this);
         intentions = enemy.enemyHealth[phase].intentions;
+
+        Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
+        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y, 0);
     }
 
     public void Act()
@@ -27,7 +30,7 @@ public class EnemyUnit : MonoBehaviour
         switch (enemy.looping)
         {
             case IntentionLooping.none:
-                intention += 1;
+                if(intentions.Count - 1 > intention) intention += 1;
                 break;
             case IntentionLooping.Loop:
                 if (intentions.Count - 1 <= intention)
@@ -69,7 +72,6 @@ public class EnemyUnit : MonoBehaviour
             default:
                 break;
         }
-        
     }
 
     public void EffectOnAct()
@@ -90,9 +92,11 @@ public class EnemyUnit : MonoBehaviour
     public void Move()
     {
         if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + enemy.enemyHealth[phase].intentions[intention].movement)) return;
+        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + enemy.enemyHealth[phase].intentions[intention].movement)) return;
 
         position += enemy.enemyHealth[phase].intentions[intention].movement;
-        transform.localPosition = new Vector3(position.x, position.y, 0);
+        Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
+        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y, 0);
     }
 
     public void Attack()
