@@ -8,9 +8,14 @@ public class EnemyUnit : MonoBehaviour
     public List<Intention> intentions;
     public int phase = 0;
     public int intention = 0;
+    public int timer = 0;
     public int damageTaken = 0;
     public List<EffectInfo> effects;
     bool pong;
+
+    public SpriteRenderer timerSpriteRenderer;
+    public Sprite timerDot;
+    public Sprite timerDanger;
 
     private void Start()
     {
@@ -19,6 +24,28 @@ public class EnemyUnit : MonoBehaviour
 
         Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y, 0);
+    }
+
+    public void Timer()
+    {
+        int curTimer = enemy.enemyHealth[phase].intentions[intention].timer;
+        if (curTimer > timer) {
+            timer++;
+            timerSpriteRenderer.size = new(curTimer - timer, 1);
+            if (curTimer == timer)
+            {
+                timerSpriteRenderer.sprite = timerDanger;
+                timerSpriteRenderer.size = new(1, 1);
+            }
+            else timerSpriteRenderer.sprite = timerDot;
+            return; 
+        }
+        EffectOnTimer();
+        Act();
+        EffectOnAfterTimer();
+        timer = 0;
+        timerSpriteRenderer.sprite = timerDot;
+        timerSpriteRenderer.size = new(curTimer - timer, 1);
     }
 
     public void Act()
@@ -82,6 +109,20 @@ public class EnemyUnit : MonoBehaviour
         }
     }
     public void EffectOnAfterAct()
+    {
+        foreach (EffectInfo effect in effects)
+        {
+            effect.effect.OnAfterAct(this);
+        }
+    }
+    public void EffectOnTimer()
+    {
+        foreach (EffectInfo effect in effects)
+        {
+            effect.effect.OnAct(this);
+        }
+    }
+    public void EffectOnAfterTimer()
     {
         foreach (EffectInfo effect in effects)
         {

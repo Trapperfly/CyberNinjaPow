@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (EnemyUnit enemy in enemies)
         {
-            enemy.Act();
+            enemy.Timer();
         }
     }
 
