@@ -18,7 +18,7 @@ public class DeckManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) DrawCard();
+        if (Input.GetKeyDown(KeyCode.Space)) DrawCard(handSize);
         if (Input.GetKeyDown(KeyCode.D)) DiscardRandomHandCard();
     }
 
@@ -54,6 +54,8 @@ public class DeckManager : MonoBehaviour
 
             CreateCard(drawnCard);
         }
+
+        Manager.Instance.enemyManager.ProgressTime(1);
     }
     public void ShuffleDiscardIntoDraw()
     {
@@ -69,6 +71,8 @@ public class DeckManager : MonoBehaviour
         Destroy(physicalCardHeld.gameObject);
         hand.Remove(card);
         AlignCards(-1);
+
+        Manager.Instance.enemyManager.ProgressTime(card.cost);
     }
     public void DiscardRandomHandCard(int amount = 1)
     {

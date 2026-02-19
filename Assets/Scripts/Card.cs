@@ -6,7 +6,7 @@ public class Card : ScriptableObject
 {
     public string cardName;
     public List<Tag> cardTags;
-    public int energyCost;
+    public int cost;
     public List<Targeting> targeting = new();
 }
 [System.Serializable]

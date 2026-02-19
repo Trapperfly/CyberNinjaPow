@@ -5,11 +5,14 @@ public class EnemyManager : MonoBehaviour
 {
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
 
-    public void Act()
+    public void ProgressTime(int time = 1)
     {
-        foreach (EnemyUnit enemy in enemies)
+        for (int i = 0; i < time; i++)
         {
-            enemy.Timer();
+            foreach (EnemyUnit enemy in enemies)
+            {
+                enemy.Timer();
+            }
         }
     }
 
@@ -30,10 +33,5 @@ public class EnemyManager : MonoBehaviour
         if (cell.y < 0) { Debug.Log("x was lower than 0"); return true; }
         if (cell.y > Manager.Instance.boardManager.boardSize.y - 1) { Debug.Log("y was higher than board size"); return true; }
         return false;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) Act();
     }
 }

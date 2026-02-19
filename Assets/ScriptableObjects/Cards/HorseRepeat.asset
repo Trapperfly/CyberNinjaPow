@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Circle
   cardTags: 02000000
-  energyCost: 2
+  cost: 2
   targeting:
   - target: {x: 1, y: 2}
     repeating: 1
