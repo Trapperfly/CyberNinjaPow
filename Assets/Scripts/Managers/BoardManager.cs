@@ -49,6 +49,8 @@ public class BoardManager : MonoBehaviour
 
     void DoCardAction()
     {
+        spaces.TryGetValue(targetedPosition, out BoardSpace target);
+        DoCardTargeting(target);
         ClearSpaces();
         Manager.Instance.deckManager.DiscardOrUseCard(heldCard);
         heldCard = null;
@@ -112,6 +114,34 @@ public class BoardManager : MonoBehaviour
                     targetPos += target.target;
             }
         }
+    }
+
+    void DoCardTargeting(BoardSpace targetSpace)
+    {
+        if (targetSpace == null) return;
+
+        foreach (Targeting target in heldCard.targeting)
+        {
+            Vector2Int targetPos = target.target;
+
+            int repeats = (target.repeating) ? 10 : 1;
+
+            for (int i = 0; i < repeats; i++)
+            {
+                Vector2Int space = targetedPosition + targetPos;
+
+                foreach (EnemyUnit enemy in Manager.Instance.enemyManager.enemies)
+                {
+                    if (enemy.position == space)
+                        enemy.TakeDamage(heldCard.generalDamage + target.damage);
+                }
+
+                if (repeats > 1)
+                    targetPos += target.target;
+            }
+        }
+
+        Manager.Instance.enemyManager.CardFinished();
     }
 
     void ClearSpaces()

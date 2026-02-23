@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,6 +9,9 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public float scale = 1.25f;
     bool target;
+
+    public TMP_Text cardName;
+    public TMP_Text cost;
     public void OnPointerEnter(PointerEventData eventData)
     {
         target = true;

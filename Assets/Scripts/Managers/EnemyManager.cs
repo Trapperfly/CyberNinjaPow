@@ -6,6 +6,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform enemyParent;
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
+    public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
 
     public void ProgressTime(int time = 1)
     {
@@ -18,6 +19,16 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public void CardFinished()
+    {
+        while (deadEnemies.Count > 0)
+        {
+            EnemyUnit enemy = deadEnemies[0];
+            enemies.Remove(enemy);
+            deadEnemies.Remove(enemy);
+            enemy.Die();
+        }
+    }
     public bool CheckIfCellIsOccupied(Vector2Int cell)
     {
         foreach (EnemyUnit enemy in enemies)
@@ -29,7 +40,7 @@ public class EnemyManager : MonoBehaviour
 
     public bool CheckIfCellIsOutsideOfBoard(Vector2Int cell)
     {
-        Debug.Log("Checking cell " + cell);
+        //Debug.Log("Checking cell " + cell);
         if (cell.x < 0) { Debug.Log("x was lower than 0"); return true; }
         if (cell.x > Manager.Instance.boardManager.boardSize.x - 1) { Debug.Log("x was higher than board size"); return true; }
         if (cell.y < 0) { Debug.Log("x was lower than 0"); return true; }

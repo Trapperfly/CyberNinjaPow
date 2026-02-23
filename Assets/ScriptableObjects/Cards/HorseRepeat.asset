@@ -15,13 +15,19 @@ MonoBehaviour:
   cardName: Circle
   cardTags: 02000000
   cost: 2
+  generalDamage: 2
   targeting:
   - target: {x: 1, y: 2}
     repeating: 1
     damage: 1
     push: 0
     pushDirection: 0
-  - target: {x: 2, y: 1}
+  - target: {x: -1, y: 2}
+    repeating: 1
+    damage: 1
+    push: 0
+    pushDirection: 0
+  - target: {x: 0, y: 2}
     repeating: 1
     damage: 1
     push: 0

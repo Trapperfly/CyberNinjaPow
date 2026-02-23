@@ -25,8 +25,10 @@ public class DeckManager : MonoBehaviour
     void CreateCard(Card card)
     {
         GameObject cardGO = Instantiate(cardPrefab, Vector2.zero, Quaternion.identity, handTransform);
-        cardGO.GetComponentInChildren<TMP_Text>().text = card.name;
-        cardGO.GetComponent<CardObject>().card = card;
+        CardObject cardObject = cardGO.GetComponent<CardObject>();
+        cardObject.cardName.text = card.name;
+        cardObject.cost.text = card.cost.ToString();
+        cardObject.card = card;
         AlignCards();
     }
 

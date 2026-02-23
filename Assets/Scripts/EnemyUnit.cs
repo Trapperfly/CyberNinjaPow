@@ -31,6 +31,38 @@ public class EnemyUnit : MonoBehaviour
         SetTimer();
     }
 
+    public void TakeDamage(int damage)
+    {
+        damageTaken += damage;
+        
+        if (damageTaken > enemy.enemyHealth[phase].gateHealth)
+        {
+            NextPhase();
+        }
+    }
+
+    public void NextPhase()
+    {
+        phase++;
+        if (enemy.enemyHealth.Count - 1 < phase)
+        {
+            PrepareDie();
+            return;
+        }
+
+        //Proceed to next phase
+    }
+
+    void PrepareDie()
+    {
+        Manager.Instance.enemyManager.deadEnemies.Add(this);
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+
     public void Timer()
     {
         int curTimer = enemy.enemyHealth[phase].intentions[intention].timer;

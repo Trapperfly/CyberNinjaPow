@@ -7,14 +7,16 @@ public class Card : ScriptableObject
     public string cardName;
     public List<Tag> cardTags;
     public int cost;
+    public int generalDamage;
     public List<Targeting> targeting = new();
+    
 }
 [System.Serializable]
 public class Targeting
 {
     public Vector2Int target;
     public bool repeating;
-    public float damage;
+    public int damage;
     //[Header("Projectile")]
     //public bool projectile;
     //public bool4 directionNESW;
