@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class BoardManager : MonoBehaviour
     public ContactFilter2D contactFilter;
     public Vector2Int targetedPosition = new(0, 0);
     public Transform board;
+    public float waitBetweenCardActions;
+    bool busy = false;
 
     private void Start()
     {
@@ -38,6 +41,7 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
+        if (busy) return;
         if (Input.GetMouseButtonUp(0) && heldCard != null && CheckMouseTargeting() != null) DoCardAction();
         else if (Input.GetMouseButtonUp(0) && heldCard != null) ResetHeldCard();
     }
@@ -50,7 +54,11 @@ public class BoardManager : MonoBehaviour
     void DoCardAction()
     {
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
-        DoCardTargeting(target);
+        StartCoroutine(DoCardTargeting(target));
+        
+    }
+    void FinishCardAction()
+    {
         ClearSpaces();
         Manager.Instance.deckManager.DiscardOrUseCard(heldCard);
         heldCard = null;
@@ -83,8 +91,19 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public EnemyUnit CheckIfEnemyIsOnSpace(Vector2Int space)
+    {
+        foreach (EnemyUnit enemy in Manager.Instance.enemyManager.enemies)
+        {
+            if (enemy.position == space)
+                return enemy;
+        }
+        return null;
+    }
     void CheckCardTargeting(BoardSpace targetSpace)
     {
+        if (busy) return;
+
         if (targetSpace == null) return;
 
         if (targetedPosition == targetSpace.position) return;
@@ -97,11 +116,13 @@ public class BoardManager : MonoBehaviour
         {
             Vector2Int targetPos = target.target;
 
-            int repeats = (target.repeating) ? 10 : 1;
+            int repeats = (target.repeating || target.projectile) ? 10 : 1;
 
             for (int i = 0; i < repeats; i++)
             {
                 Vector2Int space = targetedPosition + targetPos;
+
+                if (target.projectile && CheckIfEnemyIsOnSpace(space)) repeats = 0;
 
                 spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
 
@@ -116,32 +137,39 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void DoCardTargeting(BoardSpace targetSpace)
+    IEnumerator DoCardTargeting(BoardSpace targetSpace)
     {
-        if (targetSpace == null) return;
-
-        foreach (Targeting target in heldCard.targeting)
+        if (targetSpace == null) yield break;
+        if (waitBetweenCardActions > 0) busy = true;
+        for (int i = 0; i < heldCard.extraAmount; i++)
         {
-            Vector2Int targetPos = target.target;
-
-            int repeats = (target.repeating) ? 10 : 1;
-
-            for (int i = 0; i < repeats; i++)
+            foreach (Targeting target in heldCard.targeting)
             {
-                Vector2Int space = targetedPosition + targetPos;
+                Vector2Int targetPos = target.target;
 
-                foreach (EnemyUnit enemy in Manager.Instance.enemyManager.enemies)
+                int repeats = (target.repeating || target.projectile) ? 10 : 1;
+
+                for (int r = 0; r < repeats; r++)
                 {
-                    if (enemy.position == space)
+                    Vector2Int space = targetSpace.position + targetPos;
+
+                    if (target.projectile && CheckIfEnemyIsOnSpace(space)) repeats = 0;
+
+                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                    if (enemy)
                         enemy.TakeDamage(heldCard.generalDamage + target.damage);
+
+                    if (repeats > 1)
+                        targetPos += target.target;
+
+                    Manager.Instance.enemyManager.CardFinished();
                 }
-
-                if (repeats > 1)
-                    targetPos += target.target;
             }
+            yield return new WaitForSeconds(waitBetweenCardActions);
         }
-
-        Manager.Instance.enemyManager.CardFinished();
+        busy = false;
+        FinishCardAction();
+        yield return null;
     }
 
     void ClearSpaces()

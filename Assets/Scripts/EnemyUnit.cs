@@ -35,7 +35,7 @@ public class EnemyUnit : MonoBehaviour
     {
         damageTaken += damage;
         
-        if (damageTaken > enemy.enemyHealth[phase].gateHealth)
+        if (damageTaken >= enemy.enemyHealth[phase].gateHealth)
         {
             NextPhase();
         }

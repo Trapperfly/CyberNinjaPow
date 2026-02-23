@@ -8,6 +8,7 @@ public class Card : ScriptableObject
     public List<Tag> cardTags;
     public int cost;
     public int generalDamage;
+    public int extraAmount;
     public List<Targeting> targeting = new();
     
 }
@@ -18,7 +19,7 @@ public class Targeting
     public bool repeating;
     public int damage;
     //[Header("Projectile")]
-    //public bool projectile;
+    public bool projectile;
     //public bool4 directionNESW;
     [Header("Push")]
     public int push = 0;
