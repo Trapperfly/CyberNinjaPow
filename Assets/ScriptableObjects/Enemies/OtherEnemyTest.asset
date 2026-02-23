@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2112fd2a18cdcc94f80ff65b419a5c6e, type: 3}
-  m_Name: Gringus
+  m_Name: OtherEnemyTest
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyName: Gringus
+  enemyName: Human
   enemyHealth:
-  - gateHealth: 2
+  - gateHealth: 4
     specialAction: 0
     keepPreviousIntentions: 1
     intentions:
-    - movement: {x: 1, y: -1}
-      attack: []
-    - movement: {x: -1, y: -1}
+    - timer: 3
+      movement: {x: 0, y: -1}
       attack: []
     effect: 
-  sprite: {fileID: 0}
+  sprite: {fileID: -354001906295559755, guid: e846c7da503d28b4aa3335e754844973, type: 3}
   looping: 1

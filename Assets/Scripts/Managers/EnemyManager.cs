@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour
 {
+    public GameObject enemyPrefab;
+    public Transform enemyParent;
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
 
     public void ProgressTime(int time = 1)

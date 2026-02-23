@@ -55,7 +55,7 @@ public class DeckManager : MonoBehaviour
             CreateCard(drawnCard);
         }
 
-        Manager.Instance.enemyManager.ProgressTime(1);
+        Manager.Instance.gameManager.ProgressTime(1);
     }
     public void ShuffleDiscardIntoDraw()
     {
@@ -72,7 +72,7 @@ public class DeckManager : MonoBehaviour
         hand.Remove(card);
         AlignCards(-1);
 
-        Manager.Instance.enemyManager.ProgressTime(card.cost);
+        Manager.Instance.gameManager.ProgressTime(card.cost);
     }
     public void DiscardRandomHandCard(int amount = 1)
     {

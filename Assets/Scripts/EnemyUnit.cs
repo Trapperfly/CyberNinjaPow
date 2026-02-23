@@ -19,11 +19,16 @@ public class EnemyUnit : MonoBehaviour
 
     private void Start()
     {
+        SpriteRenderer spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = enemy.sprite;
+
         Manager.Instance.enemyManager.enemies.Add(this);
         intentions = enemy.enemyHealth[phase].intentions;
 
         Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y, 0);
+
+        SetTimer();
     }
 
     public void Timer()
@@ -46,6 +51,12 @@ public class EnemyUnit : MonoBehaviour
         timer = 0;
         timerSpriteRenderer.sprite = timerDot;
         timerSpriteRenderer.size = new(curTimer - timer, 1);
+    }
+
+    public void SetTimer()
+    {
+        int curTimer = enemy.enemyHealth[phase].intentions[intention].timer;
+        timerSpriteRenderer.size = new(curTimer, 1);
     }
 
     public void Act()
