@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyName: Bot
   enemyHealth:
-  - gateHealth: 1
+  - gateHealth: 2
     specialAction: 0
     keepPreviousIntentions: 1
     intentions:
