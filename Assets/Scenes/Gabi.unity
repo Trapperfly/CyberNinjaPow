@@ -625,6 +625,7 @@ MonoBehaviour:
   boardManager: {fileID: 0}
   deckManager: {fileID: 0}
   enemyManager: {fileID: 0}
+  busy: 0
 --- !u!4 &1900229849
 Transform:
   m_ObjectHideFlags: 0
@@ -721,8 +722,8 @@ MonoBehaviour:
   targetedPosition: {x: 0, y: 0}
   board: {fileID: 1807019440}
   waitBetweenCardActions: 0.3
-  xSpace: 1
-  ySpace: 0.8
+  xSpace: 1.2
+  ySpace: 1.1
 --- !u!114 &1900229853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,6 +742,7 @@ MonoBehaviour:
   deadEnemies: []
   yOffset: 0.2
   timeOffset: 0
+  timeAnim: 0.2
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0

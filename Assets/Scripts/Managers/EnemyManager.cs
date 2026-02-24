@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -11,14 +12,23 @@ public class EnemyManager : MonoBehaviour
     public float yOffset;
     public int timeOffset;
 
+    public float timeAnim;
+
     public void ProgressTime(int time = 1)
+    {
+        StartCoroutine(IProgressTime(time));
+    }
+
+    IEnumerator IProgressTime(int time = 1)
     {
         for (int i = 0; i < time; i++)
         {
             foreach (EnemyUnit enemy in enemies)
             {
                 enemy.Timer();
+                yield return new WaitForSeconds(timeAnim);
             }
+            yield return new WaitForSeconds(timeAnim);
         }
         foreach (EnemyUnit enemy in enemies)
         {
@@ -27,6 +37,8 @@ public class EnemyManager : MonoBehaviour
             enemy.SetTimer();
         }
         timeOffset = 0;
+        Manager.Instance.gameManager.ProgressSpawn(time);
+        yield return null;
     }
 
     public void AlterTime(int time)

@@ -18,7 +18,7 @@ public class DeckManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) DrawCard(handSize);
+        if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
         if (Input.GetKeyDown(KeyCode.D)) DiscardRandomHandCard();
     }
 

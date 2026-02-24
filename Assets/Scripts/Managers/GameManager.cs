@@ -17,16 +17,20 @@ public class GameManager : MonoBehaviour
     public void ProgressTime(int time)
     {
         Manager.Instance.enemyManager.ProgressTime(time);
-        for (int i = 0; i < time; i++) 
+    }
+
+    public void ProgressSpawn(int time)
+    {
+        for (int i = 0; i < time; i++)
         {
-            for(int j = 0; j < spawnTimerForColumns.Count; j++)
+            for (int j = 0; j < spawnTimerForColumns.Count; j++)
             {
                 spawnTimerForColumns[j] -= 1;
-                if (spawnTimerForColumns[j] == 0) 
+                if (spawnTimerForColumns[j] == 0)
                 {
                     if (!Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(new(j, Manager.Instance.boardManager.boardSize.y - 1)))
-                        SpawnEnemy(j); 
-                    spawnTimerForColumns[j] = Random.Range(6, 12); 
+                        SpawnEnemy(j);
+                    spawnTimerForColumns[j] = Random.Range(6, 12);
                 }
             }
         }

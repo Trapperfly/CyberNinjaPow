@@ -16,8 +16,6 @@ public class BoardManager : MonoBehaviour
     public float xSpace;
     public float ySpace;
 
-    bool busy = false;
-
     private void Start()
     {
         BuildBoard();
@@ -45,7 +43,7 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
-        if (busy) return;
+        if (Manager.Instance.busy) return;
         if (Input.GetMouseButtonUp(0) && heldCard != null && CheckMouseTargeting() != null) DoCardAction();
         else if (Input.GetMouseButtonUp(0) && heldCard != null) ResetHeldCard();
     }
@@ -106,7 +104,7 @@ public class BoardManager : MonoBehaviour
     }
     void CheckCardTargeting(BoardSpace targetSpace)
     {
-        if (busy) return;
+        if (Manager.Instance.busy) return;
 
         if (targetSpace == null) return;
 
@@ -144,7 +142,7 @@ public class BoardManager : MonoBehaviour
     IEnumerator DoCardTargeting(BoardSpace targetSpace)
     {
         if (targetSpace == null) yield break;
-        if (waitBetweenCardActions > 0) busy = true;
+        if (waitBetweenCardActions > 0) Manager.Instance.busy = true;
         for (int i = 0; i <= heldCard.extraAmount; i++)
         {
             foreach (Targeting target in heldCard.targeting)
@@ -171,7 +169,7 @@ public class BoardManager : MonoBehaviour
             }
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
-        busy = false;
+        Manager.Instance.busy = false;
         FinishCardAction();
         yield return null;
     }
