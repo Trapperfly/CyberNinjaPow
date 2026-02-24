@@ -17,6 +17,8 @@ public class EnemyUnit : MonoBehaviour
     public Sprite timerDot;
     public Sprite timerDanger;
 
+    public SpriteRenderer healthBarRenderer;
+
     private void Start()
     {
         SpriteRenderer spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -24,11 +26,13 @@ public class EnemyUnit : MonoBehaviour
 
         Manager.Instance.enemyManager.enemies.Add(this);
         intentions = enemy.enemyHealth[phase].intentions;
+        if (enemy.looping == IntentionLooping.Random) intention = Random.Range(0, intentions.Count);
 
         Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
-        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y, 0);
+        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
 
         SetTimer();
+        SetHealthBar();
     }
 
     public void TakeDamage(int damage)
@@ -38,7 +42,9 @@ public class EnemyUnit : MonoBehaviour
         if (damageTaken >= enemy.enemyHealth[phase].gateHealth)
         {
             NextPhase();
+            return;
         }
+        SetHealthBar();
     }
 
     public void NextPhase()
@@ -51,6 +57,16 @@ public class EnemyUnit : MonoBehaviour
         }
 
         //Proceed to next phase
+        damageTaken = 0;
+        if (!enemy.enemyHealth[phase].keepPreviousIntentions)
+        {
+            intentions.Clear();
+        }
+        foreach (var intention in enemy.enemyHealth[phase].intentions)
+        {
+            intentions.Add(intention);
+        }
+        SetHealthBar();
     }
 
     void PrepareDie()
@@ -63,9 +79,19 @@ public class EnemyUnit : MonoBehaviour
         Destroy(gameObject);
     }
 
+    void SetHealthBar()
+    {
+        int health = 0;
+        for (int i = 0 + phase; i < enemy.enemyHealth.Count; i++)
+        {
+            health += enemy.enemyHealth[i].gateHealth;
+        }
+        healthBarRenderer.size = new(health - damageTaken, 1);
+    }
+
     public void Timer()
     {
-        int curTimer = enemy.enemyHealth[phase].intentions[intention].timer;
+        int curTimer = intentions[intention].timer;    
         if (curTimer > timer) {
             timer++;
             timerSpriteRenderer.size = new(curTimer - timer, 1);
@@ -87,7 +113,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void SetTimer()
     {
-        int curTimer = enemy.enemyHealth[phase].intentions[intention].timer;
+        int curTimer = intentions[intention].timer;
         timerSpriteRenderer.size = new(curTimer, 1);
     }
 
@@ -133,6 +159,7 @@ public class EnemyUnit : MonoBehaviour
                 }
                 break;
             case IntentionLooping.RepeatEnd:
+                if (intentions.Count - 1 > intention) intention += 1;
                 break;
             case IntentionLooping.Random:
                 intention = Random.Range(0, intentions.Count);
@@ -175,12 +202,12 @@ public class EnemyUnit : MonoBehaviour
 
     public void Move()
     {
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + enemy.enemyHealth[phase].intentions[intention].movement)) return;
-        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + enemy.enemyHealth[phase].intentions[intention].movement)) return;
+        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + intentions[intention].movement)) return;
+        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + intentions[intention].movement)) return;
 
-        position += enemy.enemyHealth[phase].intentions[intention].movement;
+        position += intentions[intention].movement;
         Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
-        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y, 0);
+        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
     }
 
     public void Attack()

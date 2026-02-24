@@ -8,6 +8,8 @@ public class EnemyManager : MonoBehaviour
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
     public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
 
+    public float yOffset;
+
     public void ProgressTime(int time = 1)
     {
         for (int i = 0; i < time; i++)

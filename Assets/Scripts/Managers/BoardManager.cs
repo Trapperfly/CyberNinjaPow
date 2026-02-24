@@ -12,6 +12,10 @@ public class BoardManager : MonoBehaviour
     public Vector2Int targetedPosition = new(0, 0);
     public Transform board;
     public float waitBetweenCardActions;
+
+    public float xSpace;
+    public float ySpace;
+
     bool busy = false;
 
     private void Start()
@@ -25,7 +29,7 @@ public class BoardManager : MonoBehaviour
         while (key.y < boardSize.y)
         {
             Transform space = Instantiate(boardSpacePrefab, Vector3.zero, Quaternion.identity, board).transform;
-            space.localPosition = new(key.x - ((boardSize.x - 1) * 0.5f), key.y - ((boardSize.y - 1) * 0.5f), 0);
+            space.localPosition = new((key.x * xSpace) - ((boardSize.x - 1) * 0.5f), (key.y * ySpace) - ((boardSize.y - 1) * 0.5f), 0);
 
             BoardSpace boardSpace = space.GetComponent<BoardSpace>();
             boardSpace.position = key;
@@ -141,7 +145,7 @@ public class BoardManager : MonoBehaviour
     {
         if (targetSpace == null) yield break;
         if (waitBetweenCardActions > 0) busy = true;
-        for (int i = 0; i < heldCard.extraAmount; i++)
+        for (int i = 0; i <= heldCard.extraAmount; i++)
         {
             foreach (Targeting target in heldCard.targeting)
             {

@@ -172,8 +172,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
+    - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
+      propertyPath: position.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: position.y
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -645,12 +653,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   enemyQueue:
+  - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
   - {fileID: 11400000, guid: a46f86f89fb70d54f8ea280e164316cc, type: 2}
-  - {fileID: 11400000, guid: a46f86f89fb70d54f8ea280e164316cc, type: 2}
   - {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
   - {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
-  - {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
-  - {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
   spawnTimerForColumns: 
 --- !u!114 &1900229851
 MonoBehaviour:
@@ -693,7 +701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62eb9667ac6fd74f8448714ac366b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
-  boardSize: {x: 5, y: 5}
+  boardSize: {x: 5, y: 6}
   boardSpacePrefab: {fileID: 2735206158905932203, guid: 162dc9bfc88b86a4f8cc38c53d438ff8, type: 3}
   heldCard: {fileID: 0}
   contactFilter:
@@ -713,6 +721,8 @@ MonoBehaviour:
   targetedPosition: {x: 0, y: 0}
   board: {fileID: 1807019440}
   waitBetweenCardActions: 0.3
+  xSpace: 1
+  ySpace: 0.8
 --- !u!114 &1900229853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,6 +739,7 @@ MonoBehaviour:
   enemyParent: {fileID: 121886795}
   enemies: []
   deadEnemies: []
+  yOffset: 0.2
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +895,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7221290618965522406, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221290618965522406, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221290618965522406, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
