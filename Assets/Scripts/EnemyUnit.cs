@@ -66,6 +66,7 @@ public class EnemyUnit : MonoBehaviour
         {
             intentions.Add(intention);
         }
+        if (intention > intentions.Count) intention = 0;
         SetHealthBar();
     }
 
@@ -95,7 +96,7 @@ public class EnemyUnit : MonoBehaviour
         if (curTimer > timer) {
             timer++;
             timerSpriteRenderer.size = new(curTimer - timer, 1);
-            if (curTimer == timer)
+            if (curTimer <= timer)
             {
                 timerSpriteRenderer.sprite = timerDanger;
                 timerSpriteRenderer.size = new(1, 1);
@@ -114,7 +115,7 @@ public class EnemyUnit : MonoBehaviour
     public void SetTimer()
     {
         int curTimer = intentions[intention].timer;
-        timerSpriteRenderer.size = new(curTimer, 1);
+        timerSpriteRenderer.size = new(curTimer - timer, 1);
     }
 
     public void Act()
@@ -122,6 +123,7 @@ public class EnemyUnit : MonoBehaviour
         EffectOnAct();
         Move();
         Attack();
+        ApplyEffect();
         EffectOnAfterAct();
         switch (enemy.looping)
         {
@@ -213,5 +215,23 @@ public class EnemyUnit : MonoBehaviour
     public void Attack()
     {
 
+    }
+
+    public void ApplyEffect()
+    {
+        switch (intentions[intention].effect.effect)
+        {
+            case EffectsEnum.none:
+                break;
+            case EffectsEnum.Poison:
+                break;
+            case EffectsEnum.Regeneration:
+                break;
+            case EffectsEnum.TimeWarp:
+                Manager.Instance.enemyManager.AlterTime(intentions[intention].effect.amount);
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -174,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
+      objectReference: {fileID: 11400000, guid: 4d2ea5224f569664b9e97e26b58494b6, type: 2}
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: position.x
       value: 4
@@ -654,10 +654,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   enemyQueue:
   - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
-  - {fileID: 11400000, guid: a46f86f89fb70d54f8ea280e164316cc, type: 2}
-  - {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  - {fileID: 11400000, guid: 4d2ea5224f569664b9e97e26b58494b6, type: 2}
+  - {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
   - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
-  - {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  - {fileID: 11400000, guid: 8a8d1764a73839a44bf8068ae2177f87, type: 2}
   - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
   spawnTimerForColumns: 
 --- !u!114 &1900229851
@@ -740,6 +740,7 @@ MonoBehaviour:
   enemies: []
   deadEnemies: []
   yOffset: 0.2
+  timeOffset: 0
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class EnemyManager : MonoBehaviour
     public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
 
     public float yOffset;
+    public int timeOffset;
 
     public void ProgressTime(int time = 1)
     {
@@ -19,6 +20,18 @@ public class EnemyManager : MonoBehaviour
                 enemy.Timer();
             }
         }
+        foreach (EnemyUnit enemy in enemies)
+        {
+            enemy.timer += timeOffset;
+            //Debug.Log("Added " + timeOffset + " to " + enemy.enemy.enemyName);
+            enemy.SetTimer();
+        }
+        timeOffset = 0;
+    }
+
+    public void AlterTime(int time)
+    {
+        timeOffset += time;
     }
 
     public void CardFinished()

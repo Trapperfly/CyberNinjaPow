@@ -15,6 +15,7 @@ public class Intention
     public int timer = 5;
     public Vector2Int movement;
     public List<Targeting> attack = new();
+    public EffectApplication effect;
 }
 
 [System.Serializable]
