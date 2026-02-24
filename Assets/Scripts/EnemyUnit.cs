@@ -91,31 +91,30 @@ public class EnemyUnit : MonoBehaviour
     }
 
     public void Timer()
-    {
-        int curTimer = intentions[intention].timer;    
-        if (curTimer > timer) {
+    {  
+        if (intentions[intention].timer > timer) {
             timer++;
-            timerSpriteRenderer.size = new(curTimer - timer, 1);
-            if (curTimer <= timer)
-            {
-                timerSpriteRenderer.sprite = timerDanger;
-                timerSpriteRenderer.size = new(1, 1);
-            }
-            else timerSpriteRenderer.sprite = timerDot;
+            SetTimer();
             return; 
         }
         EffectOnTimer();
         Act();
         EffectOnAfterTimer();
         timer = 0;
-        timerSpriteRenderer.sprite = timerDot;
-        timerSpriteRenderer.size = new(curTimer - timer, 1);
+
+        SetTimer();
     }
 
     public void SetTimer()
     {
         int curTimer = intentions[intention].timer;
         timerSpriteRenderer.size = new(curTimer - timer, 1);
+        if (curTimer <= timer)
+        {
+            timerSpriteRenderer.sprite = timerDanger;
+            timerSpriteRenderer.size = new(1, 1);
+        }
+        else timerSpriteRenderer.sprite = timerDot;
     }
 
     public void Act()
