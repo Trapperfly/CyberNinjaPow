@@ -5,6 +5,7 @@ using TMPro;
 public class DeckManager : MonoBehaviour
 {
     public int handSize = 5;
+    public float cardSpread = 160f;
 
     public GameObject cardPrefab;
 
@@ -16,6 +17,10 @@ public class DeckManager : MonoBehaviour
     public List<Card> discard = new List<Card>();
     public List<Card> hand = new List<Card>();
 
+    private void Start()
+    {
+        DrawCard(handSize);
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
@@ -37,7 +42,8 @@ public class DeckManager : MonoBehaviour
         int i = 0;
         foreach (RectTransform card in handTransform)
         {
-            card.localPosition = new((160f * i) - (160f * (handTransform.childCount - 1 + offset) / 2), 0, 0);
+            card.localPosition = new((cardSpread * i) - (cardSpread * (hand.Count - 1) / 2), 0, 0);
+            Debug.Log(handTransform.childCount);
             i++;
         }
     }

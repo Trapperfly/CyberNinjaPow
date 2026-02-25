@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
+    public int playerHealth;
+    public int playerHealthMax;
+    public TMPro.TMP_Text TMP_PlayerHealth;
     public List<Enemy> enemyQueue = new List<Enemy>();
     public List<int> spawnTimerForColumns = new List<int>();
 
@@ -12,6 +15,7 @@ public class GameManager : MonoBehaviour
             int timer = Random.Range(6,20);
             spawnTimerForColumns.Add(timer);
         }
+        TMP_PlayerHealth.text = playerHealth + "/" + playerHealthMax;
     }
 
     public void ProgressTime(int time)
