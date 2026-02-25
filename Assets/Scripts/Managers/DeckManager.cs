@@ -67,7 +67,7 @@ public class DeckManager : MonoBehaviour
         }
         discard.Clear();
     }
-    public void DiscardOrUseCard(Card card)
+    public void DiscardOrUseCard(Card card, bool discardTheCard = false)
     {
         discard.Add(card);
         Destroy(physicalCardHeld.gameObject);

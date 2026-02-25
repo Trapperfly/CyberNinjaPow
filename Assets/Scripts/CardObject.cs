@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public RectTransform hand;
     public Card card = null;
@@ -26,11 +26,31 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
         if (!target) { return; }
 
         if (card == null) { return; }
 
         Manager.Instance.boardManager.heldCard = card;
         Manager.Instance.deckManager.physicalCardHeld = this;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.hovered.Contains(Manager.Instance.boardManager.discard))
+        {
+            if (Manager.Instance.boardManager.heldCard == null) { return; }
+
+            Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, true);
+        }
     }
 }

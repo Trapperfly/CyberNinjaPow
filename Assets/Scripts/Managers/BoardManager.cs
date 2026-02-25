@@ -13,6 +13,8 @@ public class BoardManager : MonoBehaviour
     public Transform board;
     public float waitBetweenCardActions;
 
+    public GameObject discard;
+
     public float xSpace;
     public float ySpace;
 
