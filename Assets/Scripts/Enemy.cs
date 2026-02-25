@@ -14,6 +14,7 @@ public class Intention
 {
     public int timer = 5;
     public Vector2Int movement;
+    public SmartMovement smartMovement;
     public List<Targeting> attack = new();
     public EffectApplication effect;
 }
@@ -26,6 +27,18 @@ public class EnemyHealth
     public bool keepPreviousIntentions = true;
     public List<Intention> intentions = new();
     public List<EffectsEnum> effect = new();
+}
+
+public enum SmartMovement
+{
+    None,
+    SmartDown,
+    SmartUp,
+    SmartLeft,
+    SmartRight,
+    SmartDownX2,
+    CoverDown,
+    CoverDownX2,
 }
 
 public enum HealthGateSpecialAction

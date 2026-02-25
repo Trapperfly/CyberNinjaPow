@@ -43,7 +43,6 @@ public class DeckManager : MonoBehaviour
         foreach (RectTransform card in handTransform)
         {
             card.localPosition = new((cardSpread * i) - (cardSpread * (hand.Count - 1) / 2), 0, 0);
-            Debug.Log(handTransform.childCount);
             i++;
         }
     }

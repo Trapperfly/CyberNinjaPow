@@ -18,9 +18,13 @@ MonoBehaviour:
     specialAction: 0
     keepPreviousIntentions: 0
     intentions:
-    - timer: 3
-      movement: {x: 0, y: -1}
+    - timer: 2
+      movement: {x: 0, y: 0}
+      smartMovement: 1
       attack: []
+      effect:
+        effect: 0
+        amount: 0
     effect: 
   sprite: {fileID: 21300000, guid: 73a4b54624761954f8df30d0ace2984c, type: 3}
   looping: 1

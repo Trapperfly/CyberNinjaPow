@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 
 public class EnemyUnit : MonoBehaviour
 {
     public Vector2Int position;
     public Enemy enemy;
     public List<Intention> intentions;
+    public Vector2Int intendedMovement;
     public int phase = 0;
     public int intention = 0;
     public int timer = 0;
@@ -33,6 +35,7 @@ public class EnemyUnit : MonoBehaviour
 
         SetTimer();
         SetHealthBar();
+        PlanMovement();
     }
 
     public void TakeDamage(int damage)
@@ -88,6 +91,88 @@ public class EnemyUnit : MonoBehaviour
             health += enemy.enemyHealth[i].gateHealth;
         }
         healthBarRenderer.size = new(health - damageTaken, 1);
+    }
+
+    public Vector2Int PlanMovement()
+    {
+        if (intentions[intention].smartMovement != SmartMovement.None)
+        {
+            switch (intentions[intention].smartMovement)
+            {
+                case SmartMovement.None:
+                    break;
+                case SmartMovement.SmartDown:
+                    CheckMoveDirection(position, new(0, -1));
+                    break;
+                case SmartMovement.SmartUp:
+                    break;
+                case SmartMovement.SmartLeft:
+                    break;
+                case SmartMovement.SmartRight:
+                    break;
+                case SmartMovement.SmartDownX2:
+                    break;
+                case SmartMovement.CoverDown:
+                    break;
+                case SmartMovement.CoverDownX2:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (intentions[intention].movement != new Vector2Int(0, 0))
+        {
+            return intentions[intention].movement;
+        }
+        
+        return new(0,0);
+    }
+
+    Vector2Int CheckMoveDirection(Vector2Int pos, Vector2Int direction)
+    {
+        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + direction)) { }
+        else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + direction)) { }
+        else
+        {
+            return direction;
+        }
+        Vector2Int nextCheck = new Vector2Int(0, 0);
+        float value = Random.value;
+        if (direction.x == 0)
+        {
+            nextCheck = (value < 0.5f) ? new(-1, direction.y) : new(1, direction.y);
+        }
+        else if (direction.y == 0)
+        {
+            nextCheck = (value < 0.5f) ? new(direction.x, -1) : new(direction.x, 1);
+        }
+
+        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + nextCheck)) { }
+        else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + nextCheck)) { }
+        else
+        {
+            return direction;
+        }
+
+        Vector2Int lastCheck = new Vector2Int(0, 0);
+        if (direction.x == 0)
+        {
+            lastCheck = (value > 0.5f) ? new(1, direction.y) : new(-1, direction.y);
+        }
+        else if (direction.y == 0)
+        {
+            lastCheck = (value > 0.5f) ? new(direction.x, 1) : new(direction.x, -1);
+        }
+
+        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + lastCheck)) { }
+        else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + lastCheck)) { }
+        else
+        {
+            return direction;
+        }
+        
+        return direction;
     }
 
     public void Timer()
@@ -170,6 +255,7 @@ public class EnemyUnit : MonoBehaviour
             default:
                 break;
         }
+        PlanMovement();
     }
 
     public void EffectOnAct()
@@ -203,10 +289,10 @@ public class EnemyUnit : MonoBehaviour
 
     public void Move()
     {
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + intentions[intention].movement)) return;
-        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + intentions[intention].movement)) return;
+        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + intendedMovement)) return;
+        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return;
 
-        position += intentions[intention].movement;
+        position += intendedMovement;
         Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
     }
