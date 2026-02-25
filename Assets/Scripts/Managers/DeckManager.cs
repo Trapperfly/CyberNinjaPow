@@ -74,7 +74,7 @@ public class DeckManager : MonoBehaviour
         hand.Remove(card);
         AlignCards(-1);
 
-        Manager.Instance.gameManager.ProgressTime(card.cost);
+        if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);
     }
     public void DiscardRandomHandCard(int amount = 1)
     {
