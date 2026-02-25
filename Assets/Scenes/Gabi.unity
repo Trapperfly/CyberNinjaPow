@@ -174,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
+      objectReference: {fileID: 11400000, guid: c8615fd8a7d941040a4516d3f854307c, type: 2}
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: position.x
       value: 3
@@ -1551,6 +1551,8 @@ MonoBehaviour:
   targetedPosition: {x: 0, y: 0}
   board: {fileID: 1807019440}
   waitBetweenCardActions: 0.3
+  cardTargetingLinePrefab: {fileID: 6578924736372930683, guid: 2738d687129da3f4993d7b332675bf4f, type: 3}
+  cardTargetingLine: {fileID: 0}
   discard: {fileID: 493819756}
   xSpace: 1.2
   ySpace: 1.1
@@ -1746,7 +1748,7 @@ PrefabInstance:
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 11400000, guid: c8615fd8a7d941040a4516d3f854307c, type: 2}
+      objectReference: {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
     - target: {fileID: 7964789773261100239, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
       propertyPath: position.x
       value: 3

@@ -35,7 +35,7 @@ public class EnemyUnit : MonoBehaviour
 
         SetTimer();
         SetHealthBar();
-        PlanMovement();
+        intendedMovement = PlanMovement();
     }
 
     public void TakeDamage(int damage)
@@ -97,12 +97,13 @@ public class EnemyUnit : MonoBehaviour
     {
         if (intentions[intention].smartMovement != SmartMovement.None)
         {
+            Vector2Int movement = new(0, 0);
             switch (intentions[intention].smartMovement)
             {
                 case SmartMovement.None:
                     break;
                 case SmartMovement.SmartDown:
-                    CheckMoveDirection(position, new(0, -1));
+                    movement = CheckMoveDirection(position, new(0, -1));
                     break;
                 case SmartMovement.SmartUp:
                     break;
@@ -119,6 +120,7 @@ public class EnemyUnit : MonoBehaviour
                 default:
                     break;
             }
+            return movement;
         }
 
         if (intentions[intention].movement != new Vector2Int(0, 0))
@@ -135,6 +137,7 @@ public class EnemyUnit : MonoBehaviour
         else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + direction)) { }
         else
         {
+            Debug.Log("Down works");
             return direction;
         }
         Vector2Int nextCheck = new Vector2Int(0, 0);
@@ -152,7 +155,8 @@ public class EnemyUnit : MonoBehaviour
         else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + nextCheck)) { }
         else
         {
-            return direction;
+            Debug.Log("Next test works");
+            return nextCheck;
         }
 
         Vector2Int lastCheck = new Vector2Int(0, 0);
@@ -169,9 +173,10 @@ public class EnemyUnit : MonoBehaviour
         else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + lastCheck)) { }
         else
         {
-            return direction;
+            Debug.Log("Last check works");
+            return lastCheck;
         }
-        
+        Debug.Log("Nothing works, probably do nothing");
         return direction;
     }
 
@@ -204,6 +209,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void Act()
     {
+        Manager.Instance.enemyManager.addTimeAnim = 1;
         EffectOnAct();
         Move();
         Attack();
@@ -255,7 +261,7 @@ public class EnemyUnit : MonoBehaviour
             default:
                 break;
         }
-        PlanMovement();
+        intendedMovement = PlanMovement();
     }
 
     public void EffectOnAct()

@@ -13,6 +13,7 @@ public class EnemyManager : MonoBehaviour
     public int timeOffset;
 
     public float timeAnim;
+    public float addTimeAnim = 0;
 
     public void ProgressTime(int time = 1)
     {
@@ -26,7 +27,8 @@ public class EnemyManager : MonoBehaviour
             foreach (EnemyUnit enemy in enemies)
             {
                 enemy.Timer();
-                yield return new WaitForSeconds(timeAnim);
+                yield return new WaitForSeconds(addTimeAnim);
+                addTimeAnim = 0;
             }
             yield return new WaitForSeconds(timeAnim);
         }

@@ -6,6 +6,7 @@ public class DeckManager : MonoBehaviour
 {
     public int handSize = 5;
     public float cardSpread = 160f;
+    public bool cardRedied = false;
 
     public GameObject cardPrefab;
 

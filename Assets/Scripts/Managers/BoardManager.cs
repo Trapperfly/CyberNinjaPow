@@ -12,6 +12,10 @@ public class BoardManager : MonoBehaviour
     public Vector2Int targetedPosition = new(0, 0);
     public Transform board;
     public float waitBetweenCardActions;
+    public bool inCardAction = false;
+
+    public GameObject cardTargetingLinePrefab;
+    public GameObject cardTargetingLine;
 
     public GameObject discard;
 
@@ -55,22 +59,38 @@ public class BoardManager : MonoBehaviour
         CheckCardTargeting(CheckMouseTargeting());
     }
 
+    public void BeginCardTargeting(Vector2 cardPos)
+    {
+        cardTargetingLine = Instantiate(cardTargetingLinePrefab, Vector3.zero, Quaternion.identity, null);
+        cardTargetingLine.GetComponent<CardTargetingLine>().startPos = cardPos;
+    }
+
+    public void EndCardTargeting()
+    {
+        Destroy(cardTargetingLine);
+        cardTargetingLine = null;
+    }
+
     void DoCardAction()
     {
+        inCardAction = true;
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
         StartCoroutine(DoCardTargeting(target));
-        
     }
     void FinishCardAction()
     {
         ClearSpaces();
         Manager.Instance.deckManager.DiscardOrUseCard(heldCard);
         heldCard = null;
+        EndCardTargeting();
+        Manager.Instance.deckManager.cardRedied = false;
+        inCardAction = false;
     }
     void ResetHeldCard()
     {
         ClearSpaces();
         heldCard = null;
+        EndCardTargeting();
     }
 
     BoardSpace CheckMouseTargeting()
