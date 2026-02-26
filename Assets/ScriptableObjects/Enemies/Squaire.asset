@@ -20,37 +20,25 @@ MonoBehaviour:
     intentions:
     - timer: 3
       movement: {x: 0, y: -1}
+      smartMovement: 0
       attack: []
+      effect:
+        effect: 0
+        amount: 0
     - timer: 2
       movement: {x: 0, y: -1}
+      smartMovement: 0
       attack: []
+      effect:
+        effect: 0
+        amount: 0
     - timer: 4
       movement: {x: 0, y: -1}
-      attack:
-      - target: {x: 0, y: 1}
-        repeating: 0
-        damage: 1
-        projectile: 0
-        push: 0
-        pushDirection: 0
-      - target: {x: 1, y: 0}
-        repeating: 0
-        damage: 1
-        projectile: 0
-        push: 0
-        pushDirection: 0
-      - target: {x: 0, y: -1}
-        repeating: 0
-        damage: 1
-        projectile: 0
-        push: 0
-        pushDirection: 0
-      - target: {x: 1, y: 0}
-        repeating: 0
-        damage: 1
-        projectile: 0
-        push: 0
-        pushDirection: 0
+      smartMovement: 0
+      attack: []
+      effect:
+        effect: 0
+        amount: 0
     effect: 
   - gateHealth: 2
     specialAction: 0
