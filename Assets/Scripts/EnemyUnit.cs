@@ -21,6 +21,8 @@ public class EnemyUnit : MonoBehaviour
 
     public SpriteRenderer healthBarRenderer;
 
+    public GameObject movementArrow;
+
     private void Start()
     {
         SpriteRenderer spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -30,7 +32,7 @@ public class EnemyUnit : MonoBehaviour
         intentions = enemy.enemyHealth[phase].intentions;
         if (enemy.looping == IntentionLooping.Random) intention = Random.Range(0, intentions.Count);
 
-        Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
+        Vector2 targetPosition = GetWorldPos(position);
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
 
         SetTimer();
@@ -38,12 +40,27 @@ public class EnemyUnit : MonoBehaviour
         intendedMovement = PlanMovement();
     }
 
+    void DisplayMovementArrow(Vector2Int movement)
+    {
+        movementArrow = Instantiate(Manager.Instance.enemyManager.enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
+        LineRenderer line = movementArrow.GetComponent<LineRenderer>();
+        line.SetPosition(0, GetWorldPos(position));
+        line.SetPosition(1, GetWorldPos(position + movement));
+    }
+
+    public Vector2 GetWorldPos(Vector2Int gridPosition)
+    {
+        return Manager.Instance.boardManager.spaces[gridPosition].transform.position;
+    }
+
     public void TakeDamage(int damage)
     {
+        Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
         if (damageTaken >= enemy.enemyHealth[phase].gateHealth)
         {
+            Debug.Log(enemy.enemyName + " took enough damage to go to next phase. Had taken " + (damageTaken - damage) + " and it took " + damage + " damage");
             NextPhase();
             return;
         }
@@ -52,12 +69,15 @@ public class EnemyUnit : MonoBehaviour
 
     public void NextPhase()
     {
+        Debug.Log(enemy.enemyName + " is at phase " + phase + ", and is going to phase " + (phase + 1) + ". Its max phases is " + (enemy.enemyHealth.Count - 1));
         phase++;
         if (enemy.enemyHealth.Count - 1 < phase)
         {
+            SetHealthBar();
             PrepareDie();
             return;
         }
+        Debug.Log(enemy.enemyName + " changed phase to phase #" + phase);
 
         //Proceed to next phase
         damageTaken = 0;
@@ -80,6 +100,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void Die()
     {
+        Destroy(movementArrow);
         Destroy(gameObject);
     }
 
@@ -95,9 +116,9 @@ public class EnemyUnit : MonoBehaviour
 
     public Vector2Int PlanMovement()
     {
+        Vector2Int movement = new(0, 0);
         if (intentions[intention].smartMovement != SmartMovement.None)
         {
-            Vector2Int movement = new(0, 0);
             switch (intentions[intention].smartMovement)
             {
                 case SmartMovement.None:
@@ -120,15 +141,16 @@ public class EnemyUnit : MonoBehaviour
                 default:
                     break;
             }
-            return movement;
+        }
+        else if (intentions[intention].movement != new Vector2Int(0, 0))
+        {
+            movement = intentions[intention].movement;
         }
 
-        if (intentions[intention].movement != new Vector2Int(0, 0))
-        {
-            return intentions[intention].movement;
-        }
-        
-        return new(0,0);
+        if (movement != new Vector2Int(0, 0))
+            DisplayMovementArrow(movement);
+
+        return movement;
     }
 
     Vector2Int CheckMoveDirection(Vector2Int pos, Vector2Int direction)
@@ -169,7 +191,7 @@ public class EnemyUnit : MonoBehaviour
             lastCheck = (value > 0.5f) ? new(direction.x, 1) : new(direction.x, -1);
         }
 
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + lastCheck)) { }
+        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + lastCheck) != null) { }
         else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + lastCheck)) { }
         else
         {
@@ -295,12 +317,39 @@ public class EnemyUnit : MonoBehaviour
 
     public void Move()
     {
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + intendedMovement)) return;
+        if (movementArrow != null)
+            Destroy(movementArrow);
+        EnemyUnit potentialCrash = Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + intendedMovement);
+        if (intendedMovement != new Vector2Int(0, 0) && potentialCrash != null) {
+            TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            return;
+        }
         if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return;
 
         position += intendedMovement;
         Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
+    }
+
+    public void ForceMove(Vector2Int direction)
+    {
+        if (movementArrow != null)
+            Destroy(movementArrow);
+        EnemyUnit potentialCrash = Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + direction);
+        if (potentialCrash != null)
+        {
+            TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            return;
+        }
+        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
+
+        position += direction;
+        Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
+        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
+
+        DisplayMovementArrow(intendedMovement);
     }
 
     public void Attack()

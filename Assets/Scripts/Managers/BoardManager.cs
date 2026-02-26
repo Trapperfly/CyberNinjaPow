@@ -225,7 +225,7 @@ public class BoardManager : MonoBehaviour
                     if (repeats > 1)
                         targetPos += target.target;
 
-                    Manager.Instance.enemyManager.CardFinished();
+                    Manager.Instance.enemyManager.KillOffEnemies();
                 }
             }
             yield return new WaitForSeconds(waitBetweenCardActions);

@@ -5,6 +5,7 @@ using System.Collections;
 public class EnemyManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
+    public GameObject enemyMovementArrowPrefab;
     public Transform enemyParent;
     public int spawningFunds = 10;
     public int boardCost = 0;
@@ -18,6 +19,20 @@ public class EnemyManager : MonoBehaviour
 
     public float timeAnim;
     public float addTimeAnim = 0;
+
+    public void MoveAllEnemies(int times, Vector2Int direction)
+    {
+        for (int t = 0; t < times; t++)
+        {
+            for (int y = 0; y < Manager.Instance.boardManager.boardSize.y; y++)
+            {
+                foreach (EnemyUnit enemy in enemies)
+                {
+                    if (enemy.position.y == y) enemy.ForceMove(direction);
+                }
+            }
+        }
+    }
 
     public void ProgressTime(int time = 1)
     {
@@ -35,6 +50,7 @@ public class EnemyManager : MonoBehaviour
                 yield return new WaitForSeconds(addTimeAnim);
                 addTimeAnim = 0;
             }
+            KillOffEnemies();
             yield return new WaitForSeconds(timeAnim);
         }
         foreach (EnemyUnit enemy in enemies)
@@ -54,7 +70,7 @@ public class EnemyManager : MonoBehaviour
         timeOffset += time;
     }
 
-    public void CardFinished()
+    public void KillOffEnemies()
     {
         while (deadEnemies.Count > 0)
         {
@@ -64,13 +80,13 @@ public class EnemyManager : MonoBehaviour
             enemy.Die();
         }
     }
-    public bool CheckIfCellIsOccupied(Vector2Int cell)
+    public EnemyUnit CheckIfCellIsOccupied(Vector2Int cell)
     {
         foreach (EnemyUnit enemy in enemies)
         {
-            if(enemy.position == cell) return true;
+            if(enemy.position == cell) return enemy;
         }
-        return false;
+        return null;
     }
 
     public bool CheckIfCellIsOutsideOfBoard(Vector2Int cell)
@@ -85,6 +101,14 @@ public class EnemyManager : MonoBehaviour
     public void SpawnEnemy(int column)
     {
         //if (enemyQueue.Count == 0) return;
+
+        EnemyUnit potentialBlock = CheckIfCellIsOccupied(new(column, Manager.Instance.boardManager.boardSize.y - 1));
+        if (potentialBlock != null)
+        {
+            potentialBlock.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            return;
+        }
+
         GameObject unitGO = Instantiate(enemyPrefab, enemyParent);
 
         EnemyUnit unit = unitGO.GetComponent<EnemyUnit>();
