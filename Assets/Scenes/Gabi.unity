@@ -203,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 121886795}
   m_Layer: 0
-  m_Name: EnemyManager
+  m_Name: EnemyParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1481,14 +1481,8 @@ MonoBehaviour:
   playerHealth: 10
   playerHealthMax: 10
   TMP_PlayerHealth: {fileID: 151869854}
-  enemyQueue:
-  - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
-  - {fileID: 11400000, guid: 4d2ea5224f569664b9e97e26b58494b6, type: 2}
-  - {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
-  - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
-  - {fileID: 11400000, guid: 8a8d1764a73839a44bf8068ae2177f87, type: 2}
-  - {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
   spawnTimerForColumns: 
+  spawnDelay: {x: 8, y: 25}
 --- !u!114 &1900229851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1503,6 +1497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeckManager
   handSize: 5
   cardSpread: 160
+  cardRedied: 0
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}
   handTransform: {fileID: 1696941415}
   physicalCardHeld: {fileID: 0}
@@ -1551,6 +1546,7 @@ MonoBehaviour:
   targetedPosition: {x: 0, y: 0}
   board: {fileID: 1807019440}
   waitBetweenCardActions: 0.3
+  inCardAction: 0
   cardTargetingLinePrefab: {fileID: 6578924736372930683, guid: 2738d687129da3f4993d7b332675bf4f, type: 3}
   cardTargetingLine: {fileID: 0}
   discard: {fileID: 493819756}
@@ -1570,11 +1566,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   enemyPrefab: {fileID: 4184783195207525563, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
   enemyParent: {fileID: 121886795}
+  spawningFunds: 10
+  boardCost: 0
+  enemyRepertoire:
+  - enemy: {fileID: 11400000, guid: c8615fd8a7d941040a4516d3f854307c, type: 2}
+    cost: 1
+  - enemy: {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
+    cost: 2
+  - enemy: {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
+    cost: 3
+  - enemy: {fileID: 11400000, guid: 8a8d1764a73839a44bf8068ae2177f87, type: 2}
+    cost: 3
+  - enemy: {fileID: 11400000, guid: 4d2ea5224f569664b9e97e26b58494b6, type: 2}
+    cost: 5
+  enemyQueue: []
   enemies: []
   deadEnemies: []
   yOffset: 0.2
   timeOffset: 0
   timeAnim: 0.2
+  addTimeAnim: 0
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0

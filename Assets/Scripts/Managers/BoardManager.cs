@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BoardManager : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class BoardManager : MonoBehaviour
 
     public float xSpace;
     public float ySpace;
+
+    public bool draggingCard;
+    public bool clickingCard;
 
     private void Start()
     {
@@ -50,8 +54,29 @@ public class BoardManager : MonoBehaviour
     private void Update()
     {
         if (Manager.Instance.busy) return;
-        if (Input.GetMouseButtonUp(0) && heldCard != null && CheckMouseTargeting() != null) DoCardAction();
-        else if (Input.GetMouseButtonUp(0) && heldCard != null) ResetHeldCard();
+        Debug.Log("Not busy!");
+        if (heldCard == null) return;
+        Debug.Log("Holding card!");
+        if (clickingCard)
+        {
+            if (!Input.GetMouseButtonDown(0)) return;
+            Debug.Log("Letting go of clicked card!");
+            //If the player has clicked a card and is clicking a tile
+            if (CheckMouseTargeting() != null) DoCardAction();
+
+            //If the player has clicked a card and is clicking outside of the board
+            else ResetCards();
+        }
+        else if (draggingCard)
+        {
+            if (!Input.GetMouseButtonUp(0)) return;
+            Debug.Log("Letting go of dragged card!");
+            //If the player is dragging a card and letting go on a tile
+            if (CheckMouseTargeting() != null) DoCardAction();
+
+            //If the player is dragging a card and letting go outside of the board
+            else ResetCards();
+        }
     }
 
     private void FixedUpdate()
@@ -67,6 +92,7 @@ public class BoardManager : MonoBehaviour
 
     public void EndCardTargeting()
     {
+        if (cardTargetingLine == null) return;
         Destroy(cardTargetingLine);
         cardTargetingLine = null;
     }
@@ -79,18 +105,31 @@ public class BoardManager : MonoBehaviour
     }
     void FinishCardAction()
     {
-        ClearSpaces();
         Manager.Instance.deckManager.DiscardOrUseCard(heldCard);
+        ResetCards();
+    }
+
+    void ResetCards()
+    {
         heldCard = null;
-        EndCardTargeting();
         Manager.Instance.deckManager.cardRedied = false;
         inCardAction = false;
-    }
-    void ResetHeldCard()
-    {
+
         ClearSpaces();
-        heldCard = null;
         EndCardTargeting();
+        ResetCardSizes();
+
+        clickingCard = false;
+        draggingCard = false;
+    }
+    void ResetCardSizes()
+    {
+        foreach (Transform card in Manager.Instance.deckManager.handTransform)
+        {
+            CardObject co = card.GetComponent<CardObject>();
+            if (!co.target)
+                card.localScale = Vector3.one;
+        }
     }
 
     BoardSpace CheckMouseTargeting()

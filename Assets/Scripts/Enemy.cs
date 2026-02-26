@@ -60,3 +60,10 @@ public enum IntentionLooping
     Random,
     RandomStart,
 }
+[System.Serializable]
+public class EnemyInfo
+{
+    public Enemy enemy;
+    public int cost;
+
+}

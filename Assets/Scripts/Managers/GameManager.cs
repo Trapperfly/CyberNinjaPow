@@ -5,14 +5,14 @@ public class GameManager : MonoBehaviour
     public int playerHealth;
     public int playerHealthMax;
     public TMPro.TMP_Text TMP_PlayerHealth;
-    public List<Enemy> enemyQueue = new List<Enemy>();
     public List<int> spawnTimerForColumns = new List<int>();
+    public Vector2Int spawnDelay;
 
     private void Start()
     {
         for (int i = 0; i < Manager.Instance.boardManager.boardSize.x; i++)
         {
-            int timer = Random.Range(6,20);
+            int timer = Random.Range(spawnDelay.x, spawnDelay.y + 1);
             spawnTimerForColumns.Add(timer);
         }
         TMP_PlayerHealth.text = playerHealth + "/" + playerHealthMax;
@@ -33,24 +33,10 @@ public class GameManager : MonoBehaviour
                 if (spawnTimerForColumns[j] == 0)
                 {
                     if (!Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(new(j, Manager.Instance.boardManager.boardSize.y - 1)))
-                        SpawnEnemy(j);
-                    spawnTimerForColumns[j] = Random.Range(6, 12);
+                        Manager.Instance.enemyManager.SpawnEnemy(j);
+                    spawnTimerForColumns[j] = Random.Range(spawnDelay.x, spawnDelay.y);
                 }
             }
         }
-    }
-
-    public void SpawnEnemy(int column)
-    {
-        if (enemyQueue.Count == 0) return;
-        GameObject unitGO = Instantiate(Manager.Instance.enemyManager.enemyPrefab, Manager.Instance.enemyManager.enemyParent);
-
-        EnemyUnit unit = unitGO.GetComponent<EnemyUnit>();
-
-        unit.position = new(column,Manager.Instance.boardManager.boardSize.y - 1);
-
-        unit.enemy = enemyQueue[0];
-
-        enemyQueue.RemoveAt(0);
     }
 }
