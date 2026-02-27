@@ -215,7 +215,7 @@ public class EnemyManager : MonoBehaviour
 
         while (funds > 0)
         {
-            EnemyInfo enemyCheck = enemyRepertoire[Random.Range(0, enemyRepertoire.Count - 1)];
+            EnemyInfo enemyCheck = enemyRepertoire[Random.Range(0, enemyRepertoire.Count)];
             if (enemyCheck.cost <= funds)
             {
                 enemy = enemyCheck.enemy;
