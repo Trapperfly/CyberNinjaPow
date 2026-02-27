@@ -12,13 +12,19 @@ public class EnemyManager : MonoBehaviour
     public List<EnemyInfo> enemyRepertoire = new List<EnemyInfo>();
     public List<Enemy> enemyQueue = new List<Enemy>();
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
+    public List<EnemyUnit> actingEnemies = new();
     public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
 
     public float yOffset;
     public int timeOffset;
 
     public float timeAnim;
+    public float moveAnimTime;
+    public float attackAnimTime;
     public float addTimeAnim = 0;
+
+    public float bobbing;
+    public float bobbingSpeed;
 
     public void MoveAllEnemies(int times, Vector2Int direction)
     {
@@ -47,9 +53,15 @@ public class EnemyManager : MonoBehaviour
             foreach (EnemyUnit enemy in enemies)
             {
                 enemy.Timer();
+            }
+            foreach (EnemyUnit enemy in actingEnemies)
+            {
+                yield return new WaitForSeconds(timeAnim);
+                enemy.Act();
                 yield return new WaitForSeconds(addTimeAnim);
                 addTimeAnim = 0;
             }
+            actingEnemies.Clear();
             KillOffEnemies();
             yield return new WaitForSeconds(timeAnim);
         }
@@ -97,6 +109,55 @@ public class EnemyManager : MonoBehaviour
         if (cell.y < 0) { Debug.Log("x was lower than 0"); return true; }
         if (cell.y > Manager.Instance.boardManager.boardSize.y - 1) { Debug.Log("y was higher than board size"); return true; }
         return false;
+    }
+
+    public Vector2Int CheckMoveDirection(Vector2Int pos, Vector2Int direction)
+    {
+        if (CheckIfCellIsOccupied(pos + direction)) { }
+        else if (CheckIfCellIsOutsideOfBoard(pos + direction)) { }
+        else
+        {
+            //Debug.Log("Down works");
+            return direction;
+        }
+        Vector2Int nextCheck = new Vector2Int(0, 0);
+        float value = Random.value;
+        if (direction.x == 0)
+        {
+            nextCheck = (value < 0.5f) ? new(-1, direction.y) : new(1, direction.y);
+        }
+        else if (direction.y == 0)
+        {
+            nextCheck = (value < 0.5f) ? new(direction.x, -1) : new(direction.x, 1);
+        }
+
+        if (CheckIfCellIsOccupied(pos + nextCheck)) { }
+        else if (CheckIfCellIsOutsideOfBoard(pos + nextCheck)) { }
+        else
+        {
+            //Debug.Log("Next test works");
+            return nextCheck;
+        }
+
+        Vector2Int lastCheck = new Vector2Int(0, 0);
+        if (direction.x == 0)
+        {
+            lastCheck = (value > 0.5f) ? new(1, direction.y) : new(-1, direction.y);
+        }
+        else if (direction.y == 0)
+        {
+            lastCheck = (value > 0.5f) ? new(direction.x, 1) : new(direction.x, -1);
+        }
+
+        if (CheckIfCellIsOccupied(pos + lastCheck) != null) { }
+        else if (CheckIfCellIsOutsideOfBoard(pos + lastCheck)) { }
+        else
+        {
+            //Debug.Log("Last check works");
+            return lastCheck;
+        }
+        //Debug.Log("Nothing works, probably do nothing");
+        return direction;
     }
     public void SpawnEnemy(int column)
     {

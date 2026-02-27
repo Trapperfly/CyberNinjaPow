@@ -52,7 +52,7 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            if (hand.Count >= handSize) { return; }
+            if (hand.Count >= handSize) { break; }
 
             if (draw.Count <= 0) ShuffleDiscardIntoDraw();
 

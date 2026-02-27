@@ -1504,11 +1504,15 @@ MonoBehaviour:
     cost: 5
   enemyQueue: []
   enemies: []
+  actingEnemies: []
   deadEnemies: []
   yOffset: 0.2
   timeOffset: 0
-  timeAnim: 0.2
+  timeAnim: 0.1
+  moveAnimTime: 0.5
+  attackAnimTime: 0.5
   addTimeAnim: 0
+  bobbing: 0.1
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0

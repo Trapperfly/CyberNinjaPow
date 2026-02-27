@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using System.Collections;
 
 public class EnemyUnit : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class EnemyUnit : MonoBehaviour
     public List<EffectInfo> effects;
     bool pong;
 
+    SpriteRenderer spriteRenderer;
+
     public SpriteRenderer timerSpriteRenderer;
     public Sprite timerDot;
     public Sprite timerDanger;
@@ -23,26 +26,39 @@ public class EnemyUnit : MonoBehaviour
 
     public GameObject movementArrow;
 
+    EnemyManager enemyManager;
+
+    float bobbingOffset;
+
     private void Start()
     {
-        SpriteRenderer spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        enemyManager = Manager.Instance.enemyManager;
+        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = enemy.sprite;
 
-        Manager.Instance.enemyManager.enemies.Add(this);
+        enemyManager.enemies.Add(this);
         intentions = enemy.enemyHealth[phase].intentions;
         if (enemy.looping == IntentionLooping.Random) intention = Random.Range(0, intentions.Count);
 
         Vector2 targetPosition = GetWorldPos(position);
-        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
+        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
 
         SetTimer();
         SetHealthBar();
         intendedMovement = PlanMovement();
+
+        bobbingOffset = Random.Range(0, 9000f);
+    }
+
+    private void Update()
+    {
+        //Debug.Log(Mathf.Sin(Time.time));
+        spriteRenderer.transform.localPosition = Mathf.Sin(Time.time * enemyManager.bobbingSpeed + bobbingOffset) * enemyManager.bobbing * new Vector3(0, 1, 0);
     }
 
     void DisplayMovementArrow(Vector2Int movement)
     {
-        movementArrow = Instantiate(Manager.Instance.enemyManager.enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
+        movementArrow = Instantiate(enemyManager.enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
         LineRenderer line = movementArrow.GetComponent<LineRenderer>();
         line.SetPosition(0, GetWorldPos(position));
         line.SetPosition(1, GetWorldPos(position + movement));
@@ -55,12 +71,12 @@ public class EnemyUnit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Debug.Log(enemy.enemyName + " took " + damage + " damage");
+        //Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
         if (damageTaken >= enemy.enemyHealth[phase].gateHealth)
         {
-            Debug.Log(enemy.enemyName + " took enough damage to go to next phase. Had taken " + (damageTaken - damage) + " and it took " + damage + " damage");
+            //Debug.Log(enemy.enemyName + " took enough damage to go to next phase. Had taken " + (damageTaken - damage) + " and it took " + damage + " damage");
             NextPhase();
             return;
         }
@@ -69,7 +85,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void NextPhase()
     {
-        Debug.Log(enemy.enemyName + " is at phase " + phase + ", and is going to phase " + (phase + 1) + ". Its max phases is " + (enemy.enemyHealth.Count - 1));
+        //Debug.Log(enemy.enemyName + " is at phase " + phase + ", and is going to phase " + (phase + 1) + ". Its max phases is " + (enemy.enemyHealth.Count - 1));
         phase++;
         if (enemy.enemyHealth.Count - 1 < phase)
         {
@@ -77,7 +93,7 @@ public class EnemyUnit : MonoBehaviour
             PrepareDie();
             return;
         }
-        Debug.Log(enemy.enemyName + " changed phase to phase #" + phase);
+        //Debug.Log(enemy.enemyName + " changed phase to phase #" + phase);
 
         //Proceed to next phase
         damageTaken = 0;
@@ -95,7 +111,7 @@ public class EnemyUnit : MonoBehaviour
 
     void PrepareDie()
     {
-        Manager.Instance.enemyManager.deadEnemies.Add(this);
+        enemyManager.deadEnemies.Add(this);
     }
 
     public void Die()
@@ -124,7 +140,7 @@ public class EnemyUnit : MonoBehaviour
                 case SmartMovement.None:
                     break;
                 case SmartMovement.SmartDown:
-                    movement = CheckMoveDirection(position, new(0, -1));
+                    movement = enemyManager.CheckMoveDirection(position, new(0, -1));
                     break;
                 case SmartMovement.SmartUp:
                     break;
@@ -142,7 +158,7 @@ public class EnemyUnit : MonoBehaviour
                     break;
             }
         }
-        else if (intentions[intention].movement != new Vector2Int(0, 0))
+        else
         {
             movement = intentions[intention].movement;
         }
@@ -153,68 +169,15 @@ public class EnemyUnit : MonoBehaviour
         return movement;
     }
 
-    Vector2Int CheckMoveDirection(Vector2Int pos, Vector2Int direction)
-    {
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + direction)) { }
-        else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + direction)) { }
-        else
-        {
-            Debug.Log("Down works");
-            return direction;
-        }
-        Vector2Int nextCheck = new Vector2Int(0, 0);
-        float value = Random.value;
-        if (direction.x == 0)
-        {
-            nextCheck = (value < 0.5f) ? new(-1, direction.y) : new(1, direction.y);
-        }
-        else if (direction.y == 0)
-        {
-            nextCheck = (value < 0.5f) ? new(direction.x, -1) : new(direction.x, 1);
-        }
-
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + nextCheck)) { }
-        else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + nextCheck)) { }
-        else
-        {
-            Debug.Log("Next test works");
-            return nextCheck;
-        }
-
-        Vector2Int lastCheck = new Vector2Int(0, 0);
-        if (direction.x == 0)
-        {
-            lastCheck = (value > 0.5f) ? new(1, direction.y) : new(-1, direction.y);
-        }
-        else if (direction.y == 0)
-        {
-            lastCheck = (value > 0.5f) ? new(direction.x, 1) : new(direction.x, -1);
-        }
-
-        if (Manager.Instance.enemyManager.CheckIfCellIsOccupied(pos + lastCheck) != null) { }
-        else if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(pos + lastCheck)) { }
-        else
-        {
-            Debug.Log("Last check works");
-            return lastCheck;
-        }
-        Debug.Log("Nothing works, probably do nothing");
-        return direction;
-    }
-
     public void Timer()
     {  
+        EffectOnTimer();
         if (intentions[intention].timer > timer) {
             timer++;
             SetTimer();
             return; 
         }
-        EffectOnTimer();
-        Act();
-        EffectOnAfterTimer();
-        timer = 0;
-
-        SetTimer();
+        enemyManager.actingEnemies.Add(this);
     }
 
     public void SetTimer()
@@ -231,16 +194,40 @@ public class EnemyUnit : MonoBehaviour
 
     public void Act()
     {
-        Manager.Instance.enemyManager.addTimeAnim = 1;
+        StartCoroutine(IAct());
+    }
+
+    public IEnumerator IAct()
+    {
         EffectOnAct();
         Move();
+        if (intendedMovement != new Vector2Int(0, 0))
+        {
+            enemyManager.addTimeAnim += enemyManager.moveAnimTime;
+            yield return new WaitForSeconds(enemyManager.moveAnimTime);
+        }
         Attack();
+        if (intentions[intention].attack.Count != 0)
+        {
+            Debug.Log(enemy.enemyName + " is attacking with " + intentions[intention].attack.Count + " attacks");
+            enemyManager.addTimeAnim += enemyManager.attackAnimTime;
+            yield return new WaitForSeconds(enemyManager.attackAnimTime);
+        }
         ApplyEffect();
         EffectOnAfterAct();
+        FindLooping();
+        timer = 0;
+        SetTimer();
+        intendedMovement = PlanMovement();
+        yield return null;
+    }
+
+    public void FindLooping()
+    {
         switch (enemy.looping)
         {
             case IntentionLooping.none:
-                if(intentions.Count - 1 > intention) intention += 1;
+                if (intentions.Count - 1 > intention) intention += 1;
                 break;
             case IntentionLooping.Loop:
                 if (intentions.Count - 1 <= intention)
@@ -283,7 +270,6 @@ public class EnemyUnit : MonoBehaviour
             default:
                 break;
         }
-        intendedMovement = PlanMovement();
     }
 
     public void EffectOnAct()
@@ -319,37 +305,62 @@ public class EnemyUnit : MonoBehaviour
     {
         if (movementArrow != null)
             Destroy(movementArrow);
-        EnemyUnit potentialCrash = Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + intendedMovement);
+
+        if (intendedMovement == new Vector2Int(0, 0))
+        {
+            return;
+        }
+
+        EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + intendedMovement);
+
         if (intendedMovement != new Vector2Int(0, 0) && potentialCrash != null) {
             TakeDamage(Manager.Instance.gameManager.collisionDamage);
             potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
             return;
         }
-        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return;
+        if (enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return;
 
         position += intendedMovement;
-        Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
-        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
+
+        StartCoroutine(MoveLerp(position));
+        //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
+        //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
     }
 
     public void ForceMove(Vector2Int direction)
     {
         if (movementArrow != null)
             Destroy(movementArrow);
-        EnemyUnit potentialCrash = Manager.Instance.enemyManager.CheckIfCellIsOccupied(position + direction);
+        EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + direction);
         if (potentialCrash != null)
         {
             TakeDamage(Manager.Instance.gameManager.collisionDamage);
             potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
             return;
         }
-        if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
+        if (enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
 
         position += direction;
-        Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
-        transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + Manager.Instance.enemyManager.yOffset, 0);
 
-        DisplayMovementArrow(intendedMovement);
+        StartCoroutine(MoveLerp(position, true));
+        //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
+        //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
+    }
+
+    public IEnumerator MoveLerp(Vector2Int gridPos, bool forced = false)
+    {
+        float seconds = 0.5f;
+        float i = 0;
+        Vector2 originalPos = transform.position;
+        Vector2 targetPos = Manager.Instance.boardManager.spaces[gridPos].transform.position;
+        while (i < seconds)
+        {
+            i += Time.deltaTime;
+            transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i * 2);
+            yield return null;
+        }
+        if (forced) intendedMovement = PlanMovement();
+        yield return null;
     }
 
     public void Attack()
@@ -368,7 +379,7 @@ public class EnemyUnit : MonoBehaviour
             case EffectsEnum.Regeneration:
                 break;
             case EffectsEnum.TimeWarp:
-                Manager.Instance.enemyManager.AlterTime(intentions[intention].effect.amount);
+                enemyManager.AlterTime(intentions[intention].effect.amount);
                 break;
             default:
                 break;
