@@ -1512,7 +1512,8 @@ MonoBehaviour:
   moveAnimTime: 0.5
   attackAnimTime: 0.5
   addTimeAnim: 0
-  bobbing: 0.1
+  bobbing: 0.02
+  bobbingSpeed: 4
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0
