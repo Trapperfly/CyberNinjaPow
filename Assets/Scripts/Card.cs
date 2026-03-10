@@ -28,13 +28,15 @@ public class TileEffect
     public int damage;
 
     [Header("Projectile")]
-    public bool isProjectile;
+    //public bool isProjectile;
 
-    [Tooltip("The projectile hits does not stop for pierce amount of enemies.")]
-    public int pierce;
+    //[Tooltip("The projectile hits does not stop for pierce amount of enemies.")]
+    //public int pierce;
 
-    [Tooltip("Direction the projectile travels.")]
-    public Direction projectileDirection;
+    //[Tooltip("Direction the projectile travels.")]
+    //public Direction projectileDirection;
+    [Tooltip("Projectiles")]
+    public List<ProjectileData> projectiles = new();
 
     [Header("Push")]
     public int pushDistance;
@@ -69,6 +71,13 @@ public class StatusEffectEntry
     public int duration = 1;
 }
 
+[System.Serializable]
+public class ProjectileData
+{
+    public Direction direction;
+    public int pierce;
+}
+
 public enum CardTag
 {
     None,
@@ -100,8 +109,6 @@ public enum StatusEffect
 public enum Direction
 {
     None,
-    North,
-    South,
-    East,
-    West,
+    North, South, East, West,
+    NorthEast, NorthWest, SouthEast, SouthWest,
 }

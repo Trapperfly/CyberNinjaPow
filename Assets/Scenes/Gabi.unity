@@ -1430,6 +1430,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 27f8d1f4f90cc5c49a3c6754a051ef00, type: 2}
   - {fileID: 11400000, guid: e9a2277df1c8174499bae04ac01dfae9, type: 2}
   - {fileID: 11400000, guid: c70a9e47996f94b4f8c539953fb2caee, type: 2}
+  - {fileID: 11400000, guid: bce7f6aa1354d254787b293e9e8e0f9b, type: 2}
   discard: []
   hand: []
 --- !u!114 &1900229852

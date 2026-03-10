@@ -185,9 +185,10 @@ public class BoardManager : MonoBehaviour
 
             for (int i = 0; i < effect.repeatCount + 1; i++)
             {
-                if (effect.isProjectile)
+                if (effect.projectiles.Count > 0)
                 {
-                    Projectile(false, space, effect.projectileDirection, effect.damage, effect.pierce);
+                    foreach (ProjectileData projectile in effect.projectiles)
+                        Projectile(false, space, projectile.direction, effect.damage, projectile.pierce);
                 }
                 else
                     cardTargetedSpace.Colorize(true);
@@ -209,8 +210,16 @@ public class BoardManager : MonoBehaviour
                 return new(1, 0);
             case Direction.West:
                 return new(-1, 0);
+            case Direction.NorthEast:
+                return new(1, 1);
+            case Direction.NorthWest:
+                return new(-1, 1);
+            case Direction.SouthEast:
+                return new(1, -1);
+            case Direction.SouthWest:
+                return new(-1, -1);
             default:
-                return new(0,0);
+                return new(0, 0);
         }
     }
 
@@ -275,14 +284,17 @@ public class BoardManager : MonoBehaviour
             {
                 Vector2Int space = targetSpace.position + targetPos;
 
-                if (effect.isProjectile)
+                if (effect.projectiles.Count > 0)
                 {
-                    Projectile(true, space, effect.projectileDirection, effect.damage, effect.pierce);
+                    foreach (ProjectileData projectile in effect.projectiles)
+                        Projectile(true, space, projectile.direction, effect.damage, projectile.pierce);
                 }
-
-                EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                if (enemy)
-                    enemy.TakeDamage(effect.damage);
+                else
+                {
+                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                    if (enemy)
+                        enemy.TakeDamage(effect.damage);
+                }
 
                 Manager.Instance.enemyManager.KillOffEnemies();
                 yield return new WaitForSeconds(waitBetweenCardActions);

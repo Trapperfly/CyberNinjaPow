@@ -208,19 +208,23 @@ public class CardEditorWindow : EditorWindow
             }
 
             // Projectile: proj or projN/S/E/W
-            var projMatch = Regex.Match(t, @"^proj([nsew]?)$");
-            if (projMatch.Success)
+            var projMatch = Regex.Match(t, @"^proj([nsew]{1,2})$");
+            var pierceMatch = Regex.Match(t, @"^pierce(\d+)$");
+            if (pierceMatch.Success)
             {
-                effect.isProjectile = true;
-                if (projMatch.Groups[1].Value != "")
-                    effect.projectileDirection = ParseDirection(projMatch.Groups[1].Value);
                 continue;
             }
-
-            // Stop on first hit
-            var stopMatch = Regex.Match(t, @"^stop(\d+)$");
-            if (stopMatch.Success) { effect.pierce = int.Parse(stopMatch.Groups[1].Value); continue; }
-            //if (t == "stop") { effect.pierce = true; continue; }
+            if (projMatch.Success)
+            {
+                var pierceData = 0; 
+                if (pierceMatch.Success) { pierceData = int.Parse(pierceMatch.Groups[1].Value); }
+                effect.projectiles.Add(new ProjectileData
+                {
+                    direction = ParseDirection(projMatch.Groups[1].Value),
+                    pierce = pierceData
+                });
+                continue;
+            }
 
             // Repeat count: r{n}
             var repMatch = Regex.Match(t, @"^r(\d+)$");
@@ -272,7 +276,11 @@ public class CardEditorWindow : EditorWindow
         "s" => Direction.South,
         "e" => Direction.East,
         "w" => Direction.West,
-        _   => Direction.None,
+        "ne" => Direction.NorthEast,
+        "nw" => Direction.NorthWest,
+        "se" => Direction.SouthEast,
+        "sw" => Direction.SouthWest,
+        _ => Direction.None,
     };
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -303,9 +311,12 @@ public class CardEditorWindow : EditorWindow
         var parts = new List<string>();
 
         if (e.damage > 0)          parts.Add($"d{e.damage}");
-        if (e.isProjectile)        parts.Add(e.projectileDirection != Direction.None ? $"proj{DirChar(e.projectileDirection)}" : "proj");
-        if (e.pierce > 0)          parts.Add($"pierce{e.pierce}");
-        if (e.pushDistance > 0)    parts.Add($"p{e.pushDistance}{DirChar(e.pushDirection)}");
+        foreach (var proj in e.projectiles)
+        {
+            parts.Add($"proj{DirStr(proj.direction)}");
+            if (proj.pierce > 0) parts.Add($"pierce{proj.pierce}");
+        }
+        if (e.pushDistance > 0)    parts.Add($"p{e.pushDistance}{DirStr(e.pushDirection)}");
         if (e.repeating)           parts.Add($"r{e.repeatCount}");
         if (e.repeatInterval > 0)  parts.Add($"ri{e.repeatInterval}");
 
@@ -329,13 +340,17 @@ public class CardEditorWindow : EditorWindow
         return string.Join(",", parts);
     }
 
-    private char DirChar(Direction d) => d switch
+    private string DirStr(Direction d) => d switch
     {
-        Direction.North => 'N',
-        Direction.South => 'S',
-        Direction.East  => 'E',
-        Direction.West  => 'W',
-        _               => '?',
+        Direction.North => "N",
+        Direction.South => "S",
+        Direction.East => "E",
+        Direction.West => "W",
+        Direction.NorthEast => "NE",
+        Direction.NorthWest => "NW",
+        Direction.SouthEast => "SE",
+        Direction.SouthWest => "SW",
+        _ => "?",
     };
 
     // ─────────────────────────────────────────────────────────────────────────
