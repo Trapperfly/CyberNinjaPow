@@ -206,13 +206,13 @@ public class EnemyUnit : MonoBehaviour
             enemyManager.addTimeAnim += enemyManager.moveAnimTime;
             yield return new WaitForSeconds(enemyManager.moveAnimTime);
         }
-        Attack();
-        if (intentions[intention].attack.Count != 0)
-        {
-            Debug.Log(enemy.enemyName + " is attacking with " + intentions[intention].attack.Count + " attacks");
-            enemyManager.addTimeAnim += enemyManager.attackAnimTime;
-            yield return new WaitForSeconds(enemyManager.attackAnimTime);
-        }
+        //Attack();
+        //if (intentions[intention].attack.Count != 0)
+        //{
+        //    Debug.Log(enemy.enemyName + " is attacking with " + intentions[intention].attack.Count + " attacks");
+        //    enemyManager.addTimeAnim += enemyManager.attackAnimTime;
+        //    yield return new WaitForSeconds(enemyManager.attackAnimTime);
+        //}
         ApplyEffect();
         EffectOnAfterAct();
         FindLooping();

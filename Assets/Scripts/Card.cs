@@ -4,40 +4,102 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Card", menuName = "Card/Card")]
 public class Card : ScriptableObject
 {
+    [Header("Identity")]
     public string cardName;
-    public List<Tag> cardTags;
+    public string description;
+    public Sprite artwork;
+    public List<CardTag> cardTags;
     public int cost;
-    public int generalDamage;
-    public int extraAmount;
-    public List<Targeting> targeting = new();
-    
+
+    [Tooltip("Each entry defines what happens on one tile of the grid when this card is played.")]
+    public List<TileEffect> tileEffects = new();
 }
+
+/// <summary>
+/// Defines everything that happens on a single grid tile when the card is played.
+/// </summary>
 [System.Serializable]
-public class Targeting
+public class TileEffect
 {
-    public Vector2Int target;
-    public bool repeating;
+    [Tooltip("Position on the grid, relative to the target origin.")]
+    public Vector2Int gridPosition;
+
+    [Header("Damage")]
     public int damage;
-    //[Header("Projectile")]
-    public bool projectile;
-    //public bool4 directionNESW;
+
+    [Header("Projectile")]
+    public bool isProjectile;
+
+    [Tooltip("The projectile hits does not stop for pierce amount of enemies.")]
+    public int pierce;
+
+    [Tooltip("Direction the projectile travels.")]
+    public Direction projectileDirection;
+
     [Header("Push")]
-    public int push = 0;
+    public int pushDistance;
     public Direction pushDirection;
-    //public bool contextualPush;
+
+    [Header("Status Effects")]
+    public List<StatusEffectEntry> statusEffects = new();
+
+    [Header("Behaviour Flags")]
+    [Tooltip("If true, this tile effect triggers multiple times (e.g. rapid hits or repeating pulses).")]
+    public bool repeating;
+
+    [Tooltip("How many times to repeat, if repeating is true.")]
+    public int repeatCount;
+
+    [Tooltip("Delay in seconds between repeats.")]
+    public float repeatInterval;
 }
-public enum Tag
+
+/// <summary>
+/// A single status effect applied to a tile, with its own stacks/duration.
+/// </summary>
+[System.Serializable]
+public class StatusEffectEntry
 {
-    none,
+    public StatusEffect effect;
+
+    [Tooltip("Number of stacks or intensity of the effect.")]
+    public int stacks = 1;
+
+    [Tooltip("How many turns the effect lasts. 0 = permanent / handled elsewhere.")]
+    public int duration = 1;
+}
+
+public enum CardTag
+{
+    None,
     SingleTarget,
     Area,
     Melee,
     Projectile,
     Push,
+    Burn,
+    Poison,
+    Stun,
+    Slow,
+    Repeating,
 }
+
+public enum StatusEffect
+{
+    None,
+    Burn,       // damage over time
+    Poison,     // damage over time, different type
+    Stun,       // skip turn
+    Slow,       // reduced movement
+    Weaken,     // reduced damage output
+    Vulnerable, // increased damage taken
+    Shield,     // absorb damage
+    Regen,      // heal over time
+}
+
 public enum Direction
 {
-    none,
+    None,
     North,
     South,
     East,

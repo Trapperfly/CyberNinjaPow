@@ -175,27 +175,90 @@ public class BoardManager : MonoBehaviour
 
         ClearSpaces();
 
-        foreach (Targeting target in heldCard.targeting)
+        foreach (TileEffect effect in heldCard.tileEffects)
         {
-            Vector2Int targetPos = target.target;
+            Vector2Int space = targetedPosition + effect.gridPosition;
 
-            int repeats = (target.repeating || target.projectile) ? 10 : 1;
+            spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
 
-            for (int i = 0; i < repeats; i++)
+            if (cardTargetedSpace == null) continue;
+
+            for (int i = 0; i < effect.repeatCount + 1; i++)
             {
-                Vector2Int space = targetedPosition + targetPos;
+                if (effect.isProjectile)
+                {
+                    Projectile(false, space, effect.projectileDirection, effect.damage, effect.pierce);
+                }
+                else
+                    cardTargetedSpace.Colorize(true);
+            }
+        }
+    }
 
-                if (target.projectile && CheckIfEnemyIsOnSpace(space)) repeats = 0;
+    Vector2Int GetProjectileDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.None:
+                return new(0, 1);
+            case Direction.North:
+                return new(0, 1);
+            case Direction.South:
+                return new(0, -1);
+            case Direction.East:
+                return new(1, 0);
+            case Direction.West:
+                return new(-1, 0);
+            default:
+                return new(0,0);
+        }
+    }
 
+    void Projectile(bool fire, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0)
+    {
+        Vector2Int space = origin;
+        Vector2Int dirVector = GetProjectileDirection(direction);
+        
+        int checks = 10;
+
+        if (fire) //If attacking
+        {
+            for (int i = 0; i < checks; i++)
+            {
                 spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
 
-                if (cardTargetedSpace != null)
+                if (cardTargetedSpace == null) continue;
+
+                EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                if (enemy)
                 {
-                    cardTargetedSpace.Colorize(true);
+                    enemy.TakeDamage(damage);
+                    if (pierce == 0)
+                        checks = 0;
+                    else pierce--;
                 }
 
-                if (repeats > 1)
-                    targetPos += target.target;
+                space += dirVector;
+            }
+        }
+        else //If only targeting
+        {
+            for (int i = 0; i < checks; i++)
+            {
+                spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
+
+                if (cardTargetedSpace == null) continue;
+
+                cardTargetedSpace.Colorize(true);
+
+                if (CheckIfEnemyIsOnSpace(space))
+                {
+                    if (pierce == 0)
+                        checks = 0;
+                    else pierce--;
+                }
+
+                space += dirVector;
             }
         }
     }
@@ -204,32 +267,28 @@ public class BoardManager : MonoBehaviour
     {
         if (targetSpace == null) yield break;
         if (waitBetweenCardActions > 0) Manager.Instance.busy = true;
-        for (int i = 0; i <= heldCard.extraAmount; i++)
+        foreach (TileEffect effect in heldCard.tileEffects)
         {
-            foreach (Targeting target in heldCard.targeting)
+            Vector2Int targetPos = effect.gridPosition;
+
+            for (int r = 0; r < effect.repeatCount + 1; r++)
             {
-                Vector2Int targetPos = target.target;
+                Vector2Int space = targetSpace.position + targetPos;
 
-                int repeats = (target.repeating || target.projectile) ? 10 : 1;
-
-                for (int r = 0; r < repeats; r++)
+                if (effect.isProjectile)
                 {
-                    Vector2Int space = targetSpace.position + targetPos;
-
-                    if (target.projectile && CheckIfEnemyIsOnSpace(space)) repeats = 0;
-
-                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                    if (enemy)
-                        enemy.TakeDamage(heldCard.generalDamage + target.damage);
-
-                    if (repeats > 1)
-                        targetPos += target.target;
-
-                    Manager.Instance.enemyManager.KillOffEnemies();
+                    Projectile(true, space, effect.projectileDirection, effect.damage, effect.pierce);
                 }
+
+                EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                if (enemy)
+                    enemy.TakeDamage(effect.damage);
+
+                Manager.Instance.enemyManager.KillOffEnemies();
+                yield return new WaitForSeconds(waitBetweenCardActions);
             }
-            yield return new WaitForSeconds(waitBetweenCardActions);
         }
+        yield return new WaitForSeconds(waitBetweenCardActions);
         Manager.Instance.busy = false;
         FinishCardAction();
         yield return null;

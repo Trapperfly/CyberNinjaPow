@@ -15,7 +15,7 @@ public class Intention
     public int timer = 5;
     public Vector2Int movement;
     public SmartMovement smartMovement;
-    public List<Targeting> attack = new();
+    //public List<Targeting> attack = new();
     public EffectApplication effect;
 }
 
