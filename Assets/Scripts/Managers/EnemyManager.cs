@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UIElements;
 
 public class EnemyManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject enemyMovementArrowPrefab;
+    public GameObject movementArrow;
     public Transform enemyParent;
     public int spawningFunds = 10;
     public int boardCost = 0;
@@ -91,6 +93,17 @@ public class EnemyManager : MonoBehaviour
             deadEnemies.Remove(enemy);
             enemy.Die();
         }
+    }
+    public void DisplayMovementArrow(Vector2Int origin, Vector2Int movement)
+    {
+        movementArrow = Instantiate(enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
+        LineRenderer line = movementArrow.GetComponent<LineRenderer>();
+        line.SetPosition(0, GetWorldPos(origin));
+        line.SetPosition(1, GetWorldPos(origin + movement));
+    }
+    public Vector2 GetWorldPos(Vector2Int gridPosition)
+    {
+        return Manager.Instance.boardManager.spaces[gridPosition].transform.position;
     }
     public EnemyUnit CheckIfCellIsOccupied(Vector2Int cell)
     {

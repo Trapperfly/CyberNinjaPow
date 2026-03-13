@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Behavior;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Enemy", menuName = "Enemy")]
@@ -28,7 +29,7 @@ public class EnemyHealth
     public List<Intention> intentions = new();
     public List<EffectsEnum> effect = new();
 }
-
+[BlackboardEnum]
 public enum SmartMovement
 {
     None,

@@ -5,23 +5,16 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Move", story: "[Agent] moves based on Intention", category: "Action", id: "5ba72cc8b65a568dc163464290edadee")]
+[NodeDescription(name: "Move", story: "[EnemyUnit] moves [ExpectedMovement]", category: "Action", id: "8803077867ef9f12a976fd94469cc290")]
 public partial class MoveAction : Action
 {
-    [SerializeReference] public BlackboardVariable<GameObject> Agent;
+    [SerializeReference] public BlackboardVariable<EnemyUnit> EnemyUnit;
+    [SerializeReference] public BlackboardVariable<Vector2Int> ExpectedMovement;
 
     protected override Status OnStart()
     {
-        return Status.Running;
-    }
-
-    protected override Status OnUpdate()
-    {
+        EnemyUnit.Value.Move();
         return Status.Success;
-    }
-
-    protected override void OnEnd()
-    {
     }
 }
 
