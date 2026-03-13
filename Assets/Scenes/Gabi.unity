@@ -148,14 +148,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: 0}
-  m_BlackboardVariableOverridesList: []
-  m_OriginalGraph: {fileID: 0}
+  m_Graph: {fileID: 5077810599642822839, guid: faa2cedc2d18271409cecc587aaa0854, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 2721978775726195668
+  m_OriginalGraph: {fileID: 5077810599642822839, guid: faa2cedc2d18271409cecc587aaa0854, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 2721978775726195668
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 48610971}
 --- !u!4 &48610973
 Transform:
   m_ObjectHideFlags: 0
@@ -1539,6 +1548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   enemyPrefab: {fileID: 4184783195207525563, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
   enemyMovementArrowPrefab: {fileID: 3498137276543333406, guid: 4dcaab8bdc72fe243bf72bd829d2880b, type: 3}
+  movementArrow: {fileID: 0}
   enemyParent: {fileID: 121886795}
   spawningFunds: 10
   boardCost: 0
