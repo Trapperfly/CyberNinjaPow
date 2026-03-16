@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3483850110652489540
+--- !u!114 &-5807356151796817935
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b27bb6d9a2c8d540a10dff10acc543e, type: 3}
-  m_Name: Actions Debug Info
+  m_Name: EnemyBase Debug Info
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphDebugInfo
   m_CodeBreakPointsList: []
 --- !u!114 &11400000
@@ -23,19 +23,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bad8f2220607dac4db5082ff333fafb8, type: 3}
-  m_Name: Actions
+  m_Name: EnemyBase
   m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorAuthoringGraph
-  Blackboard: {fileID: 8208173726276014751}
+  Blackboard: {fileID: 6428416754783999471}
   m_Description: 
   m_Nodes:
-  - rid: 2721978779294237254
-  m_VersionTimestamp: 639090044338133339
+  - rid: 2721978779636859880
+  m_VersionTimestamp: 639092776575359886
   m_SerializedVersion: 2
-  m_DebugInfo: {fileID: -3483850110652489540}
-  m_RuntimeGraph: {fileID: 3932488818149228221}
+  m_DebugInfo: {fileID: -5807356151796817935}
+  m_RuntimeGraph: {fileID: 4566370744241057495}
   AssetID:
-    m_Value0: 14161247091515984524
-    m_Value1: 5992423541528911642
+    m_Value0: 12999185571740833656
+    m_Value1: 4951444839734439881
   Story:
     Story: 
     StoryVariableNames: []
@@ -52,7 +52,7 @@ MonoBehaviour:
     NamedChildren: []
     IsPlaceholder: 0
   m_Blackboards: []
-  m_MainBlackboardAuthoringAsset: {fileID: 8208173726276014751}
+  m_MainBlackboardAuthoringAsset: {fileID: 6428416754783999471}
   m_CommandBuffer:
     m_Commands: []
   m_SubgraphsInfo: []
@@ -62,16 +62,16 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 2721978779294237254
+    - rid: 2721978779636859880
       type: {class: StartNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
         Position: {x: 0, y: 0}
         ID:
-          m_Value0: 11795403602359335530
-          m_Value1: 783260906711228552
+          m_Value0: 3109868838792869904
+          m_Value1: 2507718523775725081
         Parents: []
         PortModels:
-        - rid: 2721978779294237255
+        - rid: 2721978779636859881
         NodeType:
           m_SerializableType: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0,
             Culture=neutral, PublicKeyToken=null
@@ -81,16 +81,16 @@ MonoBehaviour:
         m_FieldValues: []
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 2721978779294237255
+    - rid: 2721978779636859881
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
         m_Name: OutputPort
         m_PortDataFlowType: 1
         m_IsFloating: 0
         m_NodeModel:
-          rid: 2721978779294237254
+          rid: 2721978779636859880
         m_Connections: []
---- !u!114 &3932488818149228221
+--- !u!114 &4566370744241057495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,56 +100,56 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db920e62f70f420bb33c771449926fa4, type: 3}
-  m_Name: Actions
+  m_Name: EnemyBase
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraph
   Graphs:
-  - rid: 2721978779294237256
-  m_DebugInfo: {fileID: -3483850110652489540}
+  - rid: 2721978779636859882
+  m_DebugInfo: {fileID: -5807356151796817935}
   m_WasCompileWithPlaceholderNode: 0
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 2721978779294237256
+    - rid: 2721978779636859882
       type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         AuthoringAssetID:
-          m_Value0: 14161247091515984524
-          m_Value1: 5992423541528911642
-        m_DebugInfo: {fileID: -3483850110652489540}
+          m_Value0: 12999185571740833656
+          m_Value1: 4951444839734439881
+        m_DebugInfo: {fileID: -5807356151796817935}
         BlackboardReference:
-          rid: 2721978779294237257
+          rid: 2721978779636859883
         BlackboardGroupReferences: []
         Root:
-          rid: 2721978779294237258
-        m_VersionTimestamp: 639090044338133339
-    - rid: 2721978779294237257
+          rid: 2721978779636859884
+        m_VersionTimestamp: 639092776575359886
+    - rid: 2721978779636859883
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
-          rid: 2721978779294237259
-        m_Source: {fileID: 5418186556401794634}
-    - rid: 2721978779294237258
+          rid: 2721978779636859885
+        m_Source: {fileID: 6792991295942356123}
+    - rid: 2721978779636859884
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
-          m_Value0: 11795403602359335530
-          m_Value1: 783260906711228552
+          m_Value0: 3109868838792869904
+          m_Value1: 2507718523775725081
         Graph:
-          rid: 2721978779294237256
+          rid: 2721978779636859882
         m_Parent:
           rid: -2
         m_Child:
           rid: -2
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 2721978779294237259
+    - rid: 2721978779636859885
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 2721978779294237260
-    - rid: 2721978779294237260
+        - rid: 2721978779636859886
+    - rid: 2721978779636859886
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -157,38 +157,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 0}
---- !u!114 &5418186556401794634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
-  m_Name: Actions Blackboard
-  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
-  VersionTimestamp: 639090044338113391
-  AssetID:
-    m_Value0: 0
-    m_Value1: 0
-  m_Blackboard:
-    m_Variables:
-    - rid: 2721978779294237261
-  m_SharedBlackboardVariableGuids: []
-  references:
-    version: 2
-    RefIds:
-    - rid: 2721978779294237261
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 0}
---- !u!114 &8208173726276014751
+--- !u!114 &6428416754783999471
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,21 +167,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
-  m_Name: Actions Blackboard
+  m_Name: EnemyBase Blackboard
   m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorBlackboardAuthoringAsset
   AssetID:
-    m_Value0: 14161247091515984524
-    m_Value1: 5992423541528911642
+    m_Value0: 0
+    m_Value1: 0
   m_Variables:
-  - rid: 2721978779294237262
-  m_VersionTimestamp: 639090044338113391
+  - rid: 2721978779636859887
+  m_VersionTimestamp: 639092776575177481
   m_CommandBuffer:
     m_Commands: []
-  m_RuntimeBlackboardAsset: {fileID: 5418186556401794634}
+  m_RuntimeBlackboardAsset: {fileID: 6792991295942356123}
   references:
     version: 2
     RefIds:
-    - rid: 2721978779294237262
+    - rid: 2721978779636859887
       type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
         ID:
@@ -221,4 +190,35 @@ MonoBehaviour:
         Name: Self
         IsExposed: 1
         m_IsShared: 0
+        m_Value: {fileID: 0}
+--- !u!114 &6792991295942356123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: EnemyBase Blackboard
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
+  VersionTimestamp: 639092776575177481
+  AssetID:
+    m_Value0: 0
+    m_Value1: 0
+  m_Blackboard:
+    m_Variables:
+    - rid: 2721978779636859888
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2721978779636859888
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
         m_Value: {fileID: 0}
