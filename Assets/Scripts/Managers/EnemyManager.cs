@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UIElements;
+using Unity.Behavior;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public int spawningFunds = 10;
     public int boardCost = 0;
     public List<EnemyInfo> enemyRepertoire = new List<EnemyInfo>();
-    public List<Enemy> enemyQueue = new List<Enemy>();
+    public List<EnemyData> enemyQueue = new List<EnemyData>();
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
     public List<EnemyUnit> actingEnemies = new();
     public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
@@ -28,6 +29,12 @@ public class EnemyManager : MonoBehaviour
     public float bobbing;
     public float bobbingSpeed;
 
+    public EnemyUnit GetBlackBoardVariable(GameObject gameObject)
+    {
+        var agent = gameObject.GetComponent<BehaviorGraphAgent>();
+        agent.GetVariable("Unit", out BlackboardVariable<EnemyUnit> unit);
+        return (EnemyUnit)unit;
+    }
     public void MoveAllEnemies(int times, Vector2Int direction)
     {
         for (int t = 0; t < times; t++)
@@ -196,9 +203,9 @@ public class EnemyManager : MonoBehaviour
         //enemyQueue.RemoveAt(0);
     }
 
-    public List<Enemy> GetRandomEnemies(int amount = 0, int funds = 0)
+    public List<EnemyData> GetRandomEnemies(int amount = 0, int funds = 0)
     {
-        List<Enemy> enemyList = new List<Enemy>();
+        List<EnemyData> enemyList = new List<EnemyData>();
 
         Vector2Int minMax = GetMinCostMaxCost();
 
@@ -218,9 +225,9 @@ public class EnemyManager : MonoBehaviour
 
         return enemyList;
     }
-    public Enemy GetRandomEnemy(int funds = 0)
+    public EnemyData GetRandomEnemy(int funds = 0)
     {
-        Enemy enemy;
+        EnemyData enemy;
 
         Vector2Int minMax = GetMinCostMaxCost();
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Behavior;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Card", menuName = "Card/Card")]
@@ -28,14 +29,6 @@ public class TileEffect
     public int damage;
 
     [Header("Projectile")]
-    //public bool isProjectile;
-
-    //[Tooltip("The projectile hits does not stop for pierce amount of enemies.")]
-    //public int pierce;
-
-    //[Tooltip("Direction the projectile travels.")]
-    //public Direction projectileDirection;
-    [Tooltip("Projectiles")]
     public List<ProjectileData> projectiles = new();
 
     [Header("Push")]
@@ -92,7 +85,7 @@ public enum CardTag
     Slow,
     Repeating,
 }
-
+[BlackboardEnum]
 public enum StatusEffect
 {
     None,
@@ -105,7 +98,7 @@ public enum StatusEffect
     Shield,     // absorb damage
     Regen,      // heal over time
 }
-
+[BlackboardEnum]
 public enum Direction
 {
     None,

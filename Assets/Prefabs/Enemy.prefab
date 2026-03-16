@@ -101,6 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5510277687992275866}
   - component: {fileID: 7964789773261100239}
+  - component: {fileID: 3049264724274307427}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -140,16 +141,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
   position: {x: 3, y: 4}
   enemy: {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
-  intentions: []
-  phase: 0
-  intention: 0
+  intendedAttack: []
+  iAttackCounter: -1
+  intendedMovement: {x: 0, y: 0}
+  actionTimer: 0
   timer: 0
+  phase: 0
   damageTaken: 0
   effects: []
   timerSpriteRenderer: {fileID: 4938997174166486607}
   timerDot: {fileID: -354001906295559755, guid: e846c7da503d28b4aa3335e754844973, type: 3}
   timerDanger: {fileID: -8398739913567040163, guid: 8fed7eb62b9d6f34ba648f6068979f2f, type: 3}
   healthBarRenderer: {fileID: 8728194017112661172}
+  movementArrow: {fileID: 0}
+--- !u!114 &3049264724274307427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184783195207525563}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
+  m_Graph: {fileID: 0}
+  m_BlackboardVariableOverridesList: []
+  m_OriginalGraph: {fileID: 0}
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6901258653281742507
 GameObject:
   m_ObjectHideFlags: 0

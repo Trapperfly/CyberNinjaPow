@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "Enemy")]
+[CreateAssetMenu(fileName = "Enemy", menuName = "Enemy/OldEnemy")]
 public class Enemy : ScriptableObject
 {
     public string enemyName = "Gringus";
@@ -16,7 +16,7 @@ public class Intention
     public int timer = 5;
     public Vector2Int movement;
     public SmartMovement smartMovement;
-    //public List<Targeting> attack = new();
+    public List<TileEffect> attack = new();
     public EffectApplication effect;
 }
 
@@ -64,7 +64,7 @@ public enum IntentionLooping
 [System.Serializable]
 public class EnemyInfo
 {
-    public Enemy enemy;
+    public EnemyData enemy;
     public int cost;
 
 }
