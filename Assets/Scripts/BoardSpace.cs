@@ -9,9 +9,28 @@ public class BoardSpace : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    public void Colorize(bool target)
+    public void Colorize(GridSpaceSelection selectionMethod)
     {
-        if (target) spriteRenderer.color = Color.green;
-        if (!target) spriteRenderer.color = Color.white;
+        switch (selectionMethod)
+        {
+            case GridSpaceSelection.None:
+                spriteRenderer.color = Color.white;
+                break;
+            case GridSpaceSelection.CardTargeting:
+                spriteRenderer.color = Color.green;
+                break;
+            case GridSpaceSelection.EnemyAttack:
+                spriteRenderer.color = Color.red;
+                break;
+            default:
+                break;
+        }
     }
+}
+public enum GridSpaceSelection
+{
+    None,
+    CardTargeting,
+    EnemyAttack,
+
 }

@@ -84,6 +84,17 @@ public class BoardManager : MonoBehaviour
         CheckCardTargeting(CheckMouseTargeting());
     }
 
+    public void PaintAttack(List<TileEffect> targets, Vector2Int origin)
+    {
+        foreach (TileEffect target in targets)
+        {
+            spaces.TryGetValue(origin + target.gridPosition, out BoardSpace targetSpace);
+            if (targetSpace == null) continue;
+
+            targetSpace.Colorize(GridSpaceSelection.EnemyAttack);
+        }
+    }
+
     public void BeginCardTargeting(Vector2 cardPos)
     {
         cardTargetingLine = Instantiate(cardTargetingLinePrefab, Vector3.zero, Quaternion.identity, null);
@@ -191,7 +202,7 @@ public class BoardManager : MonoBehaviour
                         Projectile(false, space, projectile.direction, effect.damage, projectile.pierce);
                 }
                 else
-                    cardTargetedSpace.Colorize(true);
+                    cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting);
             }
         }
     }
@@ -258,7 +269,7 @@ public class BoardManager : MonoBehaviour
 
                 if (cardTargetedSpace == null) continue;
 
-                cardTargetedSpace.Colorize(true);
+                cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting);
 
                 if (CheckIfEnemyIsOnSpace(space))
                 {
@@ -297,7 +308,7 @@ public class BoardManager : MonoBehaviour
                 }
 
                 Manager.Instance.enemyManager.KillOffEnemies();
-                yield return new WaitForSeconds(waitBetweenCardActions);
+                yield return new WaitForSeconds(effect.repeatInterval);
             }
         }
         yield return new WaitForSeconds(waitBetweenCardActions);
@@ -306,11 +317,15 @@ public class BoardManager : MonoBehaviour
         yield return null;
     }
 
-    void ClearSpaces()
+    public void ClearSpaces()
     {
         foreach (var keyValue in spaces)
         {
-            keyValue.Value.Colorize(false);
+            keyValue.Value.Colorize(GridSpaceSelection.None);
+        }
+        foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
+        {
+            unit.PaintAttack();
         }
     }
 }

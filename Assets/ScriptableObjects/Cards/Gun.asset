@@ -20,9 +20,9 @@ MonoBehaviour:
   tileEffects:
   - gridPosition: {x: 0, y: 0}
     damage: 1
-    isProjectile: 1
-    pierce: 0
-    projectileDirection: 0
+    projectiles:
+    - direction: 1
+      pierce: 0
     pushDistance: 0
     pushDirection: 0
     statusEffects: []

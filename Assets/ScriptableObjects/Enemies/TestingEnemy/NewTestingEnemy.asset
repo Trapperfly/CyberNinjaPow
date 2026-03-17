@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: NewTestingEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Gringus
-  enemySprite: {fileID: -8298362742124432106, guid: 30d8605a4c83db64ebdaf17dfc1ba1f3, type: 3}
   phases:
   - {fileID: 11400000, guid: 80e9dce1702dace41b336c889a62c4b8, type: 2}
+  - {fileID: 11400000, guid: 50477d3545876734c912d90918d8cdc2, type: 2}
+  - {fileID: 11400000, guid: c253817b2febd624684cbf04133e1319, type: 2}

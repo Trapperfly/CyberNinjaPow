@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 194cb53e1b737b54a99bd91f75316548, type: 3}
-  m_Name: TestingEnemyPhase1
+  m_Name: TestingEnemyPhase2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPhase
-  health: 1
+  health: 3
   actions: {fileID: 4566370744241057495, guid: be9465a8d3025a444af4a8c6036a826c, type: 2}
-  sprite: {fileID: 1680075260835488636, guid: 43308547fb58eed4f8d7aacf6e26dd16, type: 3}
+  sprite: {fileID: -8298362742124432106, guid: 30d8605a4c83db64ebdaf17dfc1ba1f3, type: 3}

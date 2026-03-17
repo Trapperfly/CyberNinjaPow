@@ -9,6 +9,7 @@ public class DeckManager : MonoBehaviour
     public bool cardRedied = false;
 
     public GameObject cardPrefab;
+    public Deck deck;
 
     public RectTransform handTransform;
 
@@ -20,12 +21,46 @@ public class DeckManager : MonoBehaviour
 
     private void Start()
     {
+        foreach (Card card in deck.cards)
+        {
+            draw.Add(card);
+        }
         DrawCard(handSize);
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
         if (Input.GetKeyDown(KeyCode.D)) DiscardRandomHandCard();
+    }
+
+    public void AddCardTo(WhereDoesTheCardGo where, Card card)
+    {
+        switch (where)
+        {
+            case WhereDoesTheCardGo.Nowhere:
+                break;
+            case WhereDoesTheCardGo.Hand:
+                //Discard one card first if not enough space in hand.
+                hand.Add(card);
+                CreateCard(card);
+                break;
+            case WhereDoesTheCardGo.Draw:
+                draw.Add(card);
+                break;
+            case WhereDoesTheCardGo.Discard:
+                discard.Add(card);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public enum WhereDoesTheCardGo
+    {
+        Nowhere,
+        Hand,
+        Draw,
+        Discard
     }
 
     void CreateCard(Card card)

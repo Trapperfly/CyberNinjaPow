@@ -847,6 +847,7 @@ GameObject:
   - component: {fileID: 1452836679}
   - component: {fileID: 1452836678}
   - component: {fileID: 1452836681}
+  - component: {fileID: 1452836682}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -897,7 +898,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -972,6 +973,30 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1452836682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452836677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
+  m_ComponentVersion: 1
+  m_AssetsPPU: 100
+  m_RefResolutionX: 1920
+  m_RefResolutionY: 1080
+  m_CropFrame: 0
+  m_GridSnapping: 0
+  m_FilterMode: 0
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1 &1577005187
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,18 +1505,10 @@ MonoBehaviour:
   cardSpread: 160
   cardRedied: 0
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}
+  deck: {fileID: 11400000, guid: bc83b5b618095ec498bf4a15bc9723d2, type: 2}
   handTransform: {fileID: 1696941415}
   physicalCardHeld: {fileID: 0}
-  draw:
-  - {fileID: 11400000, guid: 561d0d2f62b210e4399c221b3727d98e, type: 2}
-  - {fileID: 11400000, guid: f4104cd85f8d7c740ac8632f0586aabe, type: 2}
-  - {fileID: 11400000, guid: 2e0bb7e1e383a8c49bf2effdd69c3d4f, type: 2}
-  - {fileID: 11400000, guid: 4e13a4b6bc6035940a7a4a3b64bfeea8, type: 2}
-  - {fileID: 11400000, guid: 726518170683eb645bd9c009dfe3897f, type: 2}
-  - {fileID: 11400000, guid: 27f8d1f4f90cc5c49a3c6754a051ef00, type: 2}
-  - {fileID: 11400000, guid: e9a2277df1c8174499bae04ac01dfae9, type: 2}
-  - {fileID: 11400000, guid: c70a9e47996f94b4f8c539953fb2caee, type: 2}
-  - {fileID: 11400000, guid: bce7f6aa1354d254787b293e9e8e0f9b, type: 2}
+  draw: []
   discard: []
   hand: []
 --- !u!114 &1900229852

@@ -11,6 +11,7 @@ public class EnemyUnit : MonoBehaviour
     BehaviorGraphAgent agent;
     public List<TileEffect> intendedAttack;
     public int iAttackCounter = -1;
+    public int attackRange;
     public Vector2Int intendedMovement;
     public int actionTimer = 0;
     public int timer = 0;
@@ -39,7 +40,7 @@ public class EnemyUnit : MonoBehaviour
         
         enemyManager = Manager.Instance.enemyManager;
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = enemy.enemySprite;
+        spriteRenderer.sprite = enemy.phases[phase].sprite;
 
         enemyManager.enemies.Add(this);
         //if (enemy.looping == IntentionLooping.Random) intention = Random.Range(0, intentions.Count);
@@ -77,10 +78,16 @@ public class EnemyUnit : MonoBehaviour
 
     public void DisplayMovementArrow(Vector2Int movement)
     {
+        if (movement == Vector2Int.zero) return;
         movementArrow = Instantiate(enemyManager.enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
         LineRenderer line = movementArrow.GetComponent<LineRenderer>();
         line.SetPosition(0, GetWorldPos(position));
         line.SetPosition(1, GetWorldPos(position + movement));
+    }
+
+    public void PaintAttack()
+    {
+        Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
     }
 
     public Vector2 GetWorldPos(Vector2Int gridPosition)
@@ -116,6 +123,7 @@ public class EnemyUnit : MonoBehaviour
 
         //Proceed to next phase
         damageTaken = 0;
+        spriteRenderer.sprite = enemy.phases[phase].sprite;
         intendedMovement = Vector2Int.zero;
         intendedAttack.Clear();
 
@@ -143,44 +151,6 @@ public class EnemyUnit : MonoBehaviour
         healthBarRenderer.size = new(health - damageTaken, 1);
     }
 
-    //public Vector2Int PlanMovement()
-    //{
-    //    Vector2Int movement = new(0, 0);
-    //    if (intentions[intention].smartMovement != SmartMovement.None)
-    //    {
-    //        switch (intentions[intention].smartMovement)
-    //        {
-    //            case SmartMovement.None:
-    //                break;
-    //            case SmartMovement.SmartDown:
-    //                movement = enemyManager.CheckMoveDirection(position, new(0, -1));
-    //                break;
-    //            case SmartMovement.SmartUp:
-    //                break;
-    //            case SmartMovement.SmartLeft:
-    //                break;
-    //            case SmartMovement.SmartRight:
-    //                break;
-    //            case SmartMovement.SmartDownX2:
-    //                break;
-    //            case SmartMovement.CoverDown:
-    //                break;
-    //            case SmartMovement.CoverDownX2:
-    //                break;
-    //            default:
-    //                break;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        movement = intentions[intention].movement;
-    //    }
-
-    //    if (movement != new Vector2Int(0, 0))
-    //        DisplayMovementArrow(movement);
-
-    //    return movement;
-    //}
     public Vector2Int PlanSmartMovement(SmartMovement smartMovement)
     {
         Vector2Int movement = new(0, 0);
@@ -259,60 +229,8 @@ public class EnemyUnit : MonoBehaviour
         SetTimer();
 
         GetIntentions();
-        //intendedMovement = PlanMovement();
         yield return null;
     }
-
-    //public void FindLooping()
-    //{
-    //    switch (enemy.looping)
-    //    {
-    //        case IntentionLooping.none:
-    //            if (intentions.Count - 1 > intention) intention += 1;
-    //            break;
-    //        case IntentionLooping.Loop:
-    //            if (intentions.Count - 1 <= intention)
-    //                intention = 0;
-    //            else intention += 1;
-    //            break;
-    //        case IntentionLooping.ReverseLoop:
-    //            if (intention == 0)
-    //                intention = intentions.Count - 1;
-    //            else intention -= 1;
-    //            break;
-    //        case IntentionLooping.PingPong:
-    //            if (!pong)
-    //            {
-    //                if (intentions.Count - 1 == intention)
-    //                {
-    //                    pong = true;
-    //                    intention -= 1;
-    //                }
-    //                else intention += 1;
-    //            }
-    //            else
-    //            {
-    //                if (intention == 0)
-    //                {
-    //                    pong = false;
-    //                    intention += 1;
-    //                }
-    //                else intention -= 1;
-    //            }
-    //            break;
-    //        case IntentionLooping.RepeatEnd:
-    //            if (intentions.Count - 1 > intention) intention += 1;
-    //            break;
-    //        case IntentionLooping.Random:
-    //            intention = Random.Range(0, intentions.Count);
-    //            break;
-    //        case IntentionLooping.RandomStart:
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
-
     public void EffectOnAct()
     {
         foreach (EffectInfo effect in effects)
@@ -400,7 +318,9 @@ public class EnemyUnit : MonoBehaviour
             transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i * 2);
             yield return null;
         }
+        PaintAttack();
         if (forced) DisplayMovementArrow(intendedMovement);
+        Manager.Instance.boardManager.ClearSpaces();
         yield return null;
     }
 
@@ -408,22 +328,4 @@ public class EnemyUnit : MonoBehaviour
     {
 
     }
-
-    //public void ApplyEffect()
-    //{
-    //    switch (intentions[intention].effect.effect)
-    //    {
-    //        case EffectsEnum.none:
-    //            break;
-    //        case EffectsEnum.Poison:
-    //            break;
-    //        case EffectsEnum.Regeneration:
-    //            break;
-    //        case EffectsEnum.TimeWarp:
-    //            enemyManager.AlterTime(intentions[intention].effect.amount);
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
 }

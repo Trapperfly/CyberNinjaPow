@@ -6,4 +6,6 @@ public class EnemyPhase : ScriptableObject
 {
     public int health;
     public BehaviorGraph actions;
+    public Sprite sprite;
+    public Card damageCard;
 }
