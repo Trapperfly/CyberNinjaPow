@@ -26,6 +26,8 @@ public class BoardManager : MonoBehaviour
     public bool draggingCard;
     public bool clickingCard;
 
+    public Transform dangerSymbolsParent;
+
     private void Start()
     {
         BuildBoard();
@@ -88,10 +90,23 @@ public class BoardManager : MonoBehaviour
     {
         foreach (TileEffect target in targets)
         {
-            spaces.TryGetValue(origin + target.gridPosition, out BoardSpace targetSpace);
-            if (targetSpace == null) continue;
+            if (target.projectiles.Count > 0)
+            {
+                foreach (ProjectileData projectile in target.projectiles)
+                    Projectile(false, GridSpaceSelection.EnemyAttack, origin + target.gridPosition, projectile.direction, target.damage, projectile.pierce);
+            }
+            else
+            {
+                if ((origin + target.gridPosition).y < 0)
+                {
+                    Manager.Instance.boardManager.dangerSymbolsParent.GetChild(origin.x + target.gridPosition.x).gameObject.SetActive(true);
+                    continue;
+                }
+                spaces.TryGetValue(origin + target.gridPosition, out BoardSpace targetSpace);
+                if (targetSpace == null) continue;
 
-            targetSpace.Colorize(GridSpaceSelection.EnemyAttack);
+                targetSpace.Colorize(GridSpaceSelection.EnemyAttack);
+            }
         }
     }
 
@@ -199,7 +214,7 @@ public class BoardManager : MonoBehaviour
                 if (effect.projectiles.Count > 0)
                 {
                     foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(false, space, projectile.direction, effect.damage, projectile.pierce);
+                        Projectile(false, GridSpaceSelection.CardTargeting, space, projectile.direction, effect.damage, projectile.pierce);
                 }
                 else
                     cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting);
@@ -234,52 +249,37 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void Projectile(bool fire, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0)
+    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0)
     {
         Vector2Int space = origin;
         Vector2Int dirVector = GetProjectileDirection(direction);
-        
+
         int checks = 10;
 
-        if (fire) //If attacking
+        for (int i = 0; i < checks; i++)
         {
-            for (int i = 0; i < checks; i++)
+            if (source == GridSpaceSelection.EnemyAttack && space.y < 0)
             {
-                spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
-
-                if (cardTargetedSpace == null) continue;
-
-                EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                if (enemy)
-                {
-                    enemy.TakeDamage(damage);
-                    if (pierce == 0)
-                        checks = 0;
-                    else pierce--;
-                }
-
-                space += dirVector;
+                Manager.Instance.boardManager.dangerSymbolsParent.GetChild(space.x).gameObject.SetActive(true);
+                return;
             }
-        }
-        else //If only targeting
-        {
-            for (int i = 0; i < checks; i++)
+
+            spaces.TryGetValue(space, out BoardSpace targetedSpace);
+
+            if (targetedSpace == null) continue;
+
+            if (!fire) targetedSpace.Colorize(source);
+
+            EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+            if (enemy)
             {
-                spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
-
-                if (cardTargetedSpace == null) continue;
-
-                cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting);
-
-                if (CheckIfEnemyIsOnSpace(space))
-                {
-                    if (pierce == 0)
-                        checks = 0;
-                    else pierce--;
-                }
-
-                space += dirVector;
+                if (fire) enemy.TakeDamage(damage);
+                if (pierce == 0)
+                    checks = 0;
+                else pierce--;
             }
+
+            space += dirVector;
         }
     }
 
@@ -298,7 +298,7 @@ public class BoardManager : MonoBehaviour
                 if (effect.projectiles.Count > 0)
                 {
                     foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(true, space, projectile.direction, effect.damage, projectile.pierce);
+                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile.direction, effect.damage, projectile.pierce);
                 }
                 else
                 {
@@ -319,13 +319,18 @@ public class BoardManager : MonoBehaviour
 
     public void ClearSpaces()
     {
+        foreach (Transform child in dangerSymbolsParent)
+        {
+            child.gameObject.SetActive(false);
+        }
         foreach (var keyValue in spaces)
         {
             keyValue.Value.Colorize(GridSpaceSelection.None);
         }
         foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
         {
-            unit.PaintAttack();
+            if (unit.attacking)
+                unit.PaintAttack();
         }
     }
 }

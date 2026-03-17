@@ -9,6 +9,7 @@ public class EnemyUnit : MonoBehaviour
     //public Enemy enemy;
     public EnemyData enemy;
     BehaviorGraphAgent agent;
+    public bool attacking;
     public List<TileEffect> intendedAttack;
     public int iAttackCounter = -1;
     public int attackRange;
@@ -68,6 +69,9 @@ public class EnemyUnit : MonoBehaviour
             unit.Value = this;
 
         agent.enabled = true;
+
+        attackRange = enemy.phases[phase].attackRange;
+        attacking = (position.y <= attackRange) ? true : false;
     }
 
     private void Update()
@@ -87,7 +91,12 @@ public class EnemyUnit : MonoBehaviour
 
     public void PaintAttack()
     {
-        Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
+        attacking = (position.y <= attackRange) ? true : false;
+
+        if (attacking)
+        {
+            Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
+        }
     }
 
     public Vector2 GetWorldPos(Vector2Int gridPosition)
