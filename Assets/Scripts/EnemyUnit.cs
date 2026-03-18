@@ -20,6 +20,7 @@ public class EnemyUnit : MonoBehaviour
     public int damageTaken = 0;
     public List<EffectInfo> effects;
     bool pong;
+    bool dead;
 
     SpriteRenderer spriteRenderer;
 
@@ -59,6 +60,10 @@ public class EnemyUnit : MonoBehaviour
 
     private void GetIntentions()
     {
+        if (dead) return;
+
+        attackRange = enemy.phases[phase].attackRange;
+
         agent.enabled = false;
         agent.Graph = null;
 
@@ -70,7 +75,6 @@ public class EnemyUnit : MonoBehaviour
 
         agent.enabled = true;
 
-        attackRange = enemy.phases[phase].attackRange;
         attacking = (position.y <= attackRange) ? true : false;
     }
 
@@ -78,15 +82,6 @@ public class EnemyUnit : MonoBehaviour
     {
         //Debug.Log(Mathf.Sin(Time.time));
         spriteRenderer.transform.localPosition = Mathf.Sin(Time.time * enemyManager.bobbingSpeed + bobbingOffset) * enemyManager.bobbing * new Vector3(0, 1, 0);
-    }
-
-    public void DisplayMovementArrow(Vector2Int movement)
-    {
-        if (movement == Vector2Int.zero) return;
-        movementArrow = Instantiate(enemyManager.enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
-        LineRenderer line = movementArrow.GetComponent<LineRenderer>();
-        line.SetPosition(0, GetWorldPos(position));
-        line.SetPosition(1, GetWorldPos(position + movement));
     }
 
     public void PaintAttack()
@@ -124,6 +119,7 @@ public class EnemyUnit : MonoBehaviour
         phase++;
         if (enemy.phases.Count - 1 < phase)
         {
+            dead = true;
             SetHealthBar();
             PrepareDie();
             return;
@@ -157,7 +153,9 @@ public class EnemyUnit : MonoBehaviour
         {
             health += enemy.phases[i].health;
         }
-        healthBarRenderer.size = new(health - damageTaken, 1);
+        int currentHealth = health - damageTaken;
+        if (currentHealth < 0) currentHealth = 0;
+        healthBarRenderer.size = new(currentHealth, 1);
     }
 
     public Vector2Int PlanSmartMovement(SmartMovement smartMovement)
@@ -327,8 +325,6 @@ public class EnemyUnit : MonoBehaviour
             transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i * 2);
             yield return null;
         }
-        PaintAttack();
-        if (forced) DisplayMovementArrow(intendedMovement);
         Manager.Instance.boardManager.ClearSpaces();
         yield return null;
     }

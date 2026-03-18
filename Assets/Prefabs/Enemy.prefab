@@ -141,8 +141,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
   position: {x: 3, y: 4}
   enemy: {fileID: 11400000, guid: 344492b9a592a50409857059a42b1038, type: 2}
+  attacking: 0
   intendedAttack: []
   iAttackCounter: -1
+  attackRange: 0
   intendedMovement: {x: 0, y: 0}
   actionTimer: 0
   timer: 0

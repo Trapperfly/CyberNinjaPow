@@ -327,10 +327,6 @@ public class BoardManager : MonoBehaviour
         {
             keyValue.Value.Colorize(GridSpaceSelection.None);
         }
-        foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
-        {
-            if (unit.attacking)
-                unit.PaintAttack();
-        }
+        Manager.Instance.enemyManager.ShowIntentionsOfEnemies();
     }
 }

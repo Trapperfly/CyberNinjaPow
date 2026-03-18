@@ -14,7 +14,11 @@ public partial class MovementAction : Action
     protected override Status OnStart()
     {
         unit = Manager.Instance.enemyManager.GetBlackBoardVariable(GameObject);
-        if (unit.position.y <= unit.attackRange) return Status.Success;
+        if (unit.position.y <= unit.attackRange) 
+        {
+            unit.intendedMovement = Vector2Int.zero;
+            return Status.Success;
+        }
         Vector2Int movement;
         if (Position.Value != Vector2Int.zero)
             movement = Position.Value;
@@ -23,7 +27,7 @@ public partial class MovementAction : Action
 
         unit.intendedMovement = movement;
 
-        unit.DisplayMovementArrow(movement);
+        Manager.Instance.enemyManager.DisplayMovementArrow(unit, unit.position, movement);
 
         return Status.Success;
     }

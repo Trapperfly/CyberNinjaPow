@@ -8,7 +8,6 @@ public class EnemyManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject enemyMovementArrowPrefab;
-    public GameObject movementArrow;
     public Transform enemyParent;
     public int spawningFunds = 10;
     public int boardCost = 0;
@@ -101,16 +100,30 @@ public class EnemyManager : MonoBehaviour
             enemy.Die();
         }
     }
-    public void DisplayMovementArrow(Vector2Int origin, Vector2Int movement)
+    public void DisplayMovementArrow(EnemyUnit unit, Vector2Int origin, Vector2Int movement)
     {
-        movementArrow = Instantiate(enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
-        LineRenderer line = movementArrow.GetComponent<LineRenderer>();
+        if (unit.movementArrow != null)  Destroy(unit.movementArrow);
+        if (movement == Vector2Int.zero || CheckIfCellIsOutsideOfBoard(origin + movement)) return;
+        unit.movementArrow = Instantiate(enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
+        LineRenderer line = unit.movementArrow.GetComponent<LineRenderer>();
         line.SetPosition(0, GetWorldPos(origin));
         line.SetPosition(1, GetWorldPos(origin + movement));
     }
+
+    public void ShowIntentionsOfEnemies()
+    {
+        foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
+        {
+            if (unit.attacking)
+                unit.PaintAttack();
+            DisplayMovementArrow(unit, unit.position, unit.intendedMovement);
+        }
+    }
     public Vector2 GetWorldPos(Vector2Int gridPosition)
     {
-        return Manager.Instance.boardManager.spaces[gridPosition].transform.position;
+        BoardSpace space = null;
+        Manager.Instance.boardManager.spaces.TryGetValue(gridPosition, out space);
+        return space.transform.position;
     }
     public EnemyUnit CheckIfCellIsOccupied(Vector2Int cell)
     {

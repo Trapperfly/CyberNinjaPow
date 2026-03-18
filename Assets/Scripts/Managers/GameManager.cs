@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         }
         TMP_PlayerHealth.text = playerHealth + "/" + playerHealthMax;
         
-        StartCoroutine(AdvanceBoard(5, 5));
+        StartCoroutine(AdvanceBoard(2, 10));
     }
 
     public void ProgressTime(int time)
