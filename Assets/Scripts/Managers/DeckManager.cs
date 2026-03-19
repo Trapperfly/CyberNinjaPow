@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
 
 public class DeckManager : MonoBehaviour
 {
@@ -19,8 +20,22 @@ public class DeckManager : MonoBehaviour
     public List<Card> discard = new List<Card>();
     public List<Card> hand = new List<Card>();
 
+    Dictionary<Vector2Int, Sprite> tagSprites = new Dictionary<Vector2Int, Sprite>();
+
+    [System.Serializable]
+    public class TagVariant
+    {
+        public CardTag tag;
+        public int variant;
+    }
+
     private void Start()
     {
+        var loaded = Resources.LoadAll<Sprite>("Sprites/UI/Icons/Tags/icon_sheet_v2");
+        foreach (Sprite sprite in loaded)
+        {
+            tagSprites.Add(new Vector2Int(Mathf.RoundToInt(sprite.rect.x / 7), Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 7) / 7) + 1), sprite);
+        }
         foreach (Card card in deck.cards)
         {
             draw.Add(card);
@@ -70,6 +85,13 @@ public class DeckManager : MonoBehaviour
         cardObject.cardName.text = card.name;
         cardObject.cost.text = card.cost.ToString();
         cardObject.card = card;
+        int i = 0;
+        foreach (CardTag tag in card.cardTags)
+        {
+            cardObject.tags.GetChild(i).gameObject.SetActive(true);
+            cardObject.tags.GetChild(i).GetComponent<Image>().sprite = tagSprites[new Vector2Int(0,(int)tag)];
+            i++;
+        }
         AlignCards();
     }
 

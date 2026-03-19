@@ -15,14 +15,12 @@ MonoBehaviour:
   cardName: Ripple
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: 0700000008000000
   cost: 2
   tileEffects:
   - gridPosition: {x: -2, y: 4}
     damage: 1
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -31,9 +29,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: -1, y: 4}
     damage: 1
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -42,9 +38,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: 0, y: 4}
     damage: 1
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -53,9 +47,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: 1, y: 4}
     damage: 1
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -64,9 +56,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: 2, y: 4}
     damage: 1
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -75,9 +65,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: -1, y: 2}
     damage: 2
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -86,9 +74,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: 0, y: 2}
     damage: 2
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -97,9 +83,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: 1, y: 2}
     damage: 2
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []
@@ -108,9 +92,7 @@ MonoBehaviour:
     repeatInterval: 0
   - gridPosition: {x: 0, y: 0}
     damage: 3
-    isProjectile: 0
-    pierce: 0
-    projectileDirection: 0
+    projectiles: []
     pushDistance: 0
     pushDirection: 0
     statusEffects: []

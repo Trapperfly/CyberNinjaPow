@@ -9,6 +9,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public Card card = null;
 
     public float scale = 1.25f;
+    public float offset = 1f;
 
     public bool target;
     public bool scaled = false;
@@ -16,22 +17,35 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public TMP_Text cardName;
     public TMP_Text cost;
 
-    public bool clicked = false;
+    public Transform tags;
 
+    public bool clicked = false;
     private void FixedUpdate()
     {
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
         if (target && !scaled)
         {
-            scaled = true;
-            transform.localScale = scale * Vector3.one;
-            transform.SetAsLastSibling();
+            Scale();
         }
         else if (!target && scaled)
         {
-            scaled = false;
-            transform.localScale = Vector3.one;
+            Unscale();
         }
+    }
+
+    void Scale()
+    {
+        scaled = true;
+        transform.localScale = scale * Vector3.one;
+        transform.localPosition += new Vector3(0,offset,0);
+        transform.SetAsLastSibling();
+    }
+
+    void Unscale()
+    {
+        scaled = false;
+        transform.localScale = Vector3.one;
+        transform.localPosition += new Vector3(0, -offset, 0);
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

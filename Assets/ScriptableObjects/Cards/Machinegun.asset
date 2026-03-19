@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Machinegun
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: 05000000
   cost: 2
   tileEffects:
   - gridPosition: {x: 0, y: 0}

@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Gun
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: 05000000
   cost: 0
   tileEffects:
   - gridPosition: {x: 0, y: 0}

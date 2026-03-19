@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_RefResolutionX: 1920
   m_RefResolutionY: 1080
   m_CropFrame: 0
-  m_GridSnapping: 0
+  m_GridSnapping: 1
   m_FilterMode: 0
   m_UpscaleRT: 0
   m_PixelSnapping: 0
@@ -1917,7 +1917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeckManager
   handSize: 5
-  cardSpread: 160
+  cardSpread: 200
   cardRedied: 0
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}
   deck: {fileID: 11400000, guid: bc83b5b618095ec498bf4a15bc9723d2, type: 2}

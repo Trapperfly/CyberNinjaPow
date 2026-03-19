@@ -15,6 +15,6 @@ MonoBehaviour:
   cardName: 
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: 01000000
   cost: 0
   tileEffects: []

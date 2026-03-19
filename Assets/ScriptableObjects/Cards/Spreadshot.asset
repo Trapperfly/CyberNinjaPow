@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Wave
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: 0500000002000000
   cost: 3
   tileEffects:
   - gridPosition: {x: 0, y: 0}
