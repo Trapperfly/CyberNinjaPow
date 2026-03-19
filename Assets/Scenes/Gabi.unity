@@ -1981,7 +1981,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   enemyPrefab: {fileID: 4184783195207525563, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
   enemyMovementArrowPrefab: {fileID: 3498137276543333406, guid: 4dcaab8bdc72fe243bf72bd829d2880b, type: 3}
-  movementArrow: {fileID: 0}
   enemyParent: {fileID: 121886795}
   spawningFunds: 10
   boardCost: 0

@@ -64,7 +64,7 @@ public class BoardManager : MonoBehaviour
             if (!Input.GetMouseButtonDown(0)) return;
             Debug.Log("Letting go of clicked card!");
             //If the player has clicked a card and is clicking a tile
-            if (CheckMouseTargeting() != null) DoCardAction();
+            if (CheckMouseTargeting() != null || heldCard.tileEffects.Count == 0) DoCardAction();
 
             //If the player has clicked a card and is clicking outside of the board
             else ResetCards();
@@ -74,7 +74,7 @@ public class BoardManager : MonoBehaviour
             if (!Input.GetMouseButtonUp(0)) return;
             Debug.Log("Letting go of dragged card!");
             //If the player is dragging a card and letting go on a tile
-            if (CheckMouseTargeting() != null) DoCardAction();
+            if (CheckMouseTargeting() != null || heldCard.tileEffects.Count == 0) DoCardAction();
 
             //If the player is dragging a card and letting go outside of the board
             else ResetCards();
