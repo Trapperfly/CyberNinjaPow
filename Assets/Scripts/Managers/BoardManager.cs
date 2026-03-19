@@ -127,6 +127,11 @@ public class BoardManager : MonoBehaviour
     {
         inCardAction = true;
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
+        if (heldCard.tileEffects.Count == 0)
+        {
+            StartCoroutine(DoCard(target));
+            return;
+        }
         StartCoroutine(DoCardTargeting(target));
     }
     void FinishCardAction()
@@ -287,6 +292,47 @@ public class BoardManager : MonoBehaviour
     {
         if (targetSpace == null) yield break;
         if (waitBetweenCardActions > 0) Manager.Instance.busy = true;
+        foreach (TileEffect effect in heldCard.tileEffects)
+        {
+            Vector2Int targetPos = effect.gridPosition;
+
+            for (int r = 0; r < effect.repeatCount + 1; r++)
+            {
+                Vector2Int space = targetSpace.position + targetPos;
+
+                if (effect.projectiles.Count > 0)
+                {
+                    foreach (ProjectileData projectile in effect.projectiles)
+                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile.direction, effect.damage, projectile.pierce);
+                }
+                else
+                {
+                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                    if (enemy)
+                        enemy.TakeDamage(effect.damage);
+                }
+
+                Manager.Instance.enemyManager.KillOffEnemies();
+                yield return new WaitForSeconds(effect.repeatInterval);
+            }
+        }
+        yield return new WaitForSeconds(waitBetweenCardActions);
+        Manager.Instance.busy = false;
+        FinishCardAction();
+        yield return null;
+    }
+
+    IEnumerator DoCard(BoardSpace targetSpace = null)
+    {
+        if (waitBetweenCardActions > 0) Manager.Instance.busy = true;
+        if (targetSpace == null) 
+        {
+            //Do effect of card
+            Manager.Instance.enemyManager.KillOffEnemies();
+            Manager.Instance.busy = false;
+            FinishCardAction();
+            yield break;
+        }
         foreach (TileEffect effect in heldCard.tileEffects)
         {
             Vector2Int targetPos = effect.gridPosition;

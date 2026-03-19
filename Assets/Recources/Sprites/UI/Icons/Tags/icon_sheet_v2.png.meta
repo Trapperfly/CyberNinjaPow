@@ -128,7 +128,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -200,8 +200,8 @@ TextureImporter:
       name: icon_sheet_v2_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 98
+        x: 7
+        y: 105
         width: 7
         height: 7
       alignment: 0
@@ -222,8 +222,8 @@ TextureImporter:
       name: icon_sheet_v2_2
       rect:
         serializedVersion: 2
-        x: 7
-        y: 98
+        x: 14
+        y: 105
         width: 7
         height: 7
       alignment: 0
@@ -244,8 +244,8 @@ TextureImporter:
       name: icon_sheet_v2_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 91
+        x: 21
+        y: 105
         width: 7
         height: 7
       alignment: 0
@@ -266,8 +266,8 @@ TextureImporter:
       name: icon_sheet_v2_4
       rect:
         serializedVersion: 2
-        x: 7
-        y: 91
+        x: 28
+        y: 105
         width: 7
         height: 7
       alignment: 0
@@ -288,8 +288,8 @@ TextureImporter:
       name: icon_sheet_v2_5
       rect:
         serializedVersion: 2
-        x: 14
-        y: 91
+        x: 35
+        y: 105
         width: 7
         height: 7
       alignment: 0
@@ -310,8 +310,8 @@ TextureImporter:
       name: icon_sheet_v2_6
       rect:
         serializedVersion: 2
-        x: 21
-        y: 91
+        x: 0
+        y: 98
         width: 7
         height: 7
       alignment: 0
@@ -332,7 +332,7 @@ TextureImporter:
       name: icon_sheet_v2_7
       rect:
         serializedVersion: 2
-        x: 28
+        x: 0
         y: 91
         width: 7
         height: 7
@@ -354,7 +354,7 @@ TextureImporter:
       name: icon_sheet_v2_8
       rect:
         serializedVersion: 2
-        x: 35
+        x: 7
         y: 91
         width: 7
         height: 7
@@ -376,8 +376,8 @@ TextureImporter:
       name: icon_sheet_v2_9
       rect:
         serializedVersion: 2
-        x: 42
-        y: 91
+        x: 0
+        y: 84
         width: 7
         height: 7
       alignment: 0
@@ -398,8 +398,8 @@ TextureImporter:
       name: icon_sheet_v2_10
       rect:
         serializedVersion: 2
-        x: 49
-        y: 91
+        x: 7
+        y: 84
         width: 7
         height: 7
       alignment: 0
@@ -420,7 +420,7 @@ TextureImporter:
       name: icon_sheet_v2_11
       rect:
         serializedVersion: 2
-        x: 0
+        x: 14
         y: 84
         width: 7
         height: 7
@@ -442,7 +442,7 @@ TextureImporter:
       name: icon_sheet_v2_12
       rect:
         serializedVersion: 2
-        x: 7
+        x: 21
         y: 84
         width: 7
         height: 7
@@ -464,7 +464,7 @@ TextureImporter:
       name: icon_sheet_v2_13
       rect:
         serializedVersion: 2
-        x: 14
+        x: 28
         y: 84
         width: 7
         height: 7
@@ -486,8 +486,8 @@ TextureImporter:
       name: icon_sheet_v2_14
       rect:
         serializedVersion: 2
-        x: 0
-        y: 77
+        x: 35
+        y: 84
         width: 7
         height: 7
       alignment: 0
@@ -508,8 +508,8 @@ TextureImporter:
       name: icon_sheet_v2_15
       rect:
         serializedVersion: 2
-        x: 7
-        y: 77
+        x: 42
+        y: 84
         width: 7
         height: 7
       alignment: 0
@@ -530,8 +530,8 @@ TextureImporter:
       name: icon_sheet_v2_16
       rect:
         serializedVersion: 2
-        x: 14
-        y: 77
+        x: 49
+        y: 84
         width: 7
         height: 7
       alignment: 0
@@ -552,7 +552,7 @@ TextureImporter:
       name: icon_sheet_v2_17
       rect:
         serializedVersion: 2
-        x: 21
+        x: 0
         y: 77
         width: 7
         height: 7
@@ -574,7 +574,7 @@ TextureImporter:
       name: icon_sheet_v2_18
       rect:
         serializedVersion: 2
-        x: 28
+        x: 7
         y: 77
         width: 7
         height: 7
@@ -596,7 +596,7 @@ TextureImporter:
       name: icon_sheet_v2_19
       rect:
         serializedVersion: 2
-        x: 35
+        x: 14
         y: 77
         width: 7
         height: 7
@@ -618,8 +618,8 @@ TextureImporter:
       name: icon_sheet_v2_20
       rect:
         serializedVersion: 2
-        x: 42
-        y: 77
+        x: 0
+        y: 70
         width: 7
         height: 7
       alignment: 0
@@ -640,7 +640,7 @@ TextureImporter:
       name: icon_sheet_v2_21
       rect:
         serializedVersion: 2
-        x: 0
+        x: 7
         y: 70
         width: 7
         height: 7
@@ -662,7 +662,7 @@ TextureImporter:
       name: icon_sheet_v2_22
       rect:
         serializedVersion: 2
-        x: 7
+        x: 14
         y: 70
         width: 7
         height: 7
@@ -684,7 +684,7 @@ TextureImporter:
       name: icon_sheet_v2_23
       rect:
         serializedVersion: 2
-        x: 14
+        x: 21
         y: 70
         width: 7
         height: 7
@@ -706,7 +706,7 @@ TextureImporter:
       name: icon_sheet_v2_24
       rect:
         serializedVersion: 2
-        x: 21
+        x: 28
         y: 70
         width: 7
         height: 7
@@ -728,7 +728,7 @@ TextureImporter:
       name: icon_sheet_v2_25
       rect:
         serializedVersion: 2
-        x: 28
+        x: 35
         y: 70
         width: 7
         height: 7
@@ -750,8 +750,8 @@ TextureImporter:
       name: icon_sheet_v2_26
       rect:
         serializedVersion: 2
-        x: 0
-        y: 63
+        x: 42
+        y: 70
         width: 7
         height: 7
       alignment: 0
@@ -772,7 +772,7 @@ TextureImporter:
       name: icon_sheet_v2_27
       rect:
         serializedVersion: 2
-        x: 7
+        x: 0
         y: 63
         width: 7
         height: 7
@@ -794,7 +794,7 @@ TextureImporter:
       name: icon_sheet_v2_28
       rect:
         serializedVersion: 2
-        x: 14
+        x: 7
         y: 63
         width: 7
         height: 7
@@ -816,7 +816,7 @@ TextureImporter:
       name: icon_sheet_v2_29
       rect:
         serializedVersion: 2
-        x: 21
+        x: 14
         y: 63
         width: 7
         height: 7
@@ -838,7 +838,7 @@ TextureImporter:
       name: icon_sheet_v2_30
       rect:
         serializedVersion: 2
-        x: 28
+        x: 21
         y: 63
         width: 7
         height: 7
@@ -860,7 +860,7 @@ TextureImporter:
       name: icon_sheet_v2_31
       rect:
         serializedVersion: 2
-        x: 35
+        x: 28
         y: 63
         width: 7
         height: 7
@@ -882,8 +882,8 @@ TextureImporter:
       name: icon_sheet_v2_32
       rect:
         serializedVersion: 2
-        x: 42
-        y: 63
+        x: 0
+        y: 56
         width: 7
         height: 7
       alignment: 0
@@ -904,7 +904,7 @@ TextureImporter:
       name: icon_sheet_v2_33
       rect:
         serializedVersion: 2
-        x: 0
+        x: 7
         y: 56
         width: 7
         height: 7
@@ -926,7 +926,7 @@ TextureImporter:
       name: icon_sheet_v2_34
       rect:
         serializedVersion: 2
-        x: 7
+        x: 14
         y: 56
         width: 7
         height: 7
@@ -948,7 +948,7 @@ TextureImporter:
       name: icon_sheet_v2_35
       rect:
         serializedVersion: 2
-        x: 14
+        x: 21
         y: 56
         width: 7
         height: 7
@@ -970,7 +970,7 @@ TextureImporter:
       name: icon_sheet_v2_36
       rect:
         serializedVersion: 2
-        x: 21
+        x: 28
         y: 56
         width: 7
         height: 7
@@ -992,7 +992,7 @@ TextureImporter:
       name: icon_sheet_v2_37
       rect:
         serializedVersion: 2
-        x: 28
+        x: 35
         y: 56
         width: 7
         height: 7
@@ -1014,7 +1014,7 @@ TextureImporter:
       name: icon_sheet_v2_38
       rect:
         serializedVersion: 2
-        x: 35
+        x: 42
         y: 56
         width: 7
         height: 7
@@ -1036,8 +1036,8 @@ TextureImporter:
       name: icon_sheet_v2_39
       rect:
         serializedVersion: 2
-        x: 42
-        y: 56
+        x: 0
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1058,8 +1058,8 @@ TextureImporter:
       name: icon_sheet_v2_40
       rect:
         serializedVersion: 2
-        x: 49
-        y: 56
+        x: 7
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1080,8 +1080,8 @@ TextureImporter:
       name: icon_sheet_v2_41
       rect:
         serializedVersion: 2
-        x: 56
-        y: 56
+        x: 14
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1102,8 +1102,8 @@ TextureImporter:
       name: icon_sheet_v2_42
       rect:
         serializedVersion: 2
-        x: 63
-        y: 56
+        x: 21
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1124,8 +1124,8 @@ TextureImporter:
       name: icon_sheet_v2_43
       rect:
         serializedVersion: 2
-        x: 70
-        y: 56
+        x: 28
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1146,8 +1146,8 @@ TextureImporter:
       name: icon_sheet_v2_44
       rect:
         serializedVersion: 2
-        x: 77
-        y: 56
+        x: 35
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1168,8 +1168,8 @@ TextureImporter:
       name: icon_sheet_v2_45
       rect:
         serializedVersion: 2
-        x: 84
-        y: 56
+        x: 42
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1190,8 +1190,8 @@ TextureImporter:
       name: icon_sheet_v2_46
       rect:
         serializedVersion: 2
-        x: 91
-        y: 56
+        x: 49
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1212,8 +1212,8 @@ TextureImporter:
       name: icon_sheet_v2_47
       rect:
         serializedVersion: 2
-        x: 98
-        y: 56
+        x: 56
+        y: 49
         width: 7
         height: 7
       alignment: 0
@@ -1234,7 +1234,7 @@ TextureImporter:
       name: icon_sheet_v2_48
       rect:
         serializedVersion: 2
-        x: 0
+        x: 63
         y: 49
         width: 7
         height: 7
@@ -1256,7 +1256,7 @@ TextureImporter:
       name: icon_sheet_v2_49
       rect:
         serializedVersion: 2
-        x: 7
+        x: 70
         y: 49
         width: 7
         height: 7
@@ -1278,7 +1278,7 @@ TextureImporter:
       name: icon_sheet_v2_50
       rect:
         serializedVersion: 2
-        x: 14
+        x: 77
         y: 49
         width: 7
         height: 7
@@ -1300,7 +1300,7 @@ TextureImporter:
       name: icon_sheet_v2_51
       rect:
         serializedVersion: 2
-        x: 21
+        x: 84
         y: 49
         width: 7
         height: 7
@@ -1322,7 +1322,7 @@ TextureImporter:
       name: icon_sheet_v2_52
       rect:
         serializedVersion: 2
-        x: 28
+        x: 91
         y: 49
         width: 7
         height: 7
@@ -1344,7 +1344,7 @@ TextureImporter:
       name: icon_sheet_v2_53
       rect:
         serializedVersion: 2
-        x: 35
+        x: 98
         y: 49
         width: 7
         height: 7
