@@ -15,8 +15,10 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool scaled = false;
 
     public TMP_Text cardName;
-    public TMP_Text cost;
+    public TMP_Text cardDescription;
 
+    public Transform time;
+    public Transform range;
     public Transform tags;
 
     public bool clicked = false;

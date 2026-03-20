@@ -17,6 +17,8 @@ MonoBehaviour:
   artwork: {fileID: 0}
   cardTags: 0700000008000000
   cost: 2
+  range: 1
+  extraTagSlots: 1
   tileEffects:
   - gridPosition: {x: -2, y: 4}
     damage: 1

@@ -1917,7 +1917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeckManager
   handSize: 5
-  cardSpread: 200
+  cardSpread: 220
   cardRedied: 0
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}
   deck: {fileID: 11400000, guid: bc83b5b618095ec498bf4a15bc9723d2, type: 2}
@@ -1926,6 +1926,80 @@ MonoBehaviour:
   draw: []
   discard: []
   hand: []
+  tagVisualSettings:
+  - tag: 0
+    variant: 0
+  - tag: 1
+    variant: 3
+  - tag: 2
+    variant: 0
+  - tag: 3
+    variant: 1
+  - tag: 4
+    variant: 2
+  - tag: 5
+    variant: 0
+  - tag: 6
+    variant: 3
+  - tag: 7
+    variant: 4
+  - tag: 8
+    variant: 2
+  - tag: 9
+    variant: 8
+  - tag: 10
+    variant: 1
+  - tag: 11
+    variant: 2
+  - tag: 12
+    variant: 2
+  - tag: 13
+    variant: 2
+  - tag: 14
+    variant: 7
+  - tag: 15
+    variant: 1
+  - tag: 16
+    variant: 7
+  timeSprites:
+  - {fileID: 21300000, guid: e3b74bc399ab0f7479093a84892421d3, type: 3}
+  - {fileID: 21300000, guid: 0a7b9f4c972380c4aa3d4da293bd4410, type: 3}
+  - {fileID: 21300000, guid: dcfe7f8f72d4a294a9b0d8fadd488667, type: 3}
+  - {fileID: 21300000, guid: 4eac9463625c6c74d83a5d8cc2571828, type: 3}
+  - {fileID: 21300000, guid: d6b9dd176f9f79747b4dfae83348192c, type: 3}
+  - {fileID: 21300000, guid: 72c57fe511cb0c546bc60eee191e91b2, type: 3}
+  rangeSprites:
+  - {fileID: 21300000, guid: 77ee9ffd134d46b49acb0339042981fd, type: 3}
+  - {fileID: 21300000, guid: 35fc09040ad0cc446a379d8e67c038f3, type: 3}
+  - {fileID: 21300000, guid: 5cf5c7454fb69c648ad1d76467bfa563, type: 3}
+  - {fileID: 21300000, guid: 4d03fad3998a69a4c8019f3f0afdaac1, type: 3}
+  - {fileID: 21300000, guid: 21195a0cfbb11bd43ab0658a3304b2e7, type: 3}
+  tagHolderSprites:
+  - {fileID: 21300000, guid: 058cf131f8d39c44388292eb0170c1c5, type: 3}
+  - {fileID: 21300000, guid: 7f265ae998e60644fa967cd4d527cd89, type: 3}
+  - {fileID: 21300000, guid: adebc3be71c61784bbb3e4d94292d447, type: 3}
+  - {fileID: 21300000, guid: e4cf172b955d9bb41ae2b9668880ae74, type: 3}
+  tagBackgroundSprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 1479677ad6b121b4a9c72d38223905ee, type: 3}
+  - {fileID: 21300000, guid: a5ab4c15cf7ba354ab0f9dafd178a428, type: 3}
+  - {fileID: 21300000, guid: f471ae228c2c1124887f53e461800472, type: 3}
+  - {fileID: 21300000, guid: 601996f6380234b4b9bc114c39a24292, type: 3}
+  - {fileID: 21300000, guid: 64e28043a31c4d242b4f1def2a6ad900, type: 3}
+  - {fileID: 21300000, guid: 1403b7846752721488226fc68ba73309, type: 3}
+  - {fileID: 21300000, guid: 9c486e7adfa33024494ee70b13236322, type: 3}
+  - {fileID: 21300000, guid: f3cf0e8a4f159204396feb14e66f66d0, type: 3}
+  - {fileID: 21300000, guid: d68668a1030cd4744afb5ee6bf0a28bb, type: 3}
+  - {fileID: 21300000, guid: ead516081cfc98c4caf96bae8566539c, type: 3}
+  - {fileID: 21300000, guid: 58faa09b5207d4d4789de00e851bf522, type: 3}
+  - {fileID: 21300000, guid: 3619b5a626a737c4b82bcc0987b32d44, type: 3}
+  - {fileID: 21300000, guid: 512ef98998083e747a7460e03906d81f, type: 3}
+  - {fileID: 21300000, guid: b6f517d6ebdfb9846bb90d3eccaaa84b, type: 3}
+  - {fileID: 21300000, guid: 99cc258ddb5318d4db996d6c275c5a9f, type: 3}
+  - {fileID: 21300000, guid: 23088f9c16c61374b9bbc9a67c98c091, type: 3}
+  - {fileID: 21300000, guid: 4f46f33373f97294f8095685a45e1ea4, type: 3}
+  - {fileID: 21300000, guid: b752236147db4374c8cc39c0e7bc8821, type: 3}
+  - {fileID: 21300000, guid: 1eb50b52d44b6e042b1346c3ec9672a6, type: 3}
 --- !u!114 &1900229852
 MonoBehaviour:
   m_ObjectHideFlags: 0

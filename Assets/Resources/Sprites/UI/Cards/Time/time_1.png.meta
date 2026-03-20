@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 30d8605a4c83db64ebdaf17dfc1ba1f3
+guid: 0a7b9f4c972380c4aa3d4da293bd4410
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8298362742124432106
-    second: turtlebot_default_0
+      213: 3000631833962118854
+    second: time_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,9 +46,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: turtlebot_default_0
+      name: time_1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 2
-        width: 32
-        height: 23
+        x: 1
+        y: 78
+        width: 21
+        height: 45
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 615365a7d0b46dc80800000000000000
-      internalID: -8298362742124432106
+      spriteID: 6ce7a0541c264a920800000000000000
+      internalID: 3000631833962118854
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      turtlebot_default_0: -8298362742124432106
+      time_1_0: 3000631833962118854
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

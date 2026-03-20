@@ -11,6 +11,8 @@ public class Card : ScriptableObject
     public Sprite artwork;
     public List<CardTag> cardTags;
     public int cost;
+    public Range range;
+    public int extraTagSlots;
 
     [Tooltip("Each entry defines what happens on one tile of the grid when this card is played.")]
     public List<TileEffect> tileEffects = new();
@@ -90,6 +92,15 @@ public enum CardTag
     Repair,         //Usually relates to healing self or deployment
     TimeWarp,       //Usually relates to changing time in either direction
     Defence,        //Usually relates to blocking damage
+}
+public enum Range
+{
+    Anywhere,
+    Melee,
+    Ranged,
+    Rear,
+    Projectile
+
 }
 [BlackboardEnum]
 public enum StatusEffect
