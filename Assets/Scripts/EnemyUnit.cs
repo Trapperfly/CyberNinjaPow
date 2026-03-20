@@ -63,6 +63,7 @@ public class EnemyUnit : MonoBehaviour
         if (dead) return;
 
         attackRange = enemy.phases[phase].attackRange;
+        attacking = (position.y <= attackRange) ? true : false;
 
         agent.enabled = false;
         agent.Graph = null;
@@ -75,7 +76,6 @@ public class EnemyUnit : MonoBehaviour
 
         agent.enabled = true;
 
-        attacking = (position.y <= attackRange) ? true : false;
     }
 
     private void Update()

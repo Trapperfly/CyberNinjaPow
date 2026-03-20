@@ -273,12 +273,12 @@ public class BoardManager : MonoBehaviour
 
             if (targetedSpace == null) continue;
 
-            if (!fire) targetedSpace.Colorize(source);
-
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
                 if (fire) enemy.TakeDamage(damage);
+                else targetedSpace.Colorize(source);
+
                 if (pierce == 0)
                     checks = 0;
                 else pierce--;
