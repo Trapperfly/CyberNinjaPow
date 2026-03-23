@@ -373,6 +373,6 @@ public class BoardManager : MonoBehaviour
         {
             keyValue.Value.Colorize(GridSpaceSelection.None);
         }
-        Manager.Instance.enemyManager.ShowIntentionsOfEnemies();
+        //Manager.Instance.enemyManager.ShowIntentionsOfEnemies();
     }
 }

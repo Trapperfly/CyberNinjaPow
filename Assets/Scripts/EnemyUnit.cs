@@ -62,9 +62,6 @@ public class EnemyUnit : MonoBehaviour
     {
         if (dead) return;
 
-        attackRange = enemy.phases[phase].attackRange;
-        attacking = (position.y <= attackRange) ? true : false;
-
         agent.enabled = false;
         agent.Graph = null;
 
@@ -75,7 +72,6 @@ public class EnemyUnit : MonoBehaviour
             unit.Value = this;
 
         agent.enabled = true;
-
     }
 
     private void Update()
@@ -92,6 +88,14 @@ public class EnemyUnit : MonoBehaviour
         {
             Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
         }
+    }
+
+    public void ShowIntentions()
+    {
+        attackRange = enemy.phases[phase].attackRange;
+
+        PaintAttack();
+        Manager.Instance.enemyManager.DisplayMovementArrow(this, position, intendedMovement);
     }
 
     public Vector2 GetWorldPos(Vector2Int gridPosition)
@@ -215,27 +219,29 @@ public class EnemyUnit : MonoBehaviour
 
     public IEnumerator IAct()
     {
-        EffectOnAct();
-        Move();
-        if (intendedMovement != new Vector2Int(0, 0))
+        Vector2Int doingMove = CheckMove();
+        
+        List<TileEffect> attacks = new List<TileEffect>();
+        foreach (TileEffect effect in intendedAttack)
+        {
+            attacks.Add(effect);
+        }
+
+        GetIntentions();
+
+        StartCoroutine(Move(position)); //Move sprite to actual position
+        if (doingMove != new Vector2Int(0, 0))
         {
             enemyManager.addTimeAnim += enemyManager.moveAnimTime;
-            yield return new WaitForSeconds(enemyManager.moveAnimTime);
+            yield return new WaitForSeconds(enemyManager.moveAnimTime + 1);
         }
-        //Attack();
-        //if (intentions[intention].attack.Count != 0)
-        //{
-        //    Debug.Log(enemy.enemyName + " is attacking with " + intentions[intention].attack.Count + " attacks");
-        //    enemyManager.addTimeAnim += enemyManager.attackAnimTime;
-        //    yield return new WaitForSeconds(enemyManager.attackAnimTime);
-        //}
-        //ApplyEffect();
-        EffectOnAfterAct();
-        //FindLooping();
+        StartCoroutine(Attack());
+
+        ShowIntentions();
+
         timer = 0;
         SetTimer();
 
-        GetIntentions();
         yield return null;
     }
     public void EffectOnAct()
@@ -267,14 +273,14 @@ public class EnemyUnit : MonoBehaviour
         }
     }
 
-    public void Move()
+    public Vector2Int CheckMove()
     {
         if (movementArrow != null)
             Destroy(movementArrow);
 
         if (intendedMovement == new Vector2Int(0, 0))
         {
-            return;
+            return new(0,0);
         }
 
         EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + intendedMovement);
@@ -282,13 +288,14 @@ public class EnemyUnit : MonoBehaviour
         if (intendedMovement != new Vector2Int(0, 0) && potentialCrash != null) {
             TakeDamage(Manager.Instance.gameManager.collisionDamage);
             potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            return;
+            return new(0,0);
         }
-        if (enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return;
+        if (enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return new(0,0);
 
         position += intendedMovement;
 
-        StartCoroutine(MoveLerp(position));
+        return intendedMovement;
+
         //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
     }
@@ -308,17 +315,17 @@ public class EnemyUnit : MonoBehaviour
 
         position += direction;
 
-        StartCoroutine(MoveLerp(position, true));
+        StartCoroutine(Move(position, true));
         //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
     }
 
-    public IEnumerator MoveLerp(Vector2Int gridPos, bool forced = false)
+    public IEnumerator Move(Vector2Int moveTo, bool forced = false)
     {
         float seconds = 0.5f;
         float i = 0;
         Vector2 originalPos = transform.position;
-        Vector2 targetPos = Manager.Instance.boardManager.spaces[gridPos].transform.position;
+        Vector2 targetPos = Manager.Instance.boardManager.spaces[moveTo].transform.position;
         while (i < seconds)
         {
             i += Time.deltaTime;
@@ -326,11 +333,13 @@ public class EnemyUnit : MonoBehaviour
             yield return null;
         }
         Manager.Instance.boardManager.ClearSpaces();
+        ShowIntentions();
+
         yield return null;
     }
 
-    public void Attack()
+    IEnumerator Attack()
     {
-
+        yield return null;
     }
 }

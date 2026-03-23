@@ -27,8 +27,6 @@ public partial class MovementAction : Action
 
         unit.intendedMovement = movement;
 
-        Manager.Instance.enemyManager.DisplayMovementArrow(unit, unit.position, movement);
-
         return Status.Success;
     }
 }

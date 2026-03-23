@@ -114,10 +114,12 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
         {
-            if (unit.attacking)
-                unit.PaintAttack();
-            DisplayMovementArrow(unit, unit.position, unit.intendedMovement);
+            unit.ShowIntentions();
         }
+    }
+    public void ShowIntentionsOfEnemy(EnemyUnit unit)
+    {
+        unit.ShowIntentions();
     }
     public Vector2 GetWorldPos(Vector2Int gridPosition)
     {

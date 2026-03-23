@@ -53,7 +53,10 @@ public class GameManager : MonoBehaviour
                 if (spawnTimerForColumns[j] <= 0)
                 {
                     if (!Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(new(j, Manager.Instance.boardManager.boardSize.y - 1)))
+                    {
                         Manager.Instance.enemyManager.SpawnEnemy(j);
+                        Manager.Instance.enemyManager.ShowIntentionsOfEnemies();
+                    }
                     spawnTimerForColumns[j] = Random.Range(spawnDelay.x, spawnDelay.y);
                 }
             }
