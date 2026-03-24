@@ -122,6 +122,9 @@ public class EnemyUnit : MonoBehaviour
     }
     IEnumerator GetAndDisplayIntentionsRightAfterSpawn()
     {
+        attackRange = enemy.phases[phase].attackRange;
+        attacking = (position.y <= attackRange) ? true : false;
+
         yield return new WaitUntil(() =>
         {
             return agent.isActiveAndEnabled;
