@@ -15,5 +15,5 @@ MonoBehaviour:
   health: 1
   actions: {fileID: 4566370744241057495, guid: be9465a8d3025a444af4a8c6036a826c, type: 2}
   sprite: {fileID: -8753961941187488392, guid: 6f9f4b73263e47945bff5f025f4e5d4f, type: 3}
-  damageCard: {fileID: 0}
-  attackRange: 5
+  damageCard: {fileID: 11400000, guid: 8dceb049c133cce499a7edf666640280, type: 2}
+  attackRange: 0
