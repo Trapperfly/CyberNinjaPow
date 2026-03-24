@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
   m_Name: PlayToCostTimeAndDiscard
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardName: 
+  cardName: Damage
   description: 
   artwork: {fileID: 0}
   cardTags: 01000000

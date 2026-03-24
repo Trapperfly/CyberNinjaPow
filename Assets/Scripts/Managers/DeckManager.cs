@@ -12,7 +12,7 @@ public enum WhereDoesTheCardGo
 public class DeckManager : MonoBehaviour
 {
     public int handSize = 5;
-    public float cardSpread = 160f;
+    public float cardSpread = 600f;
     public bool cardRedied = false;
 
     public GameObject cardPrefab;
@@ -127,7 +127,7 @@ public class DeckManager : MonoBehaviour
         int i = 0;
         foreach (RectTransform card in handTransform)
         {
-            card.localPosition = new((cardSpread * i) - (cardSpread * (hand.Count - 1) / 2), 0, 0);
+            card.localPosition = new((cardSpread / hand.Count * i) - (cardSpread / hand.Count * (hand.Count - 1) / 2), 0, 0);
             i++;
         }
     }

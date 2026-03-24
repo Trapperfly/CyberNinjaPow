@@ -173,7 +173,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        //Debug.Log(enemy.enemyName + " took " + damage + " damage");
+        Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
         if (damageTaken >= enemy.phases[phase].health)
@@ -391,7 +391,7 @@ public class EnemyUnit : MonoBehaviour
                 Manager.Instance.boardManager.Projectile(
                     true, 
                     GridSpaceSelection.EnemyAttack, 
-                    attack.gridPosition, projectile.direction, 
+                    position + attack.gridPosition, projectile.direction, 
                     attack.damage, projectile.pierce, 
                     enemy.phases[phase].damageCard);
             }

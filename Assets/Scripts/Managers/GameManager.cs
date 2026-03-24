@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public TMPro.TMP_Text TMP_PlayerHealth;
     public List<int> spawnTimerForColumns = new List<int>();
     public Vector2Int spawnDelay;
+    public int startTimeProgress;
+    public int startTimeTimes;
 
     public int collisionDamage = 1;
 
@@ -20,7 +22,7 @@ public class GameManager : MonoBehaviour
         }
         TMP_PlayerHealth.text = playerHealth + "/" + playerHealthMax;
         
-        StartCoroutine(AdvanceBoard(2, 10));
+        StartCoroutine(AdvanceBoard(startTimeTimes, startTimeProgress));
     }
 
     public void ProgressTime(int time)

@@ -259,10 +259,9 @@ public class BoardManager : MonoBehaviour
         Vector2Int space = origin;
         Vector2Int dirVector = GetProjectileDirection(direction);
 
-        int checks = 10;
-
-        for (int i = 0; i < checks; i++)
+        for (int i = 0; i < 10; i++)
         {
+            space += dirVector;
             if (space.y < 0)
             {
                 if (!fire && source == GridSpaceSelection.EnemyAttack)
@@ -277,15 +276,15 @@ public class BoardManager : MonoBehaviour
             }
 
             spaces.TryGetValue(space, out BoardSpace targetedSpace);
-
             if (targetedSpace == null) {
-                space += dirVector;
                 continue;
             }
 
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
+                Debug.Log("Enemy in sight");
+                if (fire) Debug.Log("Dealing damage to " + enemy.enemy.enemyName);
                 if (fire) enemy.TakeDamage(damage);
                 else targetedSpace.Colorize(source);
 
@@ -293,7 +292,6 @@ public class BoardManager : MonoBehaviour
                 else pierce--;
             }
 
-            space += dirVector;
         }
     }
 
