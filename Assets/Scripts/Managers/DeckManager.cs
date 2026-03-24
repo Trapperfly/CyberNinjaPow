@@ -2,7 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
-
+public enum WhereDoesTheCardGo
+{
+    Nowhere,
+    Hand,
+    Draw,
+    Discard
+}
 public class DeckManager : MonoBehaviour
 {
     public int handSize = 5;
@@ -75,14 +81,6 @@ public class DeckManager : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    public enum WhereDoesTheCardGo
-    {
-        Nowhere,
-        Hand,
-        Draw,
-        Discard
     }
 
     void CreateCard(Card card)

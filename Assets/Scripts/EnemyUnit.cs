@@ -82,8 +82,16 @@ public class EnemyUnit : MonoBehaviour
             enemyManager.addTimeAnim += enemyManager.moveAnimTime;
         }
         yield return new WaitForSeconds(enemyManager.moveAnimTime);
-        yield return null;
-        StartCoroutine(Attack());
+
+        if (attacking)
+        {
+            StartCoroutine(Attack());
+            if (intendedAttack.Count > 0)
+            {
+                enemyManager.addTimeAnim += enemyManager.attackAnimTime;
+            }
+            yield return new WaitForSeconds(enemyManager.attackAnimTime);
+        }
 
         StartCoroutine(ShowIntentionsWhenReady());
 
@@ -99,6 +107,8 @@ public class EnemyUnit : MonoBehaviour
 
         readyToShowIntentions = false;
 
+        intendedAttack.Clear();
+        iAttackCounter = -1;
         agent.Graph = null;
         agent.Graph = Instantiate(enemy.phases[phase].actions);
         agent.Init();
@@ -372,6 +382,21 @@ public class EnemyUnit : MonoBehaviour
 
     IEnumerator Attack()
     {
+        readyToShowIntentions = false;
+
+        foreach (TileEffect attack in intendedAttack)
+        {
+            foreach (ProjectileData projectile in attack.projectiles)
+            {
+                Manager.Instance.boardManager.Projectile(
+                    true, 
+                    GridSpaceSelection.EnemyAttack, 
+                    attack.gridPosition, projectile.direction, 
+                    attack.damage, projectile.pierce, 
+                    enemy.phases[phase].damageCard);
+            }
+        }
+
         yield return null;
     }
 }

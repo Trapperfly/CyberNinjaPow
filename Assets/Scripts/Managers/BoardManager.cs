@@ -99,7 +99,7 @@ public class BoardManager : MonoBehaviour
             {
                 if ((origin + target.gridPosition).y < 0)
                 {
-                    Manager.Instance.boardManager.dangerSymbolsParent.GetChild(origin.x + target.gridPosition.x).gameObject.SetActive(true);
+                    dangerSymbolsParent.GetChild(origin.x + target.gridPosition.x).gameObject.SetActive(true);
                     continue;
                 }
                 spaces.TryGetValue(origin + target.gridPosition, out BoardSpace targetSpace);
@@ -254,7 +254,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0)
+    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0, Card damageCard = null)
     {
         Vector2Int space = origin;
         Vector2Int dirVector = GetProjectileDirection(direction);
@@ -263,15 +263,25 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < checks; i++)
         {
-            if (source == GridSpaceSelection.EnemyAttack && space.y < 0)
+            if (space.y < 0)
             {
-                Manager.Instance.boardManager.dangerSymbolsParent.GetChild(space.x).gameObject.SetActive(true);
-                return;
+                if (!fire && source == GridSpaceSelection.EnemyAttack)
+                    dangerSymbolsParent.GetChild(space.x).gameObject.SetActive(true);
+
+                if (fire && source == GridSpaceSelection.EnemyAttack)
+                {
+                    Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
+                    Debug.Log("Damaged player");
+                }
+                break; // always break when out of bounds
             }
 
             spaces.TryGetValue(space, out BoardSpace targetedSpace);
 
-            if (targetedSpace == null) continue;
+            if (targetedSpace == null) {
+                space += dirVector;
+                continue;
+            }
 
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
@@ -279,8 +289,7 @@ public class BoardManager : MonoBehaviour
                 if (fire) enemy.TakeDamage(damage);
                 else targetedSpace.Colorize(source);
 
-                if (pierce == 0)
-                    checks = 0;
+                if (pierce == 0) break;
                 else pierce--;
             }
 
