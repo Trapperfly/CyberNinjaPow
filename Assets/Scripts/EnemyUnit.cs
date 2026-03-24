@@ -21,6 +21,7 @@ public class EnemyUnit : MonoBehaviour
     public List<EffectInfo> effects;
     bool pong;
     bool dead;
+    public bool readyToShowIntentions = false;
 
     SpriteRenderer spriteRenderer;
 
@@ -49,8 +50,8 @@ public class EnemyUnit : MonoBehaviour
 
         Vector2 targetPosition = GetWorldPos(position);
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
-
-        GetIntentions();
+        
+        StartCoroutine(GetAndDisplayIntentionsRightAfterSpawn());
 
         SetHealthBar();
         //intendedMovement = PlanMovement();
@@ -58,20 +59,81 @@ public class EnemyUnit : MonoBehaviour
         bobbingOffset = Random.Range(0, 9000f);
     }
 
+    public void Act()
+    {
+        StartCoroutine(IAct());
+    }
+
+    public IEnumerator IAct()
+    {
+        Vector2Int doingMove = CheckMove();
+
+        List<TileEffect> attacks = new List<TileEffect>();
+        foreach (TileEffect effect in intendedAttack)
+        {
+            attacks.Add(effect);
+        }
+
+        GetIntentions();
+
+        StartCoroutine(Move(position)); //Move sprite to actual position
+        if (doingMove != new Vector2Int(0, 0))
+        {
+            enemyManager.addTimeAnim += enemyManager.moveAnimTime;
+        }
+        yield return new WaitForSeconds(enemyManager.moveAnimTime);
+        yield return null;
+        StartCoroutine(Attack());
+
+        StartCoroutine(ShowIntentionsWhenReady());
+
+        timer = 0;
+        SetTimer();
+
+        yield return null;
+    }
+
     private void GetIntentions()
     {
         if (dead) return;
 
-        agent.enabled = false;
-        agent.Graph = null;
+        readyToShowIntentions = false;
 
-        agent.Graph = enemy.phases[phase].actions;
+        agent.Graph = null;
+        agent.Graph = Instantiate(enemy.phases[phase].actions);
         agent.Init();
 
+        if (agent.GetVariable("IntentionsReady", out BlackboardVariable<bool> ready))
+            ready.Value = false;
         if (agent.GetVariable("Unit", out BlackboardVariable<EnemyUnit> unit))
             unit.Value = this;
 
-        agent.enabled = true;
+        agent.Graph.Restart();
+    }
+    IEnumerator GetAndDisplayIntentionsRightAfterSpawn()
+    {
+        yield return new WaitUntil(() =>
+        {
+            return agent.isActiveAndEnabled;
+        });
+
+        GetIntentions();
+
+        StartCoroutine(ShowIntentionsWhenReady());
+    }
+
+    IEnumerator ShowIntentionsWhenReady()
+    {
+        agent.GetVariable("IntentionsReady", out BlackboardVariable<bool> ready);
+
+        yield return new WaitUntil(() =>
+        {
+            agent.GetVariable("IntentionsReady", out BlackboardVariable<bool> r);
+            return r?.Value == true;
+        });
+        readyToShowIntentions = true;
+        ShowIntentions();
+        yield return null;
     }
 
     private void Update()
@@ -82,19 +144,15 @@ public class EnemyUnit : MonoBehaviour
 
     public void PaintAttack()
     {
-        attacking = (position.y <= attackRange) ? true : false;
-
-        if (attacking)
-        {
-            Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
-        }
+        Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
     }
 
     public void ShowIntentions()
     {
         attackRange = enemy.phases[phase].attackRange;
+        attacking = (position.y <= attackRange) ? true : false;
 
-        PaintAttack();
+        if (attacking) PaintAttack();
         Manager.Instance.enemyManager.DisplayMovementArrow(this, position, intendedMovement);
     }
 
@@ -135,6 +193,8 @@ public class EnemyUnit : MonoBehaviour
         spriteRenderer.sprite = enemy.phases[phase].sprite;
         intendedMovement = Vector2Int.zero;
         intendedAttack.Clear();
+
+        ShowIntentions();
 
         SetHealthBar();
     }
@@ -212,38 +272,6 @@ public class EnemyUnit : MonoBehaviour
         else timerSpriteRenderer.sprite = timerDot;
     }
 
-    public void Act()
-    {
-        StartCoroutine(IAct());
-    }
-
-    public IEnumerator IAct()
-    {
-        Vector2Int doingMove = CheckMove();
-        
-        List<TileEffect> attacks = new List<TileEffect>();
-        foreach (TileEffect effect in intendedAttack)
-        {
-            attacks.Add(effect);
-        }
-
-        GetIntentions();
-
-        StartCoroutine(Move(position)); //Move sprite to actual position
-        if (doingMove != new Vector2Int(0, 0))
-        {
-            enemyManager.addTimeAnim += enemyManager.moveAnimTime;
-            yield return new WaitForSeconds(enemyManager.moveAnimTime + 1);
-        }
-        StartCoroutine(Attack());
-
-        ShowIntentions();
-
-        timer = 0;
-        SetTimer();
-
-        yield return null;
-    }
     public void EffectOnAct()
     {
         foreach (EffectInfo effect in effects)
@@ -322,6 +350,8 @@ public class EnemyUnit : MonoBehaviour
 
     public IEnumerator Move(Vector2Int moveTo, bool forced = false)
     {
+        readyToShowIntentions = false;
+        Manager.Instance.boardManager.ClearSpaces();
         float seconds = 0.5f;
         float i = 0;
         Vector2 originalPos = transform.position;
@@ -332,9 +362,11 @@ public class EnemyUnit : MonoBehaviour
             transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i * 2);
             yield return null;
         }
-        Manager.Instance.boardManager.ClearSpaces();
-        ShowIntentions();
-
+        readyToShowIntentions = true;
+        if (forced) { 
+            Manager.Instance.boardManager.ClearSpaces();
+        }
+        //Manager.Instance.boardManager.ClearSpaces();
         yield return null;
     }
 
