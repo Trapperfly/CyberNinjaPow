@@ -227,7 +227,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    Vector2Int GetProjectileDirection(Direction direction)
+    public Vector2Int GetDirection(Direction direction)
     {
         switch (direction)
         {
@@ -257,7 +257,7 @@ public class BoardManager : MonoBehaviour
     public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0, Card damageCard = null)
     {
         Vector2Int space = origin;
-        Vector2Int dirVector = GetProjectileDirection(direction);
+        Vector2Int dirVector = GetDirection(direction);
 
         for (int i = 0; i < 10; i++)
         {
@@ -270,7 +270,6 @@ public class BoardManager : MonoBehaviour
                 if (fire && source == GridSpaceSelection.EnemyAttack)
                 {
                     Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
-                    Debug.Log("Damaged player");
                 }
                 break; // always break when out of bounds
             }
@@ -283,8 +282,6 @@ public class BoardManager : MonoBehaviour
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
-                Debug.Log("Enemy in sight");
-                if (fire) Debug.Log("Dealing damage to " + enemy.enemy.enemyName);
                 if (fire) enemy.TakeDamage(damage);
                 else targetedSpace.Colorize(source);
 
@@ -317,6 +314,11 @@ public class BoardManager : MonoBehaviour
                     EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
                     if (enemy)
                         enemy.TakeDamage(effect.damage);
+                    if (enemy && effect.pushDirection != Direction.None)
+                    {
+                        Vector2Int pushDir = GetDirection(effect.pushDirection);
+                        enemy.ForceMove(pushDir, effect.pushDistance);
+                    }
                 }
 
                 Manager.Instance.enemyManager.KillOffEnemies();

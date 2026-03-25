@@ -92,7 +92,7 @@ public class DeckManager : MonoBehaviour
         cardObject.time.GetComponent<Image>().sprite = timeSprites[card.cost];
         cardObject.range.GetComponent<Image>().sprite = rangeSprites[(int)card.range];
         cardObject.tags.GetComponent<Image>().sprite = tagHolderSprites[card.extraTagSlots + card.cardTags.Count];
-        cardObject.card = card;
+        cardObject.card = Instantiate(card);
         int i = 0;
 
         foreach (CardTag tag in card.cardTags)

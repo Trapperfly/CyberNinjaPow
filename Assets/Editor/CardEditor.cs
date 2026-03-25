@@ -199,7 +199,7 @@ public class CardEditorWindow : EditorWindow
             if (dmgMatch.Success) { effect.damage = int.Parse(dmgMatch.Groups[1].Value); continue; }
 
             // Push: p{n?}N/S/E/W
-            var pushMatch = Regex.Match(t, @"^p(\d*)([nsew])$");
+            var pushMatch = Regex.Match(t, @"^p(\d*)([nsew]{1,2})$");
             if (pushMatch.Success)
             {
                 effect.pushDistance = pushMatch.Groups[1].Value == "" ? 1 : int.Parse(pushMatch.Groups[1].Value);

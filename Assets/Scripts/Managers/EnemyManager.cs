@@ -42,7 +42,7 @@ public class EnemyManager : MonoBehaviour
             {
                 foreach (EnemyUnit enemy in enemies)
                 {
-                    if (enemy.position.y == y) enemy.ForceMove(direction);
+                    if (enemy.position.y == y) enemy.ForceMove(direction, 1);
                 }
             }
         }

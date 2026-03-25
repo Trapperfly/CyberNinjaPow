@@ -341,22 +341,25 @@ public class EnemyUnit : MonoBehaviour
         //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
     }
 
-    public void ForceMove(Vector2Int direction)
+    public void ForceMove(Vector2Int direction, int amount)
     {
         if (movementArrow != null)
             Destroy(movementArrow);
-        EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + direction);
-        if (potentialCrash != null)
+        for (int i = 0; i < amount; i++)
         {
-            TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            return;
+            EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + direction);
+            if (potentialCrash != null)
+            {
+                TakeDamage(Manager.Instance.gameManager.collisionDamage);
+                potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+                return;
+            }
+            if (enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
+
+            position += direction;
         }
-        if (enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
-
-        position += direction;
-
         StartCoroutine(Move(position, true));
+
         //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
     }
@@ -398,8 +401,28 @@ public class EnemyUnit : MonoBehaviour
                     attack.damage, projectile.pierce, 
                     enemy.phases[phase].damageCard);
             }
+            DamageTile(position + attack.gridPosition, attack.damage);
+            PushTile(position + attack.gridPosition, attack.pushDirection, attack.pushDistance);
         }
 
         yield return null;
+    }
+    void DamageTile(Vector2Int targetTile, int damage, List<StatusEffect> statusEffects = null)
+    {
+        if (targetTile.y < 0)
+        {
+            Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, enemy.phases[phase].damageCard);
+        }
+        EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
+        if (unit == null) return;
+        unit.TakeDamage(damage);
+    }
+
+    void PushTile(Vector2Int targetTile, Direction direction, int amount)
+    {
+        EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
+        if (unit == null) return;
+        Vector2Int dirVector = Manager.Instance.boardManager.GetDirection(direction);
+        unit.ForceMove(dirVector, amount);
     }
 }

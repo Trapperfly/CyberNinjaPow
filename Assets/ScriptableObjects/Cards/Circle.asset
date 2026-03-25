@@ -21,34 +21,43 @@ MonoBehaviour:
   extraTagSlots: 1
   tileEffects:
   - gridPosition: {x: -1, y: 1}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 6
     statusEffects: []
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 0, y: 1}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 1
     statusEffects: []
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 1, y: 1}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 5
     statusEffects: []
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -1, y: 0}
-    damage: 0
+    damage: 1
+    projectiles: []
+    pushDistance: 1
+    pushDirection: 4
+    statusEffects: []
+    repeating: 0
+    repeatCount: 0
+    repeatInterval: 0
+  - gridPosition: {x: 0, y: 0}
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -57,37 +66,37 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 1, y: 0}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 3
     statusEffects: []
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -1, y: -1}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 8
     statusEffects: []
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 0, y: -1}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 2
     statusEffects: []
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 1, y: -1}
-    damage: 0
+    damage: 1
     projectiles: []
-    pushDistance: 0
-    pushDirection: 0
+    pushDistance: 1
+    pushDirection: 7
     statusEffects: []
     repeating: 0
     repeatCount: 0
