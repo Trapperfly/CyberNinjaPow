@@ -92,7 +92,7 @@ public class DeckManager : MonoBehaviour
         cardObject.time.GetComponent<Image>().sprite = timeSprites[card.cost];
         cardObject.range.GetComponent<Image>().sprite = rangeSprites[(int)card.range];
         cardObject.tags.GetComponent<Image>().sprite = tagHolderSprites[card.extraTagSlots + card.cardTags.Count];
-        cardObject.card = Instantiate(card);
+        cardObject.card = card;
         int i = 0;
 
         foreach (CardTag tag in card.cardTags)
@@ -163,7 +163,8 @@ public class DeckManager : MonoBehaviour
     {
         discard.Add(card);
         Destroy(physicalCardHeld.gameObject);
-        hand.Remove(card);
+        Debug.Log("Discarding/using card");
+        if (hand.Remove(card)) Debug.Log("Removed card from hand");
         AlignCards(-1);
 
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);

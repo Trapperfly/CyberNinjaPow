@@ -6,9 +6,10 @@ using Unity.Properties;
 using UnityEngine.UIElements;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "AddProjectile", story: "Sends a projectile [direction] with pierce [pierce]", category: "Action", id: "c260d3d4c5205a45bf50fcceab868a0b")]
+[NodeDescription(name: "AddProjectile", story: "Sends a [damage] damage projectile [direction] with pierce [pierce]", category: "Action", id: "c260d3d4c5205a45bf50fcceab868a0b")]
 public partial class AddProjectileAction : Action
 {
+    [SerializeReference] public BlackboardVariable<int> Damage;
     [SerializeReference] public BlackboardVariable<Direction> Direction;
     [SerializeReference] public BlackboardVariable<int> Pierce;
     EnemyUnit unit;
@@ -19,6 +20,7 @@ public partial class AddProjectileAction : Action
         TileEffect tileEffect = unit.intendedAttack[unit.iAttackCounter];
 
         ProjectileData projectileData = new ProjectileData();
+        projectileData.projDamage = Damage.Value;
         projectileData.direction = Direction.Value;
         projectileData.pierce = Pierce.Value;
 

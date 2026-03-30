@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
   m_Name: Spreadshot
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardName: Wave
+  cardName: Spreadshot
   description: 
   artwork: {fileID: 0}
   cardTags: 0500000002000000
@@ -21,13 +21,16 @@ MonoBehaviour:
   extraTagSlots: 1
   tileEffects:
   - gridPosition: {x: 0, y: 0}
-    damage: 1
+    damage: 0
     projectiles:
-    - direction: 6
+    - projDamage: 1
+      direction: 6
       pierce: 0
-    - direction: 1
+    - projDamage: 1
+      direction: 1
       pierce: 0
-    - direction: 5
+    - projDamage: 1
+      direction: 5
       pierce: 0
     pushDistance: 0
     pushDirection: 0

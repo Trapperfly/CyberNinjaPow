@@ -19,6 +19,7 @@ public class BoardManager : MonoBehaviour
     public GameObject cardTargetingLine;
 
     public GameObject discard;
+    public bool hoveringDiscard;
 
     public float xSpace;
     public float ySpace;
@@ -63,6 +64,8 @@ public class BoardManager : MonoBehaviour
         {
             if (!Input.GetMouseButtonDown(0)) return;
             Debug.Log("Letting go of clicked card!");
+            //If the player was hovering the discard when clicked
+            if (hoveringDiscard) { Discard(); return; }
             //If the player has clicked a card and is clicking a tile
             if (CheckMouseTargeting() != null || heldCard.tileEffects.Count == 0) DoCardAction();
 
@@ -73,12 +76,20 @@ public class BoardManager : MonoBehaviour
         {
             if (!Input.GetMouseButtonUp(0)) return;
             Debug.Log("Letting go of dragged card!");
+            //If the player was hovering the discard when letting go
+            if (hoveringDiscard) { Discard(); return; }
             //If the player is dragging a card and letting go on a tile
             if (CheckMouseTargeting() != null || heldCard.tileEffects.Count == 0) DoCardAction();
 
             //If the player is dragging a card and letting go outside of the board
             else ResetCards();
         }
+    }
+
+    void Discard()
+    {
+        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, true);
+        ResetCards();
     }
 
     private void FixedUpdate()
@@ -307,7 +318,7 @@ public class BoardManager : MonoBehaviour
                 if (effect.projectiles.Count > 0)
                 {
                     foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile.direction, effect.damage, projectile.pierce);
+                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile.direction, projectile.projDamage, projectile.pierce);
                 }
                 else
                 {

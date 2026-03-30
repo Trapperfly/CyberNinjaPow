@@ -69,6 +69,7 @@ public class StatusEffectEntry
 [System.Serializable]
 public class ProjectileData
 {
+    public int projDamage;
     public Direction direction;
     public int pierce;
 }

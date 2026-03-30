@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler
 {
     public RectTransform hand;
     public Card card = null;
@@ -102,14 +102,14 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //Manager.Instance.deckManager.physicalCardHeld = this;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (eventData.hovered.Contains(Manager.Instance.boardManager.discard))
-        {
-            if (Manager.Instance.boardManager.heldCard == null) { return; }
-            Manager.Instance.boardManager.EndCardTargeting();
-            Manager.Instance.deckManager.cardRedied = false;
-            Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, true);
-        }
-    }
+    //public void OnEndDrag(PointerEventData eventData)
+    //{
+    //    if (eventData.hovered.Contains(Manager.Instance.boardManager.discard))
+    //    {
+    //        if (Manager.Instance.boardManager.heldCard == null) { return; }
+    //        Manager.Instance.boardManager.EndCardTargeting();
+    //        Manager.Instance.deckManager.cardRedied = false;
+    //        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, true);
+    //    }
+    //}
 }

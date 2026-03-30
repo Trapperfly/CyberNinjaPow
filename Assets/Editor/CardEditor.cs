@@ -208,19 +208,16 @@ public class CardEditorWindow : EditorWindow
             }
 
             // Projectile: proj or projN/S/E/W
-            var projMatch = Regex.Match(t, @"^proj([nsew]{1,2})$");
+            var projMatch = Regex.Match(t, @"^proj(\d+)([nsew]{1,2})$");
             var pierceMatch = Regex.Match(t, @"^pierce(\d+)$");
-            if (pierceMatch.Success)
-            {
-                continue;
-            }
             if (projMatch.Success)
             {
                 var pierceData = 0; 
                 if (pierceMatch.Success) { pierceData = int.Parse(pierceMatch.Groups[1].Value); }
                 effect.projectiles.Add(new ProjectileData
                 {
-                    direction = ParseDirection(projMatch.Groups[1].Value),
+                    projDamage = int.Parse(projMatch.Groups[1].Value),
+                    direction = ParseDirection(projMatch.Groups[2].Value),
                     pierce = pierceData
                 });
                 continue;
@@ -313,7 +310,7 @@ public class CardEditorWindow : EditorWindow
         if (e.damage > 0)          parts.Add($"d{e.damage}");
         foreach (var proj in e.projectiles)
         {
-            parts.Add($"proj{DirStr(proj.direction)}");
+            parts.Add($"proj{proj.projDamage}{DirStr(proj.direction)}");
             if (proj.pierce > 0) parts.Add($"pierce{proj.pierce}");
         }
         if (e.pushDistance > 0)    parts.Add($"p{e.pushDistance}{DirStr(e.pushDirection)}");

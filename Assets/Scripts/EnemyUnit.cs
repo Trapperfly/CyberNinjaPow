@@ -176,6 +176,8 @@ public class EnemyUnit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (damage == 0) { return; }
+
         Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
@@ -398,7 +400,7 @@ public class EnemyUnit : MonoBehaviour
                     true, 
                     GridSpaceSelection.EnemyAttack, 
                     position + attack.gridPosition, projectile.direction, 
-                    attack.damage, projectile.pierce, 
+                    projectile.projDamage, projectile.pierce, 
                     enemy.phases[phase].damageCard);
             }
             DamageTile(position + attack.gridPosition, attack.damage);
@@ -415,6 +417,7 @@ public class EnemyUnit : MonoBehaviour
         }
         EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
         if (unit == null) return;
+        //unit.AddStatus(statusEffects);
         unit.TakeDamage(damage);
     }
 
