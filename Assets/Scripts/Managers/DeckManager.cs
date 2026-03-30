@@ -17,6 +17,7 @@ public class DeckManager : MonoBehaviour
 
     public GameObject cardPrefab;
     public Deck deck;
+    public List<Card> accumulatedDamageCards = new List<Card>();
 
     public RectTransform handTransform;
 
@@ -47,6 +48,7 @@ public class DeckManager : MonoBehaviour
         {
             tagSprites.Add(new Vector2Int(Mathf.RoundToInt(sprite.rect.x / 7), Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 7) / 7) + 1), sprite);
         }
+        deck = Instantiate(deck);
         foreach (Card card in deck.cards)
         {
             draw.Add(card);
@@ -56,7 +58,14 @@ public class DeckManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
-        if (Input.GetKeyDown(KeyCode.D)) DiscardRandomHandCard();
+        //if (Input.GetKeyDown(KeyCode.D)) AddRandomCardToDeck();
+    }
+
+    void AddRandomCardToDeck()
+    {
+        int i = Random.Range(0, deck.possibleCards.Count);
+        deck.cards.Add(deck.possibleCards[i]);
+        Debug.Log("Added " + deck.possibleCards[i].name + " to deck.");
     }
 
     public void AddCardTo(WhereDoesTheCardGo where, Card card)

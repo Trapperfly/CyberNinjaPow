@@ -13,6 +13,7 @@ public class BoardManager : MonoBehaviour
     public Vector2Int targetedPosition = new(0, 0);
     public Transform board;
     public float waitBetweenCardActions;
+    public float cardAnimExtraTime;
     public bool inCardAction = false;
 
     public GameObject cardTargetingLinePrefab;
@@ -335,8 +336,9 @@ public class BoardManager : MonoBehaviour
                 Manager.Instance.enemyManager.KillOffEnemies();
                 yield return new WaitForSeconds(effect.repeatInterval);
             }
+            yield return new WaitForSeconds(waitBetweenCardActions);
         }
-        yield return new WaitForSeconds(waitBetweenCardActions);
+        yield return new WaitForSeconds(cardAnimExtraTime);
         Manager.Instance.busy = false;
         FinishCardAction();
         yield return null;

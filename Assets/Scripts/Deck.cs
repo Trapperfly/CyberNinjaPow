@@ -7,4 +7,6 @@ public class Deck : ScriptableObject
 {
     public string deckName;
     public List<Card> cards = new();
+
+    public List<Card> possibleCards = new();
 }
