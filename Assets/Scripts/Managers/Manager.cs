@@ -26,6 +26,7 @@ public class Manager : MonoBehaviour
     [HideInInspector] public BoardManager boardManager;
     [HideInInspector] public DeckManager deckManager;
     [HideInInspector] public EnemyManager enemyManager;
+    [HideInInspector] public ShopManager shopManager;
 
     public bool busy = false;
 }

@@ -13,6 +13,7 @@ public class Card : ScriptableObject
     public int cost;
     public Range range;
     public int extraTagSlots;
+    public CardRarity rarity;
 
     [Tooltip("Each entry defines what happens on one tile of the grid when this card is played.")]
     public List<TileEffect> tileEffects = new();
