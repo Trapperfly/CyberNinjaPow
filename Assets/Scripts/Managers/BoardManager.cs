@@ -294,7 +294,11 @@ public class BoardManager : MonoBehaviour
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
-                if (fire) enemy.TakeDamage(damage);
+                if (fire)
+                {
+                    ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                    enemy.TakeDamage(damage + response.integer);
+                }
                 else targetedSpace.Colorize(source);
 
                 if (pierce == 0) break;

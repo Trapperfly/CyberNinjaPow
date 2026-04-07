@@ -13,6 +13,10 @@ public abstract class Item
     {
         return null;
     }
+    public virtual ItemResponse OnHit(int stacks, EnemyUnit enemy, Vector2Int position)
+    {
+        return null;
+    }
     public virtual ItemResponse OnMeleeAttack(int stacks)
     {
         return null;
@@ -52,10 +56,13 @@ public class RocketFists : Item
     {
         return Rarity.Common;
     }
-    public override ItemResponse OnMeleeAttack(int stacks)
+    public override ItemResponse OnHit(int stacks, EnemyUnit enemy, Vector2Int position)
     {
         ItemResponse response = new ItemResponse();
-        response.integer = 1 + stacks;
+
+        if (position.y > 1) return response;
+
+        response.integer = stacks;
 
         return response;
     }

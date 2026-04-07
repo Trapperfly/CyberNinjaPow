@@ -20,6 +20,8 @@ public class Manager : MonoBehaviour
         boardManager = GetComponent<BoardManager>();
         enemyManager = GetComponent<EnemyManager>();
         deckManager = GetComponent<DeckManager>();
+        shopManager = GetComponent<ShopManager>();
+        itemManager = GetComponent<ItemManager>();
     }
     #endregion
     [HideInInspector] public GameManager gameManager;

@@ -5114,6 +5114,7 @@ GameObject:
   - component: {fileID: 1900229851}
   - component: {fileID: 1900229850}
   - component: {fileID: 1900229854}
+  - component: {fileID: 1900229855}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -5138,6 +5139,7 @@ MonoBehaviour:
   deckManager: {fileID: 0}
   enemyManager: {fileID: 0}
   shopManager: {fileID: 0}
+  itemManager: {fileID: 0}
   busy: 0
 --- !u!4 &1900229849
 Transform:
@@ -5371,6 +5373,19 @@ MonoBehaviour:
   - {x: 3, y: 5}
   cardShop: {fileID: 784989785}
   itemShop: {fileID: 2136810597}
+--- !u!114 &1900229855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900229847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4583b1d7aac5c34e906edc3dd419a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemManager
+  playerItems: []
 --- !u!1 &1904034275
 GameObject:
   m_ObjectHideFlags: 0
