@@ -22,6 +22,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public Transform tags;
 
     public bool clicked = false;
+    public bool display = false;
     private void FixedUpdate()
     {
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
@@ -60,6 +61,8 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (display) return;
+
         if (Manager.Instance.busy) return;
 
         if (!target) { return; }
@@ -88,6 +91,8 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (display) return;
+
         clicked = false;
 
         Manager.Instance.boardManager.draggingCard = true;

@@ -8,43 +8,43 @@ public abstract class Item
 
     public virtual ItemResponse OnTimeTick(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnEnemyAct(int stacks, EnemyUnit enemy)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnHit(int stacks, EnemyUnit enemy, Vector2Int position)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnMeleeAttack(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnRangedAttack(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnRearAttack(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnAreaAttack(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnProjectileAttack(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnTagUse(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
     public virtual ItemResponse OnTakeDamage(int stacks)
     {
-        return null;
+        return new ItemResponse();
     }
 }
 public class ItemResponse

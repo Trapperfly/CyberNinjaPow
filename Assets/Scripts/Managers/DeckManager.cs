@@ -16,6 +16,8 @@ public class DeckManager : MonoBehaviour
     public float cardSpread = 600f;
     public bool cardRedied = false;
 
+    public Canvas canvas;
+
     public GameObject cardPrefab;
     public Deck deck;
     public List<Card> accumulatedDamageCards = new List<Card>();
@@ -85,7 +87,9 @@ public class DeckManager : MonoBehaviour
             case WhereDoesTheCardGo.Hand:
                 //Discard one card first if not enough space in hand.
                 hand.Add(card);
-                CreateCard(card);
+                GameObject cardGO = CreateCard(card);
+                cardGO.transform.SetParent(handTransform);
+                cardGO.transform.localScale = Vector3.one;
 
                 AlignCards();
                 break;
@@ -103,9 +107,9 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    void CreateCard(Card card)
+    public GameObject CreateCard(Card card)
     {
-        GameObject cardGO = Instantiate(cardPrefab, Vector2.zero, Quaternion.identity, handTransform);
+        GameObject cardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
         CardObject cardObject = cardGO.GetComponent<CardObject>();
         cardObject.cardName.text = card.cardName;
         cardObject.cardDescription.text = card.description;
@@ -113,6 +117,7 @@ public class DeckManager : MonoBehaviour
         cardObject.range.GetComponent<Image>().sprite = rangeSprites[(int)card.range];
         cardObject.tags.GetComponent<Image>().sprite = tagHolderSprites[card.extraTagSlots + card.cardTags.Count];
         cardObject.card = card;
+
         int i = 0;
 
         foreach (CardTag tag in card.cardTags)
@@ -140,6 +145,7 @@ public class DeckManager : MonoBehaviour
             //) * 32;
             i++;
         }
+        return cardGO;
     }
 
     void AlignCards(int offset = 0)
@@ -164,7 +170,9 @@ public class DeckManager : MonoBehaviour
             draw.Remove(drawnCard);
             hand.Add(drawnCard);
 
-            CreateCard(drawnCard);
+            GameObject cardGO = CreateCard(drawnCard);
+            cardGO.transform.SetParent(handTransform);
+            cardGO.transform.localScale = Vector3.one;
 
             AlignCards();
         }

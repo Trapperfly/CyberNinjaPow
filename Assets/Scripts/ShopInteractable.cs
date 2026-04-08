@@ -14,8 +14,6 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     Canvas canvas;
 
-    public bool baught = false;
-
     private void Start()
     {
         canvas = Manager.Instance.shopManager.canvas;
@@ -23,8 +21,6 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void Generate()
     {
-        if (baught) { return; }
-
         cardSelection.Clear();
         itemSelection.Clear();
         card = null;
@@ -42,6 +38,14 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
             case ShopInteractableType.SpecificCard:
                 card = Manager.Instance.deckManager.GetRandomCard();
                 cost = (int)card.rarity;
+
+                GameObject cardGO = Manager.Instance.deckManager.CreateCard(card);
+                cardGO.transform.SetParent(transform);
+                cardGO.transform.localPosition = Vector3.zero;
+                cardGO.transform.localScale = Vector3.one;
+
+                cardGO.GetComponent<CardObject>().display = true;
+                cardGO.GetComponent<CardObject>().offset = 0;
                 break;
             case ShopInteractableType.ItemSelection:
                 for (int i = 0; i < 3; i++)
