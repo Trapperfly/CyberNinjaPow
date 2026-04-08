@@ -19,6 +19,7 @@ MonoBehaviour:
   cost: 3
   range: 1
   extraTagSlots: 1
+  rarity: 1
   tileEffects:
   - gridPosition: {x: 0, y: 0}
     damage: 0

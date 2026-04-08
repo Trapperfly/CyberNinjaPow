@@ -7,7 +7,8 @@ public enum WhereDoesTheCardGo
     Nowhere,
     Hand,
     Draw,
-    Discard
+    Discard,
+    Deck
 }
 public class DeckManager : MonoBehaviour
 {
@@ -61,12 +62,19 @@ public class DeckManager : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.D)) AddRandomCardToDeck();
     }
 
-    void AddRandomCardToDeck()
+    public void AddRandomCardToDeck()
     {
         int i = Random.Range(0, deck.possibleCards.Count);
         deck.cards.Add(deck.possibleCards[i]);
         Debug.Log("Added " + deck.possibleCards[i].name + " to deck.");
     }
+    public Card GetRandomCard()
+    {
+        int i = Random.Range(0, deck.possibleCards.Count);
+        Card card = deck.possibleCards[i];
+        return card;
+    }
+
 
     public void AddCardTo(WhereDoesTheCardGo where, Card card)
     {
@@ -86,6 +94,9 @@ public class DeckManager : MonoBehaviour
                 break;
             case WhereDoesTheCardGo.Discard:
                 discard.Add(card);
+                break;
+            case WhereDoesTheCardGo.Deck:
+                deck.cards.Add(card);
                 break;
             default:
                 break;

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        AlterMoney(0);
         for (int i = 0; i < Manager.Instance.boardManager.boardSize.x; i++)
         {
             int timer = Random.Range(spawnDelay.x, spawnDelay.y + 1);
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         money += amount;
         MoneyText.text = money.ToString();
+        Manager.Instance.shopManager.moneyText.text = money.ToString() + "$";
     }
 
     public void ProgressTime(int time)

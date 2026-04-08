@@ -3,6 +3,7 @@ using System.Collections.Generic;
 public abstract class Item
 {
     public abstract string GiveName();
+    public abstract string GiveDescription();
     public abstract Rarity GiveRarity();
 
     public virtual ItemResponse OnTimeTick(int stacks)
@@ -57,6 +58,10 @@ public class RocketFists : Item
     {
         return "Rocket Fists";
     }
+    public override string GiveDescription()
+    {
+        return "Enemies that are within melee range take additional damage.";
+    }
     public override Rarity GiveRarity()
     {
         return Rarity.Common;
@@ -78,6 +83,10 @@ public class PrecisionAirstrike : Item
     public override string GiveName()
     {
         return "Precision Airstrike";
+    }
+    public override string GiveDescription()
+    {
+        return "Damages all enemies that are at full health of their phase.";
     }
     public override Rarity GiveRarity()
     {

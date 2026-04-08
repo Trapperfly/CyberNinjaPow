@@ -1,15 +1,25 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using TMPro;
 using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
+    public GameObject cardInteractablePrefab;
+    public GameObject itemInteractablePrefab;
+
     public List<Vector2Int> shopCardAmount = new List<Vector2Int>();
     public List<Vector2Int> shopItemAmount = new List<Vector2Int>();
+
+    public ShopInteractable cardSelection;
+    public ShopInteractable itemSelection;
 
     public Transform cardShop;
     public Transform itemShop;
 
+    public TMP_Text moneyText;
+
+    public Canvas canvas;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -29,49 +39,44 @@ public class ShopManager : MonoBehaviour
     {
         ResetShop();
 
+        cardSelection.Generate();
+        itemSelection.Generate();
+
         int randomCardAmount = Random.Range(shopCardAmount[(int)quality-1].x, shopCardAmount[(int)quality-1].y + 1);
         int randomItemAmount = Random.Range(shopItemAmount[(int)quality-1].x, shopItemAmount[(int)quality-1].y + 1);
 
-        Transform cardSlots = cardShop.GetChild(0);
-        Transform cardCost = cardShop.GetChild(1);
-
         for (int i = 0; i < randomCardAmount; i++)
         {
-            cardSlots.GetChild(i).gameObject.SetActive(true);
+            GameObject cardInteractable = Instantiate(cardInteractablePrefab, cardShop);
+            cardInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
 
-            cardCost.GetChild(i).gameObject.SetActive(true);
-            cardCost.GetChild(i).GetComponent<TMP_Text>().text = i.ToString() + "$";
+            ShopInteractable specificCard = cardInteractable.GetComponent<ShopInteractable>();
+            specificCard.Generate();
+
+            cardInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificCard.cost + "$";
         }
-
-        Transform itemSlots = itemShop.GetChild(0);
-        Transform itemCost = itemShop.GetChild(1);
 
         for (int i = 0; i < randomItemAmount; i++)
         {
-            itemSlots.GetChild(i).gameObject.SetActive(true);
+            GameObject itemInteractable = Instantiate(itemInteractablePrefab, itemShop);
+            itemInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
 
-            itemCost.GetChild(i).gameObject.SetActive(true);
-            itemCost.GetChild(i).GetComponent<TMP_Text>().text = i.ToString() + "$";
+            ShopInteractable specificItem = itemInteractable.GetComponent<ShopInteractable>();
+            specificItem.Generate();
+
+            itemInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificItem.cost + "$";
         }
     }
 
     public void ResetShop()
     {
-        foreach (Transform slot in cardShop.GetChild(0))
+        foreach (Transform slot in cardShop)
         {
-            slot.gameObject.SetActive(false);
+            Destroy(slot.gameObject);
         }
-        foreach (Transform slot in cardShop.GetChild(1))
+        foreach (Transform slot in itemShop)
         {
-            slot.gameObject.SetActive(false);
-        }
-        foreach (Transform slot in itemShop.GetChild(0))
-        {
-            slot.gameObject.SetActive(false);
-        }
-        foreach (Transform slot in itemShop.GetChild(1))
-        {
-            slot.gameObject.SetActive(false);
+            Destroy(slot.gameObject);
         }
     }
 
