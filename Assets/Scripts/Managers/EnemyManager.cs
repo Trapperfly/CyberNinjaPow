@@ -58,6 +58,7 @@ public class EnemyManager : MonoBehaviour
         Manager.Instance.busy = true;
         for (int i = 0; i < time; i++)
         {
+            Manager.Instance.itemManager.TriggerOnTimeTick();
             foreach (EnemyUnit enemy in enemies)
             {
                 enemy.Timer();
@@ -65,6 +66,7 @@ public class EnemyManager : MonoBehaviour
             foreach (EnemyUnit enemy in actingEnemies)
             {
                 yield return new WaitForSeconds(timeAnim);
+                Manager.Instance.itemManager.TriggerOnEnemyAct(enemy);
                 enemy.Act();
                 yield return new WaitForSeconds(addTimeAnim);
                 addTimeAnim = 0;

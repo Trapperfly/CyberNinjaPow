@@ -46,6 +46,11 @@ public abstract class Item
         return null;
     }
 }
+public class ItemResponse
+{
+    public int integer;
+    public List<StatusEffectEntry> statusEffects = new List<StatusEffectEntry>();
+}
 public class RocketFists : Item
 {
     public override string GiveName()
@@ -67,10 +72,30 @@ public class RocketFists : Item
         return response;
     }
 }
-public class ItemResponse
+
+public class PrecisionAirstrike : Item
 {
-    public int integer;
-    public List<StatusEffectEntry> statusEffects = new List<StatusEffectEntry>();
+    public override string GiveName()
+    {
+        return "Precision Airstrike";
+    }
+    public override Rarity GiveRarity()
+    {
+        return Rarity.Common;
+    }
+    public override ItemResponse OnTimeTick(int stacks)
+    {
+        ItemResponse response = new ItemResponse();
+        int i = 0;
+
+        foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
+        {
+            if (unit.damageTaken == 0) unit.TakeDamage(stacks);
+        }
+        response.integer = i;
+
+        return response;
+    }
 }
 
 public enum Rarity

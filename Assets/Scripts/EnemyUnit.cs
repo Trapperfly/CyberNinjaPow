@@ -214,7 +214,7 @@ public class EnemyUnit : MonoBehaviour
         SetHealthBar();
     }
 
-    void PrepareDie()
+    public void PrepareDie()
     {
         enemyManager.deadEnemies.Add(this);
     }
