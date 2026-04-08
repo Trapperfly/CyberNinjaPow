@@ -311,7 +311,7 @@ public class BoardManager : MonoBehaviour
     IEnumerator DoCardTargeting(BoardSpace targetSpace)
     {
         if (targetSpace == null) yield break;
-        if (waitBetweenCardActions > 0) Manager.Instance.busy = true;
+        Manager.Instance.busy = true;
         foreach (TileEffect effect in heldCard.tileEffects)
         {
             Vector2Int targetPos = effect.gridPosition;
