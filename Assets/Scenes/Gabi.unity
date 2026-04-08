@@ -3468,7 +3468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62eb9667ac6fd74f8448714ac366b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
-  boardSize: {x: 5, y: 5}
+  boardSize: {x: 5, y: 6}
   boardSpacePrefab: {fileID: 2735206158905932203, guid: 162dc9bfc88b86a4f8cc38c53d438ff8, type: 3}
   heldCard: {fileID: 0}
   contactFilter:
