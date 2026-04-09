@@ -22,7 +22,7 @@ MonoBehaviour:
   rarity: 1
   tileEffects:
   - gridPosition: {x: -4, y: 4}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 4, y: 4}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -3, y: 3}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 3, y: 3}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -2, y: 2}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 2, y: 2}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -1, y: 1}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 1, y: 1}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -1, y: -1}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 1, y: -1}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -2, y: -2}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 2, y: -2}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -3, y: -3}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 3, y: -3}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: -4, y: -4}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     repeatCount: 0
     repeatInterval: 0
   - gridPosition: {x: 4, y: -4}
-    damage: 0
+    damage: 1
     projectiles: []
     pushDistance: 0
     pushDirection: 0

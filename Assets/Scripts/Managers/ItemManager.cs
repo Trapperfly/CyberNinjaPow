@@ -14,7 +14,7 @@ public class ItemManager : MonoBehaviour
         playerItems.Add(startingItem);
     }
 
-    public ItemResponse TriggerOnHit(EnemyUnit target)
+    public ItemResponse TriggerOnHit(EnemyUnit target = null)
     {
         ItemResponse response = new ItemResponse();
         foreach (var item in playerItems)

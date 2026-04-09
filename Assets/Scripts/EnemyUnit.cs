@@ -400,8 +400,8 @@ public class EnemyUnit : MonoBehaviour
                 Manager.Instance.boardManager.Projectile(
                     true, 
                     GridSpaceSelection.EnemyAttack, 
-                    position + attack.gridPosition, projectile.direction, 
-                    projectile.projDamage, projectile.pierce, 
+                    position + attack.gridPosition, 
+                    projectile, 
                     enemy.phases[phase].damageCard);
             }
             DamageTile(position + attack.gridPosition, attack.damage);

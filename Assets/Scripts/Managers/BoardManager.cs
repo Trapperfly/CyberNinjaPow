@@ -30,6 +30,10 @@ public class BoardManager : MonoBehaviour
 
     public Transform dangerSymbolsParent;
 
+    public Transform boardInformation;
+    public GameObject damageNumberForTilePrefab;
+    public Vector2 damageNumberOffset;
+
     private void Start()
     {
         BuildBoard();
@@ -105,7 +109,7 @@ public class BoardManager : MonoBehaviour
             if (target.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in target.projectiles)
-                    Projectile(false, GridSpaceSelection.EnemyAttack, origin + target.gridPosition, projectile.direction, target.damage, projectile.pierce);
+                    Projectile(false, GridSpaceSelection.EnemyAttack, origin + target.gridPosition, projectile);
             }
             else
             {
@@ -117,7 +121,7 @@ public class BoardManager : MonoBehaviour
                 spaces.TryGetValue(origin + target.gridPosition, out BoardSpace targetSpace);
                 if (targetSpace == null) continue;
 
-                targetSpace.Colorize(GridSpaceSelection.EnemyAttack);
+                targetSpace.Colorize(GridSpaceSelection.EnemyAttack, target.damage);
             }
         }
     }
@@ -139,12 +143,7 @@ public class BoardManager : MonoBehaviour
     {
         inCardAction = true;
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
-        if (heldCard.tileEffects.Count == 0)
-        {
-            StartCoroutine(DoCard(target));
-            return;
-        }
-        StartCoroutine(DoCardTargeting(target));
+        StartCoroutine(DoCard(target));
     }
     void FinishCardAction()
     {
@@ -231,10 +230,16 @@ public class BoardManager : MonoBehaviour
                 if (effect.projectiles.Count > 0)
                 {
                     foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(false, GridSpaceSelection.CardTargeting, space, projectile.direction, effect.damage, projectile.pierce);
+                        Projectile(false, GridSpaceSelection.CardTargeting, space, projectile);
                 }
                 else
-                    cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting);
+                {
+                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                    ItemResponse response = new();
+                    if (enemy != null)
+                        response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                    cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting, effect.damage + response.integer);
+                }
             }
         }
     }
@@ -266,10 +271,16 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, Direction direction, int damage = 0, int pierce = 0, Card damageCard = null)
+    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, ProjectileData projectile, Card damageCard = null)
     {
         Vector2Int space = origin;
-        Vector2Int dirVector = GetDirection(direction);
+        ProjectileData data = new();
+
+        data.projDamage = projectile.projDamage;
+        data.pierce = projectile.pierce;
+        data.direction = projectile.direction;
+
+        Vector2Int dirVector = GetDirection(data.direction);
 
         for (int i = 0; i < 10; i++)
         {
@@ -294,23 +305,37 @@ public class BoardManager : MonoBehaviour
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
+                ItemResponse response = new();
+                if (source == GridSpaceSelection.CardTargeting)
+                    response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+
                 if (fire)
                 {
-                    ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                    enemy.TakeDamage(damage + response.integer);
+                    Debug.Log("Dealing base " + data.projDamage + " plus item " + response.integer + " damage");
+                    enemy.TakeDamage(data.projDamage + response.integer);
                 }
-                else targetedSpace.Colorize(source);
+                else
+                {
+                    targetedSpace.Colorize(source, data.projDamage + response.integer);
+                }
 
-                if (pierce == 0) break;
-                else pierce--;
+                if (data.pierce == 0) break;
+                else data.pierce--;
             }
 
         }
     }
 
-    IEnumerator DoCardTargeting(BoardSpace targetSpace)
+    IEnumerator DoCard(BoardSpace targetSpace = null)
     {
-        if (targetSpace == null) yield break;
+        if (targetSpace == null)
+        {
+            //Do effect of card
+            Manager.Instance.enemyManager.KillOffEnemies();
+            Manager.Instance.busy = false;
+            FinishCardAction();
+            yield break;
+        }
         Manager.Instance.busy = true;
         foreach (TileEffect effect in heldCard.tileEffects)
         {
@@ -323,13 +348,16 @@ public class BoardManager : MonoBehaviour
                 if (effect.projectiles.Count > 0)
                 {
                     foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile.direction, projectile.projDamage, projectile.pierce);
+                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
                 }
                 else
                 {
                     EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
                     if (enemy)
-                        enemy.TakeDamage(effect.damage);
+                    {
+                        ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                        enemy.TakeDamage(effect.damage + response.integer);
+                    }
                     if (enemy && effect.pushDirection != Direction.None)
                     {
                         Vector2Int pushDir = GetDirection(effect.pushDirection);
@@ -343,47 +371,6 @@ public class BoardManager : MonoBehaviour
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
         yield return new WaitForSeconds(cardAnimExtraTime);
-        Manager.Instance.busy = false;
-        FinishCardAction();
-        yield return null;
-    }
-
-    IEnumerator DoCard(BoardSpace targetSpace = null)
-    {
-        if (waitBetweenCardActions > 0) Manager.Instance.busy = true;
-        if (targetSpace == null) 
-        {
-            //Do effect of card
-            Manager.Instance.enemyManager.KillOffEnemies();
-            Manager.Instance.busy = false;
-            FinishCardAction();
-            yield break;
-        }
-        foreach (TileEffect effect in heldCard.tileEffects)
-        {
-            Vector2Int targetPos = effect.gridPosition;
-
-            for (int r = 0; r < effect.repeatCount + 1; r++)
-            {
-                Vector2Int space = targetSpace.position + targetPos;
-
-                if (effect.projectiles.Count > 0)
-                {
-                    foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile.direction, effect.damage, projectile.pierce);
-                }
-                else
-                {
-                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                    if (enemy)
-                        enemy.TakeDamage(effect.damage);
-                }
-
-                Manager.Instance.enemyManager.KillOffEnemies();
-                yield return new WaitForSeconds(effect.repeatInterval);
-            }
-        }
-        yield return new WaitForSeconds(waitBetweenCardActions);
         Manager.Instance.busy = false;
         FinishCardAction();
         yield return null;

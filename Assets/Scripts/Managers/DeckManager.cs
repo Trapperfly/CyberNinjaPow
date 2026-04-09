@@ -150,6 +150,7 @@ public class DeckManager : MonoBehaviour
 
     void AlignCards(int offset = 0)
     {
+        if (handTransform.childCount == 0) { return;  }
         int i = 0;
         foreach (RectTransform card in handTransform)
         {
