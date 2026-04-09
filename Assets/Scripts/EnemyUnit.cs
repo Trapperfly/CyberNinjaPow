@@ -178,7 +178,7 @@ public class EnemyUnit : MonoBehaviour
     {
         if (damage == 0) { return; }
 
-        Debug.Log(enemy.enemyName + " took " + damage + " damage");
+        //Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
         if (damageTaken >= enemy.phases[phase].health)

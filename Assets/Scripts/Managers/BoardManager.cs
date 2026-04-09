@@ -62,13 +62,13 @@ public class BoardManager : MonoBehaviour
     private void Update()
     {
         if (Manager.Instance.busy) return;
-        Debug.Log("Not busy!");
+        //Debug.Log("Not busy!");
         if (heldCard == null) return;
-        Debug.Log("Holding card!");
+        //Debug.Log("Holding card!");
         if (clickingCard)
         {
             if (!Input.GetMouseButtonDown(0)) return;
-            Debug.Log("Letting go of clicked card!");
+            //Debug.Log("Letting go of clicked card!");
             //If the player was hovering the discard when clicked
             if (hoveringDiscard) { Discard(); return; }
             //If the player has clicked a card and is clicking a tile
@@ -80,7 +80,7 @@ public class BoardManager : MonoBehaviour
         else if (draggingCard)
         {
             if (!Input.GetMouseButtonUp(0)) return;
-            Debug.Log("Letting go of dragged card!");
+            //Debug.Log("Letting go of dragged card!");
             //If the player was hovering the discard when letting go
             if (hoveringDiscard) { Discard(); return; }
             //If the player is dragging a card and letting go on a tile
@@ -356,6 +356,7 @@ public class BoardManager : MonoBehaviour
                     if (enemy)
                     {
                         ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                        Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
                         enemy.TakeDamage(effect.damage + response.integer);
                     }
                     if (enemy && effect.pushDirection != Direction.None)

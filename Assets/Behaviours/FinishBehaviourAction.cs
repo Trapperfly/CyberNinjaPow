@@ -13,7 +13,7 @@ public partial class FinishBehaviourAction : Action
     protected override Status OnStart()
     {
         Ready.Value = true;
-        Debug.Log("Graph Finished");
+        //Debug.Log("Graph Finished");
         return Status.Success;
     }
 }

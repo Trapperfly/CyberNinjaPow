@@ -192,8 +192,9 @@ public class DeckManager : MonoBehaviour
     {
         discard.Add(card);
         Destroy(physicalCardHeld.gameObject);
-        Debug.Log("Discarding/using card");
-        if (hand.Remove(card)) Debug.Log("Removed card from hand");
+        //Debug.Log("Discarding/using card");
+        hand.Remove(card);
+        //if () Debug.Log("Removed card from hand");
         AlignCards(-1);
 
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);
