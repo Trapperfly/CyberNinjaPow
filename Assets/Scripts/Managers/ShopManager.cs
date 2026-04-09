@@ -53,7 +53,7 @@ public class ShopManager : MonoBehaviour
             ShopInteractable specificCard = cardInteractable.GetComponent<ShopInteractable>();
             specificCard.Generate();
 
-            cardInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificCard.cost + "$";
+            cardInteractable.transform.GetChild(0).GetComponent<TMP_Text>().text = specificCard.cost + "$";
         }
 
         for (int i = 0; i < randomItemAmount; i++)
@@ -64,7 +64,7 @@ public class ShopManager : MonoBehaviour
             ShopInteractable specificItem = itemInteractable.GetComponent<ShopInteractable>();
             specificItem.Generate();
 
-            itemInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificItem.cost + "$";
+            itemInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificItem.item.GiveName() + ": " + specificItem.cost + "$";
         }
     }
 
