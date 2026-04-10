@@ -386,6 +386,30 @@ public class BoardManager : MonoBehaviour
         foreach (var keyValue in spaces)
         {
             keyValue.Value.Colorize(GridSpaceSelection.None);
+
+            if (!heldCard) continue;
+
+            switch (heldCard.range)
+            {
+                case Range.Anywhere:
+                    keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    break;
+                case Range.Melee:
+                    if (keyValue.Key.y <= 1) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    break;
+                case Range.Ranged:
+                    if (keyValue.Key.y > 1 && keyValue.Key.y < 4) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    break;
+                case Range.Rear:
+                    if (keyValue.Key.y > 3) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    break;
+                case Range.Projectile:
+                    if (keyValue.Key.y == 0) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    break;
+                default:
+                    keyValue.Value.Colorize(GridSpaceSelection.None);
+                    break;
+            }
         }
         Manager.Instance.enemyManager.ShowIntentionsOfEnemies();
     }

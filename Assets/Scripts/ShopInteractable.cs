@@ -40,7 +40,7 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
                 cost = (int)card.rarity;
 
                 GameObject cardGO = Manager.Instance.deckManager.CreateCard(card);
-                cardGO.transform.SetParent(transform);
+                cardGO.transform.SetParent(transform.GetChild(0));
                 cardGO.transform.localPosition = Vector3.zero;
                 cardGO.transform.localScale = Vector3.one;
 

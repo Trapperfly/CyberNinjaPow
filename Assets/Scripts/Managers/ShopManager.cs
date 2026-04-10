@@ -48,12 +48,12 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < randomCardAmount; i++)
         {
             GameObject cardInteractable = Instantiate(cardInteractablePrefab, cardShop);
-            cardInteractable.transform.localPosition = Vector3.zero + new Vector3(200 / (cardShop.localScale.x) * i, 0, 0);
+            cardInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
 
             ShopInteractable specificCard = cardInteractable.GetComponent<ShopInteractable>();
             specificCard.Generate();
 
-            cardInteractable.transform.GetChild(0).GetComponent<TMP_Text>().text = specificCard.cost + "$";
+            cardInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificCard.cost + "$";
         }
 
         for (int i = 0; i < randomItemAmount; i++)
