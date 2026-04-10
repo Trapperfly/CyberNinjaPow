@@ -203,7 +203,7 @@ public class EnemyManager : MonoBehaviour
         EnemyUnit potentialBlock = CheckIfCellIsOccupied(new(column, Manager.Instance.boardManager.boardSize.y - 1));
         if (potentialBlock != null)
         {
-            potentialBlock.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            //potentialBlock.TakeDamage(Manager.Instance.gameManager.collisionDamage);
             return 0f;
         }
 
