@@ -82,7 +82,7 @@ public class EnemyManager : MonoBehaviour
             enemy.SetTimer();
         }
         timeOffset = 0;
-        Manager.Instance.gameManager.ProgressSpawn(time);
+        Manager.Instance.gameManager.ProgressSpawn();
         Manager.Instance.busy = false;
         yield return null;
     }
@@ -196,7 +196,7 @@ public class EnemyManager : MonoBehaviour
         //Debug.Log("Nothing works, probably do nothing");
         return direction;
     }
-    public void SpawnEnemy(int column)
+    public float SpawnEnemy(int column)
     {
         //if (enemyQueue.Count == 0) return;
 
@@ -204,7 +204,7 @@ public class EnemyManager : MonoBehaviour
         if (potentialBlock != null)
         {
             potentialBlock.TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            return;
+            return 0f;
         }
 
         GameObject unitGO = Instantiate(enemyPrefab, enemyParent);
@@ -214,6 +214,8 @@ public class EnemyManager : MonoBehaviour
         unit.position = new(column, Manager.Instance.boardManager.boardSize.y - 1);
 
         unit.enemy = GetRandomEnemy();
+
+        return unit.enemy.threat;
 
         //unit.enemy = enemyQueue[0];
 

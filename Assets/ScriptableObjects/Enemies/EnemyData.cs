@@ -7,4 +7,5 @@ public class EnemyData : ScriptableObject
     public string enemyName;
     public List<EnemyPhase> phases = new List<EnemyPhase>();
     public Card damageCard;
+    public float threat;
 }

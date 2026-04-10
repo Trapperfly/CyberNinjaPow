@@ -222,6 +222,7 @@ public class EnemyUnit : MonoBehaviour
     public void Die()
     {
         Manager.Instance.gameManager.AlterMoney(1);
+        Manager.Instance.gameManager.Threat(-enemy.threat);
         Destroy(movementArrow);
         Destroy(gameObject);
     }
