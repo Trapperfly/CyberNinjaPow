@@ -9,6 +9,11 @@ public class ItemManager : MonoBehaviour
     {
         playerItems.Clear();
 
+        //AddRandomItem();
+    }
+     
+    public void AddRandomItem()
+    {
         Item item = ItemCreator.GetRandom();
         ItemList startingItem = new ItemList(item, item.GiveName(), 1);
         playerItems.Add(startingItem);
