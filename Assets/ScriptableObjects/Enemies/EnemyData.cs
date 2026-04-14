@@ -8,4 +8,13 @@ public class EnemyData : ScriptableObject
     public List<EnemyPhase> phases = new List<EnemyPhase>();
     public Card damageCard;
     public float threat;
+    public EnemyStrength strength;
+}
+
+public enum EnemyStrength
+{
+    none, 
+    Normal,
+    Elite,
+    Boss
 }

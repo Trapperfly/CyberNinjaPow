@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public Objective mainObjective;
     public List<SideObjective> sideObjectives;
 
+    public int mainObjectiveTracker;
+    public int mainObjectiveGoal;
+
     private void Start()
     {
         AlterMoney(0);
@@ -46,6 +49,16 @@ public class GameManager : MonoBehaviour
     public void ProgressTime(int time)
     {
         Manager.Instance.enemyManager.ProgressTime(time);
+    }
+
+    public void AfterTimeProgress()
+    {
+        bool finished = CheckIfWaveIsFinished();
+
+        if (finished) { FinishWave(); return; }
+
+        //If not finished
+        ProgressSpawn();
     }
 
     //public IEnumerator AdvanceBoard(int amount, int timePerAdvance)
@@ -87,6 +100,26 @@ public class GameManager : MonoBehaviour
         currentThreat += change;
     }
 
+    public void KilledAnEnemy(float threat, EnemyStrength strength = EnemyStrength.none)
+    {
+        ChangeThreat(threat);
+        switch (mainObjective)
+        {
+            case Objective.KillCertainAmountOfEnemies:
+            case Objective.KillAllEnemies:
+                mainObjectiveTracker += 1;
+                break;
+            case Objective.KillTheEliteUnit:
+            case Objective.SurviveThenKillElite:
+                if (strength == EnemyStrength.Elite) mainObjectiveTracker += 1;
+                break;
+            case Objective.KillTheBoss:
+            case Objective.SurviveThenKillBoss:
+                if (strength == EnemyStrength.Boss) mainObjectiveTracker += 1;
+                break;
+        }
+    }
+
     public void ProgressSpawn()
     {
         float spawningBias = Mathf.Pow(1f - (currentThreat / maxThreat), threatCalculation);
@@ -98,6 +131,65 @@ public class GameManager : MonoBehaviour
             float threat = Manager.Instance.enemyManager.SpawnEnemy(Random.Range(0,5));
             ChangeThreat(threat);
         }
+    }
+
+    public void StartWave()
+    {
+        mainObjectiveTracker = 0;
+        switch (mainObjective)
+        {
+            case Objective.None:
+                break;
+            case Objective.KillCertainAmountOfEnemies:
+                mainObjectiveGoal = 10;
+                break;
+            case Objective.KillAllEnemies:
+                mainObjectiveGoal = 10;
+                break;
+            case Objective.SurviveCertainAmountOfTime:
+                mainObjectiveGoal = 50;
+                break;
+            case Objective.KillTheEliteUnit:
+                mainObjectiveGoal = 1;
+                break;
+            case Objective.KillTheBoss:
+                mainObjectiveGoal = 1;
+                break;
+            case Objective.SurviveThenKillElite:
+                mainObjectiveGoal = 1;
+                break;
+            case Objective.SurviveThenKillBoss:
+                mainObjectiveGoal = 1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public bool CheckIfWaveIsFinished()
+    {
+        switch (mainObjective)
+        {
+            case Objective.None:
+                break;
+            case Objective.KillCertainAmountOfEnemies:
+            case Objective.KillAllEnemies:
+            case Objective.SurviveCertainAmountOfTime:
+            case Objective.KillTheEliteUnit:
+            case Objective.KillTheBoss:
+            case Objective.SurviveThenKillElite:
+            case Objective.SurviveThenKillBoss:
+                if (mainObjectiveTracker >= mainObjectiveGoal) return true;
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    public void FinishWave()
+    {
+
     }
 }
 
@@ -113,10 +205,14 @@ public enum Objective
     SurviveThenKillBoss,
 }
 
-public enum SideObjective
+public enum SideObjectiveEnum
 {
     None,
     
 }
-
-//public class SideObjectiveTracking
+[System.Serializable]
+public class SideObjective
+{
+    public SideObjectiveEnum objective;
+    public bool completed = false;
+}

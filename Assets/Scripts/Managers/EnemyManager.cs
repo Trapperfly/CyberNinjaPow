@@ -82,8 +82,8 @@ public class EnemyManager : MonoBehaviour
             enemy.SetTimer();
         }
         timeOffset = 0;
-        Manager.Instance.gameManager.ProgressSpawn();
         Manager.Instance.busy = false;
+        Manager.Instance.gameManager.AfterTimeProgress();
         yield return null;
     }
 
