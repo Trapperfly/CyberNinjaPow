@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     public float maxThreat;
     public float threatCalculation = 2f;
 
+    public Objective mainObjective;
+    public List<SideObjective> sideObjectives;
+
     private void Start()
     {
         AlterMoney(0);
@@ -79,7 +82,7 @@ public class GameManager : MonoBehaviour
     //        }
     //    }
     //}
-    public void Threat(float change)
+    public void ChangeThreat(float change)
     {
         currentThreat += change;
     }
@@ -93,7 +96,27 @@ public class GameManager : MonoBehaviour
             Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
 
             float threat = Manager.Instance.enemyManager.SpawnEnemy(Random.Range(0,5));
-            Threat(threat);
+            ChangeThreat(threat);
         }
     }
 }
+
+public enum Objective
+{
+    None,
+    KillCertainAmountOfEnemies,
+    KillAllEnemies,
+    SurviveCertainAmountOfTime,
+    KillTheEliteUnit,
+    KillTheBoss,
+    SurviveThenKillElite,
+    SurviveThenKillBoss,
+}
+
+public enum SideObjective
+{
+    None,
+    
+}
+
+//public class SideObjectiveTracking
