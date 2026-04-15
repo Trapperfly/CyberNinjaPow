@@ -341,7 +341,9 @@ public class BoardManager : MonoBehaviour
         {
             Vector2Int targetPos = effect.gridPosition;
 
-            for (int r = 0; r < effect.repeatCount + 1; r++)
+            int repetitions = (effect.repeating) ? effect.repeatCount : 1;
+
+            for (int r = 0; r < repetitions; r++)
             {
                 Vector2Int space = targetSpace.position + targetPos;
 

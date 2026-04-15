@@ -38,17 +38,20 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Scale()
     {
+        Manager.Instance.deckManager.AlignCardsAsSiblings();
         scaled = true;
         transform.localScale = scale * Vector3.one;
         transform.localPosition += new Vector3(0,offset,0);
-        transform.SetAsLastSibling();
+        transform.SetParent(Manager.Instance.deckManager.handHoldingCardTransform);
     }
 
     void Unscale()
     {
+        transform.SetParent(Manager.Instance.deckManager.handTransform);
         scaled = false;
         transform.localScale = Vector3.one;
         transform.localPosition += new Vector3(0, -offset, 0);
+        Manager.Instance.deckManager.AlignCardsAsSiblings();
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

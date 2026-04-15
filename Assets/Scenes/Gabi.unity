@@ -2043,6 +2043,41 @@ MonoBehaviour:
   cardSelection: []
   card: {fileID: 0}
   cost: 0
+--- !u!1 &1354788636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354788637}
+  m_Layer: 5
+  m_Name: HeldCard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1354788637
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354788636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1992698361}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -446.5}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1388418517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3207,10 +3242,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5565fe9e7e0c7cb48a6ed05e76329776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  waveInProgress: 0
   playerHealth: 10
   playerHealthMax: 10
   MoneyText: {fileID: 151869854}
   spawnDelay: {x: 8, y: 25}
+  startEnemyYPosition: 2
+  enemySpawnDelay: 0.2
+  startEnemyCount: 5
   startTimeProgress: 0
   startTimeTimes: 0
   collisionDamage: 1
@@ -3218,6 +3257,10 @@ MonoBehaviour:
   currentThreat: 0
   maxThreat: 20
   threatCalculation: 1.5
+  mainObjective: 0
+  sideObjectives: []
+  mainObjectiveTracker: 0
+  mainObjectiveGoal: 0
 --- !u!114 &1900229851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3233,11 +3276,13 @@ MonoBehaviour:
   handSize: 5
   cardSpread: 1200
   cardRedied: 0
+  drawAnimTime: 0.3
   canvas: {fileID: 1992698360}
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}
   deck: {fileID: 11400000, guid: bc83b5b618095ec498bf4a15bc9723d2, type: 2}
   accumulatedDamageCards: []
   handTransform: {fileID: 1696941415}
+  handHoldingCardTransform: {fileID: 1354788637}
   physicalCardHeld: {fileID: 0}
   draw: []
   discard: []
@@ -3534,6 +3579,7 @@ RectTransform:
   - {fileID: 1410855386}
   - {fileID: 1011086006}
   - {fileID: 1696941415}
+  - {fileID: 1354788637}
   - {fileID: 1892046379}
   - {fileID: 754352261}
   - {fileID: 151869853}

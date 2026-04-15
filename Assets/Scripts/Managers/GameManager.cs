@@ -5,11 +5,18 @@ using TMPro;
 using JetBrains.Annotations;
 public class GameManager : MonoBehaviour
 {
+    public bool waveInProgress = false;
+
     public int playerHealth;
     public int playerHealthMax;
     public TMP_Text MoneyText;
     //public List<int> spawnTimerForColumns = new List<int>();
     public Vector2Int spawnDelay;
+
+    public int startEnemyYPosition = 2;
+    public float enemySpawnDelay = 0.2f;
+    public int startEnemyCount = 5;
+
     public int startTimeProgress;
     public int startTimeTimes;
 
@@ -37,6 +44,11 @@ public class GameManager : MonoBehaviour
         //}
         
         //StartCoroutine(AdvanceBoard(startTimeTimes, startTimeProgress));
+    }
+
+    private void Update()
+    {
+        if (!waveInProgress && Input.GetKeyDown(KeyCode.Space)) StartWave();
     }
 
     public void AlterMoney(int amount)
@@ -102,7 +114,7 @@ public class GameManager : MonoBehaviour
 
     public void KilledAnEnemy(float threat, EnemyStrength strength = EnemyStrength.none)
     {
-        ChangeThreat(threat);
+        ChangeThreat(-threat);
         switch (mainObjective)
         {
             case Objective.KillCertainAmountOfEnemies:
@@ -128,13 +140,19 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
 
-            float threat = Manager.Instance.enemyManager.SpawnEnemy(Random.Range(0,5));
-            ChangeThreat(threat);
+            Manager.Instance.enemyManager.SpawnEnemy(Random.Range(0,5));
         }
     }
 
     public void StartWave()
     {
+        StartCoroutine(IStartWave());
+    }
+    public IEnumerator IStartWave()
+    {
+        waveInProgress = true;
+        Manager.Instance.busy = true;
+        yield return null;
         mainObjectiveTracker = 0;
         switch (mainObjective)
         {
@@ -164,6 +182,24 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+
+        for (int i = 0; i < Manager.Instance.deckManager.handSize; i++)
+        {
+            Manager.Instance.deckManager.DrawCard();
+            yield return new WaitForSeconds(Manager.Instance.deckManager.drawAnimTime);
+        }
+
+        for (int i = 0; i < startEnemyCount; i++)
+        {
+            int column = Random.Range(0, Manager.Instance.boardManager.boardSize.x);
+            int row = Random.Range(Manager.Instance.boardManager.boardSize.y - startEnemyYPosition, Manager.Instance.boardManager.boardSize.y);
+
+            Manager.Instance.enemyManager.SpawnEnemy(column, row);
+            yield return new WaitForSeconds(enemySpawnDelay);
+        }
+
+        Manager.Instance.busy = false;
+        yield return null;
     }
 
     public bool CheckIfWaveIsFinished()
@@ -189,7 +225,7 @@ public class GameManager : MonoBehaviour
 
     public void FinishWave()
     {
-
+        waveInProgress = false;
     }
 }
 

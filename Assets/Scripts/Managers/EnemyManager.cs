@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UIElements;
 using Unity.Behavior;
+using System.Threading;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -196,30 +197,26 @@ public class EnemyManager : MonoBehaviour
         //Debug.Log("Nothing works, probably do nothing");
         return direction;
     }
-    public float SpawnEnemy(int column)
+    public void SpawnEnemy(int column, int row = -1)
     {
-        //if (enemyQueue.Count == 0) return;
+        row = (row == -1) ? Manager.Instance.boardManager.boardSize.y - 1 : row;
 
-        EnemyUnit potentialBlock = CheckIfCellIsOccupied(new(column, Manager.Instance.boardManager.boardSize.y - 1));
+        EnemyUnit potentialBlock = CheckIfCellIsOccupied(new(column, row));
         if (potentialBlock != null)
         {
             //potentialBlock.TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            return 0f;
+            return;
         }
 
         GameObject unitGO = Instantiate(enemyPrefab, enemyParent);
 
         EnemyUnit unit = unitGO.GetComponent<EnemyUnit>();
 
-        unit.position = new(column, Manager.Instance.boardManager.boardSize.y - 1);
+        unit.position = new(column, row);
 
         unit.enemy = GetRandomEnemy();
 
-        return unit.enemy.threat;
-
-        //unit.enemy = enemyQueue[0];
-
-        //enemyQueue.RemoveAt(0);
+        Manager.Instance.gameManager.ChangeThreat(unit.enemy.threat);
     }
 
     public List<EnemyData> GetRandomEnemies(int amount = 0, int funds = 0)

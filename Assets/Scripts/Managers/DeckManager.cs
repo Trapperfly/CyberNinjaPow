@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine.UI;
+using System.Collections;
+using System.Linq;
 public enum WhereDoesTheCardGo
 {
     Nowhere,
@@ -15,6 +16,7 @@ public class DeckManager : MonoBehaviour
     public int handSize = 5;
     public float cardSpread = 600f;
     public bool cardRedied = false;
+    public float drawAnimTime = 0.1f;
 
     public Canvas canvas;
 
@@ -23,6 +25,7 @@ public class DeckManager : MonoBehaviour
     public List<Card> accumulatedDamageCards = new List<Card>();
 
     public RectTransform handTransform;
+    public RectTransform handHoldingCardTransform;
 
     public CardObject physicalCardHeld;
 
@@ -56,11 +59,10 @@ public class DeckManager : MonoBehaviour
         {
             draw.Add(card);
         }
-        DrawCard(handSize);
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
+        //if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
         //if (Input.GetKeyDown(KeyCode.D)) AddRandomCardToDeck();
     }
 
@@ -148,7 +150,7 @@ public class DeckManager : MonoBehaviour
         return cardGO;
     }
 
-    void AlignCards(int offset = 0)
+    void AlignCardsOLD(int offset = 0)
     {
         if (hand.Count == 0) { return;  }
         int i = 0;
@@ -159,27 +161,84 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    public void DrawCard(int amount = 1)
+    public void AlignCards(int offset = 0)
     {
+        if (hand.Count == 0) return;
+
+        int count = hand.Count;
+        float spread = Mathf.Min(cardSpread, count * 150f);
+
+        for (int i = 0; i < count; i++)
+        {
+            RectTransform card = handTransform.GetChild(i) as RectTransform;
+
+            if (card == null) continue;
+
+            float x = count > 1 ? (spread / (count - 1) * i) - spread / 2f : 0f;
+            card.localPosition = new Vector3(x, 0, 0);
+        }
+    }
+
+    public void AlignCardsAsSiblings()
+    {
+        if (hand.Count == 0) return;
+
+        CardObject[] cardObjects = handTransform.GetComponentsInChildren<CardObject>();
+
+        for (int i = 0; i < hand.Count; i++)
+        {
+            foreach (CardObject co in cardObjects)
+            {
+                if (co.card != hand[i]) continue;
+
+                RectTransform cardTransform = co.GetComponent<RectTransform>();
+                cardTransform.SetSiblingIndex(i);
+
+                break;
+            }
+        }
+    }
+
+    public void DrawPile(int amount = 1, int timeProgress = 1)
+    {
+        StartCoroutine(IDrawPile(amount, timeProgress));
+    }
+
+    public IEnumerator IDrawPile(int amount = 1, int timeProgress = 1)
+    {
+        Manager.Instance.busy = true;
+        yield return null;
         for (int i = 0; i < amount; i++)
         {
             if (hand.Count >= handSize) { break; }
 
-            if (draw.Count <= 0) ShuffleDiscardIntoDraw();
+            DrawCard();
 
-            Card drawnCard = draw[Random.Range(0, draw.Count)];
-            draw.Remove(drawnCard);
-            hand.Add(drawnCard);
-
-            GameObject cardGO = CreateCard(drawnCard);
-            cardGO.transform.SetParent(handTransform);
-            cardGO.transform.localScale = Vector3.one;
-
-            AlignCards();
+            yield return new WaitForSeconds(drawAnimTime);
         }
 
-        Manager.Instance.gameManager.ProgressTime(1);
+        Manager.Instance.gameManager.ProgressTime(timeProgress);
+        Manager.Instance.busy = false;
+        yield return null;
     }
+
+    public Card DrawCard()
+    {
+        if (draw.Count <= 0) ShuffleDiscardIntoDraw();
+
+        Card drawnCard = draw[Random.Range(0, draw.Count)];
+        draw.Remove(drawnCard);
+        hand.Add(drawnCard);
+
+        GameObject cardGO = CreateCard(drawnCard);
+        cardGO.transform.SetParent(handTransform);
+        cardGO.transform.localScale = Vector3.one;
+
+        AlignCards();
+
+        return drawnCard;
+    }
+
     public void ShuffleDiscardIntoDraw()
     {
         foreach (Card card in discard)
@@ -195,7 +254,7 @@ public class DeckManager : MonoBehaviour
         //Debug.Log("Discarding/using card");
         hand.Remove(card);
         //if () Debug.Log("Removed card from hand");
-        AlignCards(-1);
+        AlignCards();
 
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);
     }
