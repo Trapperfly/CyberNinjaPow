@@ -183,6 +183,8 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+        Manager.Instance.deckManager.LoadDeck();
+
         for (int i = 0; i < Manager.Instance.deckManager.handSize; i++)
         {
             Manager.Instance.deckManager.DrawCard();
@@ -226,6 +228,8 @@ public class GameManager : MonoBehaviour
     public void FinishWave()
     {
         waveInProgress = false;
+
+        Manager.Instance.deckManager.SaveDeck();
     }
 }
 

@@ -149,6 +149,15 @@ public class EnemyManager : MonoBehaviour
         if (cell.y > Manager.Instance.boardManager.boardSize.y - 1) { Debug.Log("y was higher than board size"); return true; }
         return false;
     }
+    public bool CheckIfCellIsOutsideOfBoard(int x, int y)
+    {
+        //Debug.Log("Checking cell " + cell);
+        if (x < 0) { Debug.Log("x was lower than 0"); return true; }
+        if (x > Manager.Instance.boardManager.boardSize.x - 1) { Debug.Log("x was higher than board size"); return true; }
+        if (y < 0) { Debug.Log("x was lower than 0"); return true; }
+        if (y > Manager.Instance.boardManager.boardSize.y - 1) { Debug.Log("y was higher than board size"); return true; }
+        return false;
+    }
 
     public Vector2Int CheckMoveDirection(Vector2Int pos, Vector2Int direction)
     {
@@ -202,10 +211,12 @@ public class EnemyManager : MonoBehaviour
     {
         row = (row == -1) ? Manager.Instance.boardManager.boardSize.y - 1 : row;
 
+        if (CheckIfCellIsOutsideOfBoard(column, row)) return;
+
         EnemyUnit potentialBlock = CheckIfCellIsOccupied(new(column, row));
         if (potentialBlock != null)
         {
-            //potentialBlock.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+            SpawnEnemy(column, row-1);
             return;
         }
 

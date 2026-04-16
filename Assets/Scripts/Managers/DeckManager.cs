@@ -55,15 +55,36 @@ public class DeckManager : MonoBehaviour
             tagSprites.Add(new Vector2Int(Mathf.RoundToInt(sprite.rect.x / 7), Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 7) / 7) + 1), sprite);
         }
         deck = Instantiate(deck);
-        foreach (Card card in deck.cards)
-        {
-            draw.Add(card);
-        }
     }
-    private void Update()
+    public void SaveDeck()
     {
-        //if (Input.GetKeyDown(KeyCode.Space) && !Manager.Instance.busy) DrawCard(handSize);
-        //if (Input.GetKeyDown(KeyCode.D)) AddRandomCardToDeck();
+        deck.cards.Clear();
+        foreach (Card card in draw)
+        {
+            deck.cards.Add(card);
+        }
+        draw.Clear();
+        foreach (Card card in discard)
+        {
+            deck.cards.Add(card);
+        }
+        discard.Clear();
+        foreach (Card card in hand)
+        {
+            deck.cards.Add(card);
+        }
+        hand.Clear();
+        StartCoroutine(ClearHand());
+    }
+    public void LoadDeck()
+    {
+        if (deck.cards.Count == 0) Debug.Log("Deck contained no cards.");
+        while (deck.cards.Count > 0)
+        {
+            int selected = Random.Range(0, deck.cards.Count);
+            draw.Add(deck.cards[selected]);
+            deck.cards.RemoveAt(selected);
+        }
     }
 
     public void AddRandomCardToDeck()
@@ -150,17 +171,6 @@ public class DeckManager : MonoBehaviour
         return cardGO;
     }
 
-    void AlignCardsOLD(int offset = 0)
-    {
-        if (hand.Count == 0) { return;  }
-        int i = 0;
-        foreach (RectTransform card in handTransform)
-        {
-            card.localPosition = new((cardSpread / hand.Count * i) - (cardSpread / hand.Count * (hand.Count - 1) / 2), 0, 0);
-            i++;
-        }
-    }
-
     public void AlignCards(int offset = 0)
     {
         if (hand.Count == 0) return;
@@ -241,11 +251,12 @@ public class DeckManager : MonoBehaviour
 
     public void ShuffleDiscardIntoDraw()
     {
-        foreach (Card card in discard)
+        while (discard.Count > 0)
         {
-            draw.Add(card);
+            int selected = Random.Range(0, discard.Count);
+            draw.Add(discard[selected]);
+            discard.RemoveAt(selected);
         }
-        discard.Clear();
     }
     public void DiscardOrUseCard(Card card, bool discardTheCard = false)
     {
@@ -257,6 +268,22 @@ public class DeckManager : MonoBehaviour
         AlignCards();
 
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);
+    }
+
+    public IEnumerator ClearHand()
+    {
+        Manager.Instance.busy = true;
+        foreach (Transform card in handTransform)
+        {
+            Destroy(card.gameObject);
+            yield return new WaitForSeconds(0.2f);
+        }
+        foreach (Transform card in handHoldingCardTransform)
+        {
+            Destroy(card.gameObject);
+            yield return new WaitForSeconds(0.2f);
+        }
+        Manager.Instance.busy = false;
     }
     public void DiscardRandomHandCard(int amount = 1)
     {
