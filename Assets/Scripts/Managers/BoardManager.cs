@@ -365,6 +365,7 @@ public class BoardManager : MonoBehaviour
                     {
                         Vector2Int pushDir = GetDirection(effect.pushDirection);
                         enemy.ForceMove(pushDir, effect.pushDistance);
+                        yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
                     }
                 }
 

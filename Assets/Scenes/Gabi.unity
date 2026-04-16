@@ -2980,7 +2980,7 @@ Transform:
   m_GameObject: {fileID: 1807019439}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.84, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3399,8 +3399,8 @@ MonoBehaviour:
   cardTargetingLine: {fileID: 0}
   discard: {fileID: 493819756}
   hoveringDiscard: 0
-  xSpace: 1.2
-  ySpace: 1.1
+  xSpace: 1.05
+  ySpace: 0.95
   draggingCard: 0
   clickingCard: 0
   dangerSymbolsParent: {fileID: 1011086006}
@@ -3437,6 +3437,7 @@ MonoBehaviour:
   timeOffset: 0
   timeAnim: 0.1
   moveAnimTime: 0.5
+  collideAnimTime: 0.3
   attackAnimTime: 0.5
   addTimeAnim: 0
   bobbing: 0.02

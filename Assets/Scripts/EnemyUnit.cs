@@ -162,6 +162,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void ShowIntentions()
     {
+        if (dead) return;
         attackRange = enemy.phases[phase].attackRange;
         attacking = (position.y <= attackRange) ? true : false;
 
@@ -176,7 +177,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (damage == 0) { return; }
+        if (dead || damage == 0) { return; }
 
         //Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
@@ -354,8 +355,7 @@ public class EnemyUnit : MonoBehaviour
             EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + direction);
             if (potentialCrash != null)
             {
-                TakeDamage(Manager.Instance.gameManager.collisionDamage);
-                potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+                StartCoroutine(Crash(direction, potentialCrash));
                 return;
             }
             if (enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
@@ -372,14 +372,14 @@ public class EnemyUnit : MonoBehaviour
     {
         readyToShowIntentions = false;
         Manager.Instance.boardManager.ClearSpaces();
-        float seconds = 0.5f;
+        float seconds = Manager.Instance.enemyManager.collideAnimTime;
         float i = 0;
         Vector2 originalPos = transform.position;
         Vector2 targetPos = Manager.Instance.boardManager.spaces[moveTo].transform.position;
         while (i < seconds)
         {
             i += Time.deltaTime;
-            transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i * 2);
+            transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i / seconds);
             yield return null;
         }
         readyToShowIntentions = true;
@@ -387,6 +387,27 @@ public class EnemyUnit : MonoBehaviour
             Manager.Instance.boardManager.ClearSpaces();
         }
         //Manager.Instance.boardManager.ClearSpaces();
+        yield return null;
+    }
+    public IEnumerator Crash(Vector2Int moveTo, EnemyUnit crashInto)
+    {
+        float seconds = Manager.Instance.enemyManager.collideAnimTime;
+        float i = 0;
+        Vector2 originalPos = transform.position;
+        Manager.Instance.boardManager.spaces.TryGetValue(position + moveTo, out BoardSpace targetSpace);
+        Vector2 targetPos =  targetSpace.transform.position;
+        while (i < seconds)
+        {
+            i += Time.deltaTime;
+            transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i / seconds * 0.75f);
+            yield return null;
+        }
+        TakeDamage(Manager.Instance.gameManager.collisionDamage);
+        crashInto.TakeDamage(Manager.Instance.gameManager.collisionDamage);
+
+        if (!dead)
+            transform.position = originalPos;
+
         yield return null;
     }
 

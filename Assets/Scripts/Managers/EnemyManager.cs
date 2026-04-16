@@ -23,6 +23,7 @@ public class EnemyManager : MonoBehaviour
 
     public float timeAnim;
     public float moveAnimTime;
+    public float collideAnimTime;
     public float attackAnimTime;
     public float addTimeAnim = 0;
 
