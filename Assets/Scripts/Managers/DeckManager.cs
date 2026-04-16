@@ -33,12 +33,16 @@ public class DeckManager : MonoBehaviour
     public List<Card> discard = new List<Card>();
     public List<Card> hand = new List<Card>();
 
+    public List<Transform> handCards = new List<Transform>();
+
     Dictionary<Vector2Int, Sprite> tagSprites = new Dictionary<Vector2Int, Sprite>();
     public List<TagVariant> tagVisualSettings = new List<TagVariant>();
     public List<Sprite> timeSprites = new List<Sprite>();
     public List<Sprite> rangeSprites = new List<Sprite>();
     public List<Sprite> tagHolderSprites = new List<Sprite>();
     public List<Sprite> tagBackgroundSprites = new List<Sprite>();
+
+    public int handIndexCounter = 0;
 
     [System.Serializable]
     public class TagVariant
@@ -74,8 +78,9 @@ public class DeckManager : MonoBehaviour
             deck.cards.Add(card);
         }
         hand.Clear();
-        StartCoroutine(ClearHand());
+        ClearHand();
     }
+
     public void LoadDeck()
     {
         if (deck.cards.Count == 0) Debug.Log("Deck contained no cards.");
@@ -84,6 +89,17 @@ public class DeckManager : MonoBehaviour
             int selected = Random.Range(0, deck.cards.Count);
             draw.Add(deck.cards[selected]);
             deck.cards.RemoveAt(selected);
+        }
+    }
+    public void ClearHand()
+    {
+        foreach (Transform card in handTransform)
+        {
+            Destroy(card.gameObject);
+        }
+        foreach (Transform card in handHoldingCardTransform)
+        {
+            Destroy(card.gameObject);
         }
     }
 
@@ -113,6 +129,7 @@ public class DeckManager : MonoBehaviour
                 GameObject cardGO = CreateCard(card);
                 cardGO.transform.SetParent(handTransform);
                 cardGO.transform.localScale = Vector3.one;
+                handCards.Add(cardGO.transform);
 
                 AlignCards();
                 break;
@@ -193,20 +210,17 @@ public class DeckManager : MonoBehaviour
     {
         if (hand.Count == 0) return;
 
-        CardObject[] cardObjects = handTransform.GetComponentsInChildren<CardObject>();
-
-        for (int i = 0; i < hand.Count; i++)
+        for (int i = 0; i < handCards.Count; i++)
         {
-            foreach (CardObject co in cardObjects)
-            {
-                if (co.card != hand[i]) continue;
-
-                RectTransform cardTransform = co.GetComponent<RectTransform>();
-                cardTransform.SetSiblingIndex(i);
-
-                break;
-            }
+            handCards[i].SetSiblingIndex(i);
         }
+
+        //CardObject[] cardObjects = handTransform.GetComponentsInChildren<CardObject>();
+
+        //foreach (CardObject co in cardObjects)
+        //{
+        //    co.transform.SetSiblingIndex(co.handIndex);
+        //}
     }
 
     public void DrawPile(int amount = 1, int timeProgress = 1)
@@ -243,8 +257,11 @@ public class DeckManager : MonoBehaviour
         GameObject cardGO = CreateCard(drawnCard);
         cardGO.transform.SetParent(handTransform);
         cardGO.transform.localScale = Vector3.one;
+        handCards.Add(cardGO.transform);
 
         AlignCards();
+        AlignCardsAsSiblings();
+
 
         return drawnCard;
     }
@@ -261,41 +278,28 @@ public class DeckManager : MonoBehaviour
     public void DiscardOrUseCard(Card card, bool discardTheCard = false)
     {
         discard.Add(card);
-        Destroy(physicalCardHeld.gameObject);
-        //Debug.Log("Discarding/using card");
+
+        handCards.Remove(physicalCardHeld.transform);
         hand.Remove(card);
-        //if () Debug.Log("Removed card from hand");
+
+        Destroy(physicalCardHeld.gameObject);
+
         AlignCards();
 
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);
     }
 
-    public IEnumerator ClearHand()
-    {
-        Manager.Instance.busy = true;
-        foreach (Transform card in handTransform)
-        {
-            Destroy(card.gameObject);
-            yield return new WaitForSeconds(0.2f);
-        }
-        foreach (Transform card in handHoldingCardTransform)
-        {
-            Destroy(card.gameObject);
-            yield return new WaitForSeconds(0.2f);
-        }
-        Manager.Instance.busy = false;
-    }
-    public void DiscardRandomHandCard(int amount = 1)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            if (hand.Count <= 0) { return; }
+    //public void DiscardRandomHandCard(int amount = 1)
+    //{
+    //    for (int i = 0; i < amount; i++)
+    //    {
+    //        if (hand.Count <= 0) { return; }
 
-            Card drawnCard = hand[Random.Range(0, hand.Count)];
-            hand.Remove(drawnCard);
-            discard.Add(drawnCard);
-        }
-    }
+    //        Card drawnCard = hand[Random.Range(0, hand.Count)];
+    //        hand.Remove(drawnCard);
+    //        discard.Add(drawnCard);
+    //    }
+    //}
     public void DiscardNextDraw()
     {
         Card drawnCard = draw[Random.Range(0, draw.Count)];

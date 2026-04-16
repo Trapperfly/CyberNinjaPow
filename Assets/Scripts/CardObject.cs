@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler
 {
@@ -10,6 +9,9 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public float scale = 1.25f;
     public float offset = 1f;
+
+    public int handIndex = 0;
+    int savedHandIndex = 0;
 
     public bool target;
     public bool scaled = false;
@@ -23,43 +25,53 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public bool clicked = false;
     public bool display = false;
-    private void FixedUpdate()
-    {
-        if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
-        if (target && !scaled)
-        {
-            Scale();
-        }
-        else if (!target && scaled)
-        {
-            Unscale();
-        }
-    }
+
+    private static CardObject currentlyScaled;
+    //private void Update()
+    //{
+    //    if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
+    //    if (target && !scaled && currentlyScaled == null)
+    //    {
+    //        currentlyScaled = this;
+    //        Scale();
+    //    }
+    //    else if (!target && scaled)
+    //    {
+    //        currentlyScaled = null;
+    //        Unscale();
+    //    }
+    //}
 
     void Scale()
     {
-        Manager.Instance.deckManager.AlignCardsAsSiblings();
         scaled = true;
         transform.localScale = scale * Vector3.one;
-        transform.localPosition += new Vector3(0,offset,0);
-        transform.SetParent(Manager.Instance.deckManager.handHoldingCardTransform);
+        transform.localPosition += new Vector3(0, offset, 0);
+        if (!display)
+        {
+            Manager.Instance.deckManager.AlignCardsAsSiblings();
+            transform.SetAsLastSibling(); // always on top, after alignment
+        }
     }
 
     void Unscale()
     {
-        transform.SetParent(Manager.Instance.deckManager.handTransform);
         scaled = false;
         transform.localScale = Vector3.one;
         transform.localPosition += new Vector3(0, -offset, 0);
-        Manager.Instance.deckManager.AlignCardsAsSiblings();
+        if (!display) Manager.Instance.deckManager.AlignCardsAsSiblings(); // restores correct order
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
+        if (!scaled) Scale();
         target = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
+        if (scaled) Unscale();
         target = false;
     }
     public void OnPointerDown(PointerEventData eventData)

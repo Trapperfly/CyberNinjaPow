@@ -68,6 +68,7 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
         {
             case ShopInteractableType.ExitShop:         //Remove the shop interface.
                 canvas.gameObject.SetActive(false);
+                Manager.Instance.gameManager.StartWave();
                 break;
             case ShopInteractableType.Refresh:          //Refreshes the shop with new instances of interactables.
                 if (Manager.Instance.gameManager.money >= cost)

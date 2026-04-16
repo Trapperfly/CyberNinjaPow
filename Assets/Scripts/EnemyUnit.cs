@@ -220,9 +220,9 @@ public class EnemyUnit : MonoBehaviour
         enemyManager.deadEnemies.Add(this);
     }
 
-    public void Die()
+    public void Die(bool rewards = true)
     {
-        Manager.Instance.gameManager.AlterMoney((int)enemy.strength);
+        if (rewards) Manager.Instance.gameManager.AlterMoney((int)enemy.strength);
         Manager.Instance.gameManager.KilledAnEnemy(enemy.threat, enemy.strength);
         Destroy(movementArrow);
         Destroy(gameObject);

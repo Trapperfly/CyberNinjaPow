@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (!waveInProgress && Input.GetKeyDown(KeyCode.Space)) StartWave();
+        if (waveInProgress && Input.GetKeyDown(KeyCode.S)) FinishWave();
     }
 
     public void AlterMoney(int amount)
@@ -230,6 +231,20 @@ public class GameManager : MonoBehaviour
         waveInProgress = false;
 
         Manager.Instance.deckManager.SaveDeck();
+
+        Manager.Instance.enemyManager.ClearEnemies();
+
+        OpenShop();
+    }
+
+    public void OpenRewards(ShopQuality quality = ShopQuality.Normal)
+    {
+
+    }
+    public void OpenShop(ShopQuality quality = ShopQuality.Normal)
+    {
+        Manager.Instance.shopManager.GenerateShop(quality);
+        Manager.Instance.shopManager.shopCanvas.gameObject.SetActive(true);
     }
 }
 

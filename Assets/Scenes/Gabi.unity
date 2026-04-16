@@ -3466,6 +3466,7 @@ MonoBehaviour:
   - {x: 3, y: 5}
   cardSelection: {fileID: 509133747}
   itemSelection: {fileID: 2007785514}
+  shopCanvas: {fileID: 367719031}
   cardShop: {fileID: 784989785}
   itemShop: {fileID: 2136810597}
   moneyText: {fileID: 208080488}

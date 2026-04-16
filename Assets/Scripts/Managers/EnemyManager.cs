@@ -231,6 +231,17 @@ public class EnemyManager : MonoBehaviour
         Manager.Instance.gameManager.ChangeThreat(unit.enemy.threat);
     }
 
+    public void ClearEnemies()
+    {
+        while (enemies.Count > 0)
+        {
+            EnemyUnit enemy = enemies[0];
+            enemies.Remove(enemy);
+            enemy.Die(false);
+        }
+        deadEnemies.Clear();
+    }
+
     public List<EnemyData> GetRandomEnemies(int amount = 0, int funds = 0)
     {
         List<EnemyData> enemyList = new List<EnemyData>();

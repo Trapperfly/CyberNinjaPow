@@ -14,6 +14,8 @@ public class ShopManager : MonoBehaviour
     public ShopInteractable cardSelection;
     public ShopInteractable itemSelection;
 
+    public Canvas shopCanvas;
+
     public Transform cardShop;
     public Transform itemShop;
 
