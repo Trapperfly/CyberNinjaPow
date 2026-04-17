@@ -20,7 +20,7 @@ public class EnemyUnit : MonoBehaviour
     public int damageTaken = 0;
     public List<EffectInfo> effects;
     bool pong;
-    bool dead;
+    public bool dead;
     public bool readyToShowIntentions = false;
 
     SpriteRenderer spriteRenderer;
@@ -61,13 +61,21 @@ public class EnemyUnit : MonoBehaviour
 
     public void Act()
     {
+        if (dead) return;
         StartCoroutine(IAct());
     }
 
     public IEnumerator IAct()
     {
         Vector2Int doingMove = CheckMove();
-
+        //if (doingMove != new Vector2Int(0, 0))
+        //{
+        //    enemyManager.addTimeAnim += enemyManager.moveAnimTime;
+        //}
+        //if (attacking && intendedAttack.Count > 0)
+        //{
+        //    enemyManager.addTimeAnim += enemyManager.attackAnimTime * intendedAttack.Count;
+        //}
         List<TileEffect> attacks = new List<TileEffect>();
         foreach (TileEffect effect in intendedAttack)
         {
@@ -77,19 +85,16 @@ public class EnemyUnit : MonoBehaviour
         GetIntentions();
 
         StartCoroutine(Move(position)); //Move sprite to actual position
+
         if (doingMove != new Vector2Int(0, 0))
         {
-            enemyManager.addTimeAnim += enemyManager.moveAnimTime;
+            yield return new WaitForSeconds(enemyManager.moveAnimTime);
         }
-        yield return new WaitForSeconds(enemyManager.moveAnimTime);
 
         if (attacking)
         {
             StartCoroutine(Attack());
-            if (intendedAttack.Count > 0)
-            {
-                enemyManager.addTimeAnim += enemyManager.attackAnimTime;
-            }
+
             yield return new WaitForSeconds(enemyManager.attackAnimTime);
         }
 

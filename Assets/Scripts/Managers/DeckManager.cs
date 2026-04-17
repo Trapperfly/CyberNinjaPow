@@ -67,16 +67,19 @@ public class DeckManager : MonoBehaviour
         {
             deck.cards.Add(card);
         }
+        Debug.Log(deck.cards.Count);
         draw.Clear();
         foreach (Card card in discard)
         {
             deck.cards.Add(card);
         }
+        Debug.Log(deck.cards.Count);
         discard.Clear();
         foreach (Card card in hand)
         {
             deck.cards.Add(card);
         }
+        Debug.Log(deck.cards.Count);
         hand.Clear();
         ClearHand();
     }
@@ -87,6 +90,7 @@ public class DeckManager : MonoBehaviour
         while (deck.cards.Count > 0)
         {
             int selected = Random.Range(0, deck.cards.Count);
+            Debug.Log("Added " + deck.cards[selected].cardName + " back to the deck.");
             draw.Add(deck.cards[selected]);
             deck.cards.RemoveAt(selected);
         }
@@ -97,10 +101,7 @@ public class DeckManager : MonoBehaviour
         {
             Destroy(card.gameObject);
         }
-        foreach (Transform card in handHoldingCardTransform)
-        {
-            Destroy(card.gameObject);
-        }
+        handCards.Clear();
     }
 
     public void AddRandomCardToDeck()

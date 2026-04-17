@@ -61,6 +61,15 @@ public class GameManager : MonoBehaviour
 
     public void ProgressTime(int time)
     {
+        switch (mainObjective)
+        {
+            case Objective.SurviveCertainAmountOfTime:
+            case Objective.SurviveThenKillElite:
+            case Objective.SurviveThenKillBoss:
+                mainObjectiveTracker += time;
+                break;
+        }
+
         Manager.Instance.enemyManager.ProgressTime(time);
     }
 
@@ -166,7 +175,7 @@ public class GameManager : MonoBehaviour
                 mainObjectiveGoal = 10;
                 break;
             case Objective.SurviveCertainAmountOfTime:
-                mainObjectiveGoal = 50;
+                mainObjectiveGoal = 10;
                 break;
             case Objective.KillTheEliteUnit:
                 mainObjectiveGoal = 1;
@@ -233,6 +242,8 @@ public class GameManager : MonoBehaviour
         Manager.Instance.deckManager.SaveDeck();
 
         Manager.Instance.enemyManager.ClearEnemies();
+
+        Manager.Instance.boardManager.ClearSpaces();
 
         OpenShop();
     }

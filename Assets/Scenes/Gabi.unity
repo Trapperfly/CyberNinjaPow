@@ -3257,7 +3257,7 @@ MonoBehaviour:
   currentThreat: 0
   maxThreat: 20
   threatCalculation: 1.5
-  mainObjective: 0
+  mainObjective: 3
   sideObjectives: []
   mainObjectiveTracker: 0
   mainObjectiveGoal: 0
@@ -3287,6 +3287,7 @@ MonoBehaviour:
   draw: []
   discard: []
   hand: []
+  handCards: []
   tagVisualSettings:
   - tag: 0
     variant: 0
@@ -3361,6 +3362,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4f46f33373f97294f8095685a45e1ea4, type: 3}
   - {fileID: 21300000, guid: b752236147db4374c8cc39c0e7bc8821, type: 3}
   - {fileID: 21300000, guid: 1eb50b52d44b6e042b1346c3ec9672a6, type: 3}
+  handIndexCounter: 0
 --- !u!114 &1900229852
 MonoBehaviour:
   m_ObjectHideFlags: 0

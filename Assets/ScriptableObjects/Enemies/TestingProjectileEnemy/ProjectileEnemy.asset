@@ -17,3 +17,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5e5123fe0994e843a67e33553904fa3, type: 2}
   damageCard: {fileID: 0}
   threat: 2
+  strength: 1

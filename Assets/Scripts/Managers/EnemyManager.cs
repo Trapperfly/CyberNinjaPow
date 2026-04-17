@@ -69,8 +69,10 @@ public class EnemyManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(timeAnim);
                 Manager.Instance.itemManager.TriggerOnEnemyAct(enemy);
-                enemy.Act();
-                yield return new WaitForSeconds(addTimeAnim);
+                //enemy.Act();
+                if (!enemy.dead)
+                    yield return StartCoroutine(enemy.IAct());
+                //yield return new WaitForSeconds(addTimeAnim);
                 addTimeAnim = 0;
             }
             actingEnemies.Clear();
