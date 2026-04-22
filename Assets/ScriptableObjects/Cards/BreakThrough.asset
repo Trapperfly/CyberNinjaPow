@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
+  m_Name: BreakThrough
+  m_EditorClassIdentifier: Assembly-CSharp::Card
+  cardName: Break Through
+  description: Splits when hitting an enemy, hitting enemies behind. {NI}
+  artwork: {fileID: 0}
+  cardTags: 05000000
+  cost: 2
+  range: 4
+  extraTagSlots: 1
+  rarity: 3
+  tileEffects:
+  - gridPosition: {x: 0, y: 0}
+    damage: 0
+    projectiles:
+    - projDamage: 3
+      direction: 1
+      pierce: 0
+    pushDistance: 0
+    pushDirection: 0
+    statusEffects: []
+    repeating: 0
+    repeatCount: 0
+    repeatInterval: 0

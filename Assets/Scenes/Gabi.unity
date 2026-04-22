@@ -3442,8 +3442,8 @@ MonoBehaviour:
   collideAnimTime: 0.3
   attackAnimTime: 0.5
   addTimeAnim: 0
-  bobbing: 0.02
-  bobbingSpeed: 4
+  bobbing: 0
+  bobbingSpeed: 0
 --- !u!114 &1900229854
 MonoBehaviour:
   m_ObjectHideFlags: 0

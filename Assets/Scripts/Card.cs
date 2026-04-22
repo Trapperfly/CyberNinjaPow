@@ -108,14 +108,13 @@ public enum Range
 public enum StatusEffect
 {
     None,
-    Burn,       // damage over time
-    Poison,     // damage over time, different type
-    Stun,       // skip turn
-    Slow,       // reduced movement
-    Weaken,     // reduced damage output
-    Vulnerable, // increased damage taken
-    Shield,     // absorb damage
-    Regen,      // heal over time
+    Burning,   
+    Hacked,    
+    Marked,    
+    Conductive,
+    Chilled,
+    Frozen,    
+    Shield,    
 }
 [BlackboardEnum]
 public enum Direction

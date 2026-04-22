@@ -143,11 +143,11 @@ public class CardEditorWindow : EditorWindow
         string syntax =
             "d{n}         damage (e.g. d5)\n" +
             "p{n}N/S/E/W  push distance + dir (e.g. p2N, pW)\n" +
-            "proj / projN/S/E/W  projectile + optional dir\n" +
+            "proj{n} / proj{n}N/S/E/W  projectile + damage + optional dir\n" +
             "pierce{n}    projectile does not stop n times \n" +
             "r{n}         repeat n times (e.g. r3)\n" +
             "ri{f}        repeat interval seconds (e.g. ri0.5)\n" +
-            "burn{n}  psn{n}  stun  slow  weak  vuln  shld{n}  regen{n}\n" +
+            "burn{n}  hack{n}  mark{n}  cond{n}  chil{n}  froz{n}\n" +
             "X            origin / player tile (ignored)";
         EditorGUILayout.HelpBox(syntax, MessageType.None);
     }
@@ -243,12 +243,12 @@ public class CardEditorWindow : EditorWindow
         // burn{n}, psn{n}, shld{n}, regen{n}
         var stackedEffects = new Dictionary<string, StatusEffect>
         {
-            { "burn",  StatusEffect.Burn    },
-            { "psn",   StatusEffect.Poison  },
-            { "shld",  StatusEffect.Shield  },
-            { "regen", StatusEffect.Regen   },
-            { "weak",  StatusEffect.Weaken  },
-            { "vuln",  StatusEffect.Vulnerable },
+            { "burn",  StatusEffect.Burning    },
+            { "hack",   StatusEffect.Hacked  },
+            { "mark",  StatusEffect.Marked  },
+            { "cond", StatusEffect.Conductive   },
+            { "chil",  StatusEffect.Chilled  },
+            { "froz",  StatusEffect.Frozen },
         };
 
         foreach (var kvp in stackedEffects)
@@ -261,10 +261,6 @@ public class CardEditorWindow : EditorWindow
                 return;
             }
         }
-
-        // Single-stack keyword effects
-        if (t == "stun") list.Add(new StatusEffectEntry { effect = StatusEffect.Stun, stacks = 1, duration = 1 });
-        if (t == "slow") list.Add(new StatusEffectEntry { effect = StatusEffect.Slow, stacks = 1, duration = 1 });
     }
 
     private Direction ParseDirection(string s) => s.ToLower() switch
@@ -321,14 +317,12 @@ public class CardEditorWindow : EditorWindow
         {
             string key = se.effect switch
             {
-                StatusEffect.Burn       => "burn",
-                StatusEffect.Poison     => "psn",
-                StatusEffect.Shield     => "shld",
-                StatusEffect.Regen      => "regen",
-                StatusEffect.Weaken     => "weak",
-                StatusEffect.Vulnerable => "vuln",
-                StatusEffect.Stun       => "stun",
-                StatusEffect.Slow       => "slow",
+                StatusEffect.Burning    => "burn",
+                StatusEffect.Hacked     => "hack",
+                StatusEffect.Marked     => "mark",
+                StatusEffect.Conductive => "cond",
+                StatusEffect.Chilled    => "chil",
+                StatusEffect.Frozen     => "froz",
                 _                       => ""
             };
             if (key != "") parts.Add(se.stacks > 1 ? $"{key}{se.stacks}" : key);
