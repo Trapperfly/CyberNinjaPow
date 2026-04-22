@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
                 mainObjectiveGoal = 10;
                 break;
             case Objective.SurviveCertainAmountOfTime:
-                mainObjectiveGoal = 10;
+                mainObjectiveGoal = 30;
                 break;
             case Objective.KillTheEliteUnit:
                 mainObjectiveGoal = 1;
