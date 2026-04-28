@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
-  m_Name: CrossSlash
+  m_Name: CrossSlashSecondHit
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Cross Slash
-  description: Hits twice to form an X
+  description: Not properly implemented yet
   artwork: {fileID: 0}
   cardTags: 0c000000
   cost: 2
@@ -21,7 +21,7 @@ MonoBehaviour:
   extraTagSlots: 1
   rarity: 1
   tileEffects:
-  - gridPosition: {x: 1, y: 1}
+  - gridPosition: {x: -1, y: 1}
     damage: 1
     projectiles: []
     pushDistance: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
-  - gridPosition: {x: -1, y: -1}
+  - gridPosition: {x: 1, y: -1}
     damage: 1
     projectiles: []
     pushDistance: 0
@@ -48,4 +48,4 @@ MonoBehaviour:
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
-  additionalCardEffect: {fileID: 11400000, guid: afc74969bc050ee4785113eba4565fc1, type: 2}
+  additionalCardEffect: {fileID: 0}

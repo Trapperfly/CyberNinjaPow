@@ -143,7 +143,7 @@ public class BoardManager : MonoBehaviour
     {
         inCardAction = true;
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
-        StartCoroutine(DoCard(target));
+        StartCoroutine(DoCard(heldCard, target));
     }
     void FinishCardAction()
     {
@@ -219,27 +219,40 @@ public class BoardManager : MonoBehaviour
 
         foreach (TileEffect effect in heldCard.tileEffects)
         {
-            Vector2Int space = targetedPosition + effect.gridPosition;
-
-            spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
-
-            if (cardTargetedSpace == null) continue;
-
-            for (int i = 0; i < effect.repeatCount + 1; i++)
+            int repeat = (effect.repeatCount < 1) ? 1 : effect.repeatCount;
+            for (int i = 0; i < repeat; i++)
             {
-                if (effect.projectiles.Count > 0)
-                {
-                    foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(false, GridSpaceSelection.CardTargeting, space, projectile);
-                }
-                else
-                {
-                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                    ItemResponse response = new();
-                    if (enemy != null)
-                        response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                    cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting, effect.damage + response.integer);
-                }
+                TargetAndColorizeSpaces(effect);
+            }
+        }
+        foreach (TileEffect effect in heldCard.additionalCardEffect.tileEffects)
+        {
+            TargetAndColorizeSpaces(effect);
+        }
+    }
+
+    void TargetAndColorizeSpaces(TileEffect effect)
+    {
+        Vector2Int space = targetedPosition + effect.gridPosition;
+
+        spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
+
+        if (cardTargetedSpace == null) return;
+
+        for (int i = 0; i < effect.repeatCount + 1; i++)
+        {
+            if (effect.projectiles.Count > 0)
+            {
+                foreach (ProjectileData projectile in effect.projectiles)
+                    Projectile(false, GridSpaceSelection.CardTargeting, space, projectile);
+            }
+            else
+            {
+                EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                ItemResponse response = new();
+                if (enemy != null)
+                    response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting, effect.damage + response.integer);
             }
         }
     }
@@ -326,7 +339,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    IEnumerator DoCard(BoardSpace targetSpace = null)
+    IEnumerator DoCard(Card card, BoardSpace targetSpace = null)
     {
         if (targetSpace == null)
         {
@@ -337,7 +350,7 @@ public class BoardManager : MonoBehaviour
             yield break;
         }
         Manager.Instance.busy = true;
-        foreach (TileEffect effect in heldCard.tileEffects)
+        foreach (TileEffect effect in card.tileEffects)
         {
             Vector2Int targetPos = effect.gridPosition;
 
@@ -375,8 +388,15 @@ public class BoardManager : MonoBehaviour
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
         yield return new WaitForSeconds(cardAnimExtraTime);
-        Manager.Instance.busy = false;
-        FinishCardAction();
+        if (card.additionalCardEffect != null)
+        {
+            StartCoroutine(DoCard(card.additionalCardEffect, targetSpace));
+        }
+        else
+        {
+            Manager.Instance.busy = false;
+            FinishCardAction();
+        }
         yield return null;
     }
 

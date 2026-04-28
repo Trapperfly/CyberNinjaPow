@@ -24,7 +24,12 @@ public class BoardSpace : MonoBehaviour
             case GridSpaceSelection.CardTargeting:
                 cardTargeting.SetActive(true);
 
-                if (damage != null) Destroy(damage);
+                if (damage != null)
+                {
+                    //Destroy(damage);
+                    damage.GetComponent<TMP_Text>().text += "+" + damageOnTile.ToString();
+                    return;
+                }
                 if (damageOnTile == 0) return;
                 damage = Instantiate(Manager.Instance.boardManager.damageNumberForTilePrefab, Manager.Instance.boardManager.boardInformation);
                 damage.transform.position = Camera.main.WorldToScreenPoint(transform.position) + (Vector3)Manager.Instance.boardManager.damageNumberOffset;
@@ -34,7 +39,12 @@ public class BoardSpace : MonoBehaviour
             case GridSpaceSelection.EnemyAttack:
                 enemyTargeting.SetActive(true);
 
-                if (damage != null) Destroy(damage);
+                if (damage != null)
+                {
+                    //Destroy(damage);
+                    damage.GetComponent<TMP_Text>().text += "+" + damageOnTile.ToString();
+                    return;
+                }
                 if (damageOnTile == 0) return;
                 damage = Instantiate(Manager.Instance.boardManager.damageNumberForTilePrefab, Manager.Instance.boardManager.boardInformation);
                 damage.transform.position = Camera.main.WorldToScreenPoint(transform.position) + (Vector3)Manager.Instance.boardManager.damageNumberOffset;

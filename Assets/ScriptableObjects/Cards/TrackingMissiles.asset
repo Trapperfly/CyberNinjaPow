@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
   m_Name: TrackingMissiles
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardName: 
-  description: 
+  cardName: TrackingMissiles
+  description: Deal 1 damage to each Marked enemy. {NI}
   artwork: {fileID: 0}
-  cardTags: 
-  cost: 0
+  cardTags: 0a000000
+  cost: 1
   range: 0
-  extraTagSlots: 0
-  rarity: 0
+  extraTagSlots: 1
+  rarity: 2
   tileEffects: []
+  additionalCardEffect: {fileID: 0}
