@@ -3414,6 +3414,7 @@ GameObject:
   - component: {fileID: 1900229850}
   - component: {fileID: 1900229854}
   - component: {fileID: 1900229855}
+  - component: {fileID: 1900229856}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3439,6 +3440,7 @@ MonoBehaviour:
   enemyManager: {fileID: 0}
   shopManager: {fileID: 0}
   itemManager: {fileID: 0}
+  playerManager: {fileID: 0}
   busy: 0
 --- !u!4 &1900229849
 Transform:
@@ -3711,6 +3713,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemManager
   playerItems: []
+--- !u!114 &1900229856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900229847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf5065e41e312a4cbc1b7c0a83a5d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
+  playerResource: 0
+  maxPlayerResource: 6
 --- !u!1 &1992698357
 GameObject:
   m_ObjectHideFlags: 0

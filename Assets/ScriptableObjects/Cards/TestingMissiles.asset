@@ -10,41 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
-  m_Name: Unload
+  m_Name: TestingMissiles
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardName: Unload
-  description: Repeat X times, where X is your current Ammo. Remove all Ammo. {NI}
+  cardName: TrackingMissiles
+  description: Deal 1 damage to each Marked enemy. {NI}
   artwork: {fileID: 0}
-  cardTags: 05000000
-  cost: 0
-  range: 4
+  cardTags: 0a000000
+  cost: 1
+  range: 0
   extraTagSlots: 1
-  rarity: 3
+  rarity: 2
   tileEffects: []
   playAdditionalCardAfterThisOne: {fileID: 0}
   additionalCardEffects:
-  - otherEffect: 7
+  - otherEffect: 14
     conditionalEffect: 0
     amount: 0
     card: {fileID: 0}
     effect:
       gridPosition: {x: 0, y: 0}
-      damage: 0
-      projectiles: []
-      pushDistance: 0
-      pushDirection: 0
-      statusEffects: []
-      repeating: 0
-      repeatCount: 0
-      repeatInterval: 0
-    statusEffect: 0
-  - otherEffect: 8
-    conditionalEffect: 0
-    amount: 0
-    card: {fileID: 0}
-    effect:
-      gridPosition: {x: 0, y: 0}
-      damage: 0
+      damage: 1
       projectiles: []
       pushDistance: 0
       pushDirection: 0

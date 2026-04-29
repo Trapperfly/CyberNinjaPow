@@ -21,4 +21,20 @@ MonoBehaviour:
   extraTagSlots: 1
   rarity: 2
   tileEffects: []
-  additionalCardEffect: {fileID: 0}
+  playAdditionalCardAfterThisOne: {fileID: 0}
+  additionalCardEffects:
+  - otherEffect: 14
+    conditionalEffect: 0
+    amount: 1
+    card: {fileID: 0}
+    effect:
+      gridPosition: {x: 0, y: 0}
+      damage: 0
+      projectiles: []
+      pushDistance: 0
+      pushDirection: 0
+      statusEffects: []
+      repeating: 0
+      repeatCount: 0
+      repeatInterval: 0
+    statusEffect: 3

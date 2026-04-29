@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -217,24 +218,25 @@ public class BoardManager : MonoBehaviour
 
         ClearSpaces();
 
+        TargetAdditionalCardEffects(heldCard);
+
         foreach (TileEffect effect in heldCard.tileEffects)
         {
             int repeat = (effect.repeatCount < 1) ? 1 : effect.repeatCount;
             for (int i = 0; i < repeat; i++)
             {
-                TargetAndColorizeSpaces(effect);
+                TargetAndColorizeSpaces(effect, targetedPosition + effect.gridPosition);
             }
         }
-        foreach (TileEffect effect in heldCard.additionalCardEffect.tileEffects)
+        if (heldCard.playAdditionalCardAfterThisOne == null) return;
+        foreach (TileEffect effect in heldCard.playAdditionalCardAfterThisOne.tileEffects)
         {
-            TargetAndColorizeSpaces(effect);
+            TargetAndColorizeSpaces(effect, targetedPosition + effect.gridPosition);
         }
     }
 
-    void TargetAndColorizeSpaces(TileEffect effect)
+    void TargetAndColorizeSpaces(TileEffect effect, Vector2Int space)
     {
-        Vector2Int space = targetedPosition + effect.gridPosition;
-
         spaces.TryGetValue(space, out BoardSpace cardTargetedSpace);
 
         if (cardTargetedSpace == null) return;
@@ -253,6 +255,35 @@ public class BoardManager : MonoBehaviour
                 if (enemy != null)
                     response = Manager.Instance.itemManager.TriggerOnHit(enemy);
                 cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting, effect.damage + response.integer);
+            }
+        }
+    }
+
+    void TargetAndAttackSpaces(TileEffect effect, Vector2Int space)
+    {
+        int repetitions = (effect.repeating) ? effect.repeatCount : 1;
+
+        for (int r = 0; r < repetitions; r++)
+        {
+            if (effect.projectiles.Count > 0)
+            {
+                foreach (ProjectileData projectile in effect.projectiles)
+                    Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
+            }
+            else
+            {
+                EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                if (enemy)
+                {
+                    ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                    Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
+                    enemy.TakeDamage(effect.damage + response.integer);
+                }
+                if (enemy && effect.pushDirection != Direction.None)
+                {
+                    Vector2Int pushDir = GetDirection(effect.pushDirection);
+                    enemy.ForceMove(pushDir, effect.pushDistance);
+                }
             }
         }
     }
@@ -339,12 +370,61 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public AdditionalCardEffectReply DoAdditionalCardEffects(Card card)
+    {
+        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
+        foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+        {
+            AdditionalCardEffectReply effectReply = cardEffect.Activate(true);
+            if (effectReply.stop) reply.stop = true;
+        }
+        return reply;
+    }
+
+    public AdditionalCardEffectReply TargetAdditionalCardEffects(Card card)
+    {
+        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
+        foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+        {
+            AdditionalCardEffectReply effectReply = cardEffect.Activate(false);
+            if (effectReply.stop) reply.stop = true;
+        }
+        return reply;
+    }
+
+    public AdditionalCardEffectReply DoConditionalCardEffects(Card card, CardConditions conditions) //Needs a better way to check for completions of conditions
+    {
+        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
+        foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+        {
+            cardEffect.Conditional(conditions);
+        }
+        return reply;
+    }
+
+    public void CheckCardConditions(Card card, AdditionalCardEffectReply reply)
+    {
+        CardConditions conditions = new CardConditions();
+        conditions.killed = (Manager.Instance.enemyManager.KillOffEnemies() > 0) ? true : false;
+        conditions.hit = reply.hitEnemy;
+        DoConditionalCardEffects(card, conditions);
+    }
+
     IEnumerator DoCard(Card card, BoardSpace targetSpace = null)
     {
+        AdditionalCardEffectReply reply = DoAdditionalCardEffects(card);
+        if (reply.stop)
+        {
+            ResetCards();
+            yield break;
+        }
         if (targetSpace == null)
         {
             //Do effect of card
-            Manager.Instance.enemyManager.KillOffEnemies();
+
+            //Check conditional
+            CheckCardConditions(card, reply);
+            //Finish card
             Manager.Instance.busy = false;
             FinishCardAction();
             yield break;
@@ -381,16 +461,15 @@ public class BoardManager : MonoBehaviour
                         yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
                     }
                 }
-
-                Manager.Instance.enemyManager.KillOffEnemies();
+                CheckCardConditions(card, reply);
                 yield return new WaitForSeconds(effect.repeatInterval);
             }
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
         yield return new WaitForSeconds(cardAnimExtraTime);
-        if (card.additionalCardEffect != null)
+        if (card.playAdditionalCardAfterThisOne != null)
         {
-            StartCoroutine(DoCard(card.additionalCardEffect, targetSpace));
+            StartCoroutine(DoCard(card.playAdditionalCardAfterThisOne, targetSpace));
         }
         else
         {
@@ -398,6 +477,31 @@ public class BoardManager : MonoBehaviour
             FinishCardAction();
         }
         yield return null;
+    }
+
+    public void TargetAllEnemies(bool fire, TileEffect tileEffect, StatusEffect conditionalTarget = StatusEffect.None)
+    {
+        foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
+        {
+            Debug.Log("Targeting space " + unit.position);
+            if (conditionalTarget == StatusEffect.None)
+            {
+                if (fire) TargetAndAttackSpaces(tileEffect, unit.position);
+                else TargetAndColorizeSpaces(tileEffect, unit.position);
+            }
+            else
+            {
+                foreach (EffectInfo effect in unit.effects)
+                {
+                    StatusEffect status = effect.effect.GiveStatus();
+                    if (status == conditionalTarget)
+                    {
+                        if (fire) TargetAndAttackSpaces(tileEffect, unit.position);
+                        else TargetAndColorizeSpaces(tileEffect, unit.position);
+                    }
+                }
+            }
+        }
     }
 
     public void ClearSpaces()

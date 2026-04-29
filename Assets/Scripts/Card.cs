@@ -18,7 +18,152 @@ public class Card : ScriptableObject
     [Tooltip("Each entry defines what happens on one tile of the grid when this card is played.")]
     public List<TileEffect> tileEffects = new();
 
-    public Card additionalCardEffect;
+    public Card playAdditionalCardAfterThisOne;
+
+    public List<AdditionalCardEffect> additionalCardEffects = new();
+}
+
+[System.Serializable]
+public class AdditionalCardEffect
+{
+    public OtherCardEffects otherEffect;
+    public ConditionalCardEffects conditionalEffect;
+    public int amount;
+    public Card card;
+    public TileEffect effect;
+    public StatusEffect statusEffect;
+
+    public AdditionalCardEffectReply Activate(bool fire)
+    {
+        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
+        switch (otherEffect)
+        {
+            case OtherCardEffects.None:
+                break;
+            case OtherCardEffects.Block:
+                break;
+            case OtherCardEffects.Parry:
+                break;
+            case OtherCardEffects.DrawCards:
+                if (fire) Manager.Instance.deckManager.DrawPile(amount, 0);
+                break;
+            case OtherCardEffects.DiscardCards:
+                //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 
+                break;
+            case OtherCardEffects.UseClassResource:
+                if (fire)
+                {
+                    bool enough = Manager.Instance.playerManager.UseResource(amount);
+                    reply.stop = !enough;
+                }
+                break;
+            case OtherCardEffects.AddClassResource:
+                if (fire) Manager.Instance.playerManager.AddResource(amount);
+                break;
+            case OtherCardEffects.CostIsEqualToClassResource:
+                if (fire) reply.additionalCost = Manager.Instance.playerManager.playerResource;
+                break;
+            case OtherCardEffects.UseAllClassResource:
+                if (fire) Manager.Instance.playerManager.UseAllResource();
+                break;
+            case OtherCardEffects.UseAllClassResourceForRepeat:
+                int uses = Manager.Instance.playerManager.playerResource;
+                reply.repeats = uses;
+                break;
+            case OtherCardEffects.UseAllClassResourceGainCard:
+                int cards = Manager.Instance.playerManager.playerResource;
+                if (fire) for (int i = 0; i < cards; i++) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, card);
+                break;
+            case OtherCardEffects.AddCardToHand:
+                if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, card);
+                break;
+            case OtherCardEffects.AddCardToDiscard:
+                if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Discard, card);
+                break;
+            case OtherCardEffects.AddCardToDraw:
+                if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Draw, card);
+                break;
+            case OtherCardEffects.TargetAllEnemies:
+                Manager.Instance.boardManager.TargetAllEnemies(fire, effect);
+                break;
+            case OtherCardEffects.TargetAllEnemiesWithSpecificStatus:
+                Manager.Instance.boardManager.TargetAllEnemies(fire, effect, statusEffect);
+                break;
+            default:
+                break;
+        }
+        return reply;
+    }
+
+    public AdditionalCardEffectReply Conditional(CardConditions conditions)
+    {
+        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
+        switch (conditionalEffect)
+        {
+            case ConditionalCardEffects.None:
+                break;
+            case ConditionalCardEffects.GainClassResourceOnKill:
+                if (conditions.killed)
+                    Manager.Instance.playerManager.AddResource(amount);
+                break;
+            case ConditionalCardEffects.GainClassResourceOnHit:
+                if (conditions.hit)
+                    Manager.Instance.playerManager.AddResource(amount);
+                break;
+            case ConditionalCardEffects.DoubleDamageOnStatus:
+                reply.damageMultiplier = 2;
+                break;
+            default:
+                break;
+        }
+        return reply;
+    }
+}
+
+public class CardConditions
+{
+    public bool killed = false;
+    public bool hit = false;
+
+}
+
+public class AdditionalCardEffectReply
+{
+    public bool stop = false;
+    public int additionalCost = 0;
+    public int repeats = 0;
+    public int damage = 0;
+    public int damageMultiplier = 1;
+    public bool hitEnemy = false;
+}
+
+public enum OtherCardEffects
+{
+    None,
+    Block,
+    Parry,
+    DrawCards,
+    DiscardCards,
+    UseClassResource,
+    AddClassResource,
+    CostIsEqualToClassResource,
+    UseAllClassResource,
+    UseAllClassResourceForRepeat,
+    UseAllClassResourceGainCard,
+    AddCardToHand,
+    AddCardToDiscard,
+    AddCardToDraw,
+    TargetAllEnemies,
+    TargetAllEnemiesWithSpecificStatus,
+
+}
+
+public enum ConditionalCardEffects
+{
+    None,
+    GainClassResourceOnKill,
+    GainClassResourceOnHit,
+    DoubleDamageOnStatus,
 }
 
 /// <summary>

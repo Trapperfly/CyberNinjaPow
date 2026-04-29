@@ -246,7 +246,6 @@ public class DeckManager : MonoBehaviour
         Manager.Instance.busy = false;
         yield return null;
     }
-
     public Card DrawCard()
     {
         if (draw.Count <= 0) ShuffleDiscardIntoDraw();

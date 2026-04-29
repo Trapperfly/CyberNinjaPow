@@ -11,7 +11,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public float offset = 1f;
 
     public int handIndex = 0;
-    int savedHandIndex = 0;
+    //int savedHandIndex = 0;
 
     public bool target;
     public bool scaled = false;

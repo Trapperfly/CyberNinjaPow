@@ -27,7 +27,6 @@ public class EnemyHealth
     public HealthGateSpecialAction specialAction;
     public bool keepPreviousIntentions = true;
     public List<Intention> intentions = new();
-    public List<EffectsEnum> effect = new();
 }
 [BlackboardEnum]
 public enum SmartMovement

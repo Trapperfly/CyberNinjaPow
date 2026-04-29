@@ -22,6 +22,7 @@ public class Manager : MonoBehaviour
         deckManager = GetComponent<DeckManager>();
         shopManager = GetComponent<ShopManager>();
         itemManager = GetComponent<ItemManager>();
+        playerManager = GetComponent<PlayerManager>();
     }
     #endregion
     [HideInInspector] public GameManager gameManager;
@@ -30,6 +31,7 @@ public class Manager : MonoBehaviour
     [HideInInspector] public EnemyManager enemyManager;
     [HideInInspector] public ShopManager shopManager;
     [HideInInspector] public ItemManager itemManager;
+    [HideInInspector] public PlayerManager playerManager;
 
     public bool busy = false;
 }

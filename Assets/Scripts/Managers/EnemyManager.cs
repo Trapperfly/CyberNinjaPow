@@ -96,15 +96,18 @@ public class EnemyManager : MonoBehaviour
         timeOffset += time;
     }
 
-    public void KillOffEnemies()
+    public int KillOffEnemies()
     {
+        int deadCount = 0;
         while (deadEnemies.Count > 0)
         {
             EnemyUnit enemy = deadEnemies[0];
             enemies.Remove(enemy);
             deadEnemies.Remove(enemy);
             enemy.Die();
+            deadCount++;
         }
+        return deadCount;
     }
     public void DisplayMovementArrow(EnemyUnit unit, Vector2Int origin, Vector2Int movement)
     {
