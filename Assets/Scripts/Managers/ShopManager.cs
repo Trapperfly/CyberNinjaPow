@@ -8,11 +8,11 @@ public class ShopManager : MonoBehaviour
     public GameObject cardInteractablePrefab;
     public GameObject itemInteractablePrefab;
 
-    public List<Vector2Int> shopCardAmount = new List<Vector2Int>();
-    public List<Vector2Int> shopItemAmount = new List<Vector2Int>();
+    //public List<Vector2Int> shopCardAmount = new List<Vector2Int>();
+    //public List<Vector2Int> shopItemAmount = new List<Vector2Int>();
 
-    public ShopInteractable cardSelection;
-    public ShopInteractable itemSelection;
+    //public ShopInteractable cardSelection;
+    //public ShopInteractable itemSelection;
 
     public Canvas shopCanvas;
 
@@ -41,32 +41,34 @@ public class ShopManager : MonoBehaviour
     {
         ResetShop();
 
-        cardSelection.Generate();
-        itemSelection.Generate();
+        //cardSelection.Generate();
+        //itemSelection.Generate();
 
-        int randomCardAmount = Random.Range(shopCardAmount[(int)quality-1].x, shopCardAmount[(int)quality-1].y + 1);
-        int randomItemAmount = Random.Range(shopItemAmount[(int)quality-1].x, shopItemAmount[(int)quality-1].y + 1);
+        //int randomCardAmount = Random.Range(shopCardAmount[(int)quality-1].x, shopCardAmount[(int)quality-1].y + 1);
+        //int randomItemAmount = Random.Range(shopItemAmount[(int)quality-1].x, shopItemAmount[(int)quality-1].y + 1);
 
-        for (int i = 0; i < randomCardAmount; i++)
+        for (int i = 0; i < 4; i++)
         {
-            GameObject cardInteractable = Instantiate(cardInteractablePrefab, cardShop);
-            cardInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
+            GameObject cardInteractable = Instantiate(cardInteractablePrefab, cardShop.GetChild(i));
+            //cardInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
+            cardInteractable.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
 
             ShopInteractable specificCard = cardInteractable.GetComponent<ShopInteractable>();
             specificCard.Generate();
 
-            cardInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificCard.cost + "$";
+            //cardInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificCard.cost + "$";
         }
 
-        for (int i = 0; i < randomItemAmount; i++)
+        for (int i = 0; i < 3; i++)
         {
-            GameObject itemInteractable = Instantiate(itemInteractablePrefab, itemShop);
-            itemInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
+            GameObject itemInteractable = Instantiate(itemInteractablePrefab, itemShop.GetChild(i));
+            //itemInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
+            itemInteractable.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
 
             ShopInteractable specificItem = itemInteractable.GetComponent<ShopInteractable>();
             specificItem.Generate();
 
-            itemInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificItem.item.GiveName() + ": " + specificItem.cost + "$";
+            //itemInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificItem.item.GiveName() + ": " + specificItem.cost + "$";
         }
     }
 
@@ -74,11 +76,13 @@ public class ShopManager : MonoBehaviour
     {
         foreach (Transform slot in cardShop)
         {
-            Destroy(slot.gameObject);
+            if (slot.childCount > 0)
+                Destroy(slot.GetChild(0).gameObject);
         }
         foreach (Transform slot in itemShop)
         {
-            Destroy(slot.gameObject);
+            if (slot.childCount > 0)
+                Destroy(slot.GetChild(0).gameObject);
         }
     }
 
