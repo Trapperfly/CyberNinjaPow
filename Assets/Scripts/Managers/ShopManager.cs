@@ -30,16 +30,13 @@ public class ShopManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            GenerateShop(ShopQuality.Elite);
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            GenerateShop(ShopQuality.Boss);
+            GenerateShop(false);
         }
     }
-    public void GenerateShop(ShopQuality quality = ShopQuality.Normal)
+    public void GenerateShop(bool restock = true)
     {
-        ResetShop();
+        
+        ResetShop(restock);
 
         //cardSelection.Generate();
         //itemSelection.Generate();
@@ -47,9 +44,10 @@ public class ShopManager : MonoBehaviour
         //int randomCardAmount = Random.Range(shopCardAmount[(int)quality-1].x, shopCardAmount[(int)quality-1].y + 1);
         //int randomItemAmount = Random.Range(shopItemAmount[(int)quality-1].x, shopItemAmount[(int)quality-1].y + 1);
 
-        for (int i = 0; i < 4; i++)
+        foreach (Transform slot in cardShop)
         {
-            GameObject cardInteractable = Instantiate(cardInteractablePrefab, cardShop.GetChild(i));
+            if (!slot.gameObject.activeSelf) continue;
+            GameObject cardInteractable = Instantiate(cardInteractablePrefab, slot);
             //cardInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
             cardInteractable.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
 
@@ -59,9 +57,10 @@ public class ShopManager : MonoBehaviour
             //cardInteractable.transform.GetChild(1).GetComponent<TMP_Text>().text = specificCard.cost + "$";
         }
 
-        for (int i = 0; i < 3; i++)
+        foreach (Transform slot in itemShop)
         {
-            GameObject itemInteractable = Instantiate(itemInteractablePrefab, itemShop.GetChild(i));
+            if (!slot.gameObject.activeSelf) continue;
+            GameObject itemInteractable = Instantiate(itemInteractablePrefab, slot);
             //itemInteractable.transform.localPosition = Vector3.zero + new Vector3(200 * i, 0, 0);
             itemInteractable.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
 
@@ -72,15 +71,20 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    public void ResetShop()
+    public void ResetShop(bool restock = true)
     {
         foreach (Transform slot in cardShop)
         {
+            if (restock)
+                slot.gameObject.SetActive(true);
+
             if (slot.childCount > 0)
                 Destroy(slot.GetChild(0).gameObject);
         }
         foreach (Transform slot in itemShop)
         {
+            if (restock)
+                slot.gameObject.SetActive(true);
             if (slot.childCount > 0)
                 Destroy(slot.GetChild(0).gameObject);
         }

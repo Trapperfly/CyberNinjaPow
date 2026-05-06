@@ -86,6 +86,8 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
                 {
                     Manager.Instance.gameManager.AlterMoney(-cost);
                     Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Deck, card);
+                    //gameObject.SetActive(false);
+                    transform.parent.gameObject.SetActive(false);
                     Destroy(gameObject);
                 }
                 break;
@@ -96,6 +98,8 @@ public class ShopInteractable : MonoBehaviour, IPointerClickHandler, IPointerEnt
                 {
                     Manager.Instance.gameManager.AlterMoney(-cost);
                     Manager.Instance.itemManager.playerItems.Add(new ItemList(item, item.GiveName(), 1));
+                    //gameObject.SetActive(false);
+                    transform.parent.gameObject.SetActive(false);
                     Destroy(gameObject);
                 }
                 break;

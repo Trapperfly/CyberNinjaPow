@@ -38,6 +38,7 @@ MonoBehaviour:
       repeatCount: 0
       repeatInterval: 0
     statusEffect: 0
+    animationTime: 0.3
   - otherEffect: 8
     conditionalEffect: 0
     amount: 0
@@ -53,3 +54,4 @@ MonoBehaviour:
       repeatCount: 0
       repeatInterval: 0
     statusEffect: 0
+    animationTime: 0

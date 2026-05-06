@@ -252,9 +252,9 @@ public class GameManager : MonoBehaviour
     {
 
     }
-    public void OpenShop(ShopQuality quality = ShopQuality.Normal)
+    public void OpenShop()
     {
-        Manager.Instance.shopManager.GenerateShop(quality);
+        Manager.Instance.shopManager.GenerateShop();
         Manager.Instance.shopManager.shopCanvas.gameObject.SetActive(true);
     }
 }

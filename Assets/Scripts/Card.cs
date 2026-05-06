@@ -32,6 +32,7 @@ public class AdditionalCardEffect
     public Card card;
     public TileEffect effect;
     public StatusEffect statusEffect;
+    public float animationTime;
 
     public AdditionalCardEffectReply Activate(bool fire)
     {

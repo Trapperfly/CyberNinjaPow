@@ -376,10 +376,29 @@ public class BoardManager : MonoBehaviour
         foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
         {
             AdditionalCardEffectReply effectReply = cardEffect.Activate(true);
-            if (effectReply.stop) reply.stop = true;
+            if (effectReply.stop)
+            {
+                reply.stop = true;
+                return reply;
+            }
         }
         return reply;
     }
+    //public IEnumerator IDoAdditionalCardEffects(Card card)
+    //{
+    //    reply = new AdditionalCardEffectReply();
+    //    foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+    //    {
+    //        AdditionalCardEffectReply effectReply = cardEffect.Activate(true);
+    //        if (effectReply.stop)
+    //        {
+    //            reply.stop = true;
+    //            yield break;
+    //        }
+    //        yield return new WaitForSeconds(cardEffect.animationTime);
+    //    }
+    //    yield return null;
+    //}
 
     public AdditionalCardEffectReply TargetAdditionalCardEffects(Card card)
     {

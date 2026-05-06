@@ -146,6 +146,7 @@ public class DeckManager : MonoBehaviour
             default:
                 break;
         }
+        if (where == WhereDoesTheCardGo.Hand) AlignCards();
     }
 
     public GameObject CreateCard(Card card)

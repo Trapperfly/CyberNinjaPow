@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Pummel
   description: 
   artwork: {fileID: 0}
-  cardTags: 00000000
+  cardTags: 0c000000
   cost: 1
   range: 1
   extraTagSlots: 2
@@ -30,3 +30,5 @@ MonoBehaviour:
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
+  playAdditionalCardAfterThisOne: {fileID: 0}
+  additionalCardEffects: []
