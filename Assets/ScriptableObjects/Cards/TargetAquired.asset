@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Target Aquired
   description: 
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 5bb6f9123d9db55448ce14b32abba4df, type: 3}
   cardTags: 06000000
   cost: 0
   range: 0
@@ -33,3 +33,5 @@ MonoBehaviour:
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
+  playAdditionalCardAfterThisOne: {fileID: 0}
+  additionalCardEffects: []

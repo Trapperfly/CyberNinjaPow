@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: TargetingMatrix
   description: Mark all targeted enemies.
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 920b57d3f6ef55c4f8e5082fbef2163a, type: 3}
   cardTags: 
   cost: 2
   range: 0
@@ -129,3 +129,5 @@ MonoBehaviour:
     repeating: 0
     repeatCount: 0
     repeatInterval: 0
+  playAdditionalCardAfterThisOne: {fileID: 0}
+  additionalCardEffects: []

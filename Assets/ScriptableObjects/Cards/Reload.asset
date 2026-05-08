@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Reload
   description: Gain 3 Ammo {NI}
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 9cce72834b17ccc4d8226c93292f9ae8, type: 3}
   cardTags: 
   cost: 1
   range: 0
@@ -38,3 +38,4 @@ MonoBehaviour:
       repeatCount: 0
       repeatInterval: 0
     statusEffect: 0
+    animationTime: 0

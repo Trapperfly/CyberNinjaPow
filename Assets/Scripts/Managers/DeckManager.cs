@@ -155,6 +155,7 @@ public class DeckManager : MonoBehaviour
         CardObject cardObject = cardGO.GetComponent<CardObject>();
         cardObject.cardName.text = card.cardName;
         cardObject.cardDescription.text = card.description;
+        cardObject.art.sprite = card.artwork;
         cardObject.time.GetComponent<Image>().sprite = timeSprites[card.cost];
         cardObject.range.GetComponent<Image>().sprite = rangeSprites[(int)card.range];
         cardObject.tags.GetComponent<Image>().sprite = tagHolderSprites[card.extraTagSlots + card.cardTags.Count];
