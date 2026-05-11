@@ -109,6 +109,44 @@ public class EnemyManager : MonoBehaviour
         }
         return deadCount;
     }
+
+    public List<Vector2Int> GetEnemyPositions(TargetAll targetAll)
+    {
+        List<Vector2Int> positions = new List<Vector2Int>();
+        foreach (EnemyUnit enemy in enemies)
+        {
+            switch (targetAll.condition)
+            {
+                case TargetAllCondition.None:
+                    positions.Add(enemy.position);
+                    break;
+                case TargetAllCondition.StatusEffect:
+                    if (ContainsEffect(enemy, targetAll.statusEffect)) positions.Add(enemy.position);
+                    break;
+                case TargetAllCondition.LowerThanNumber:
+                    if (enemy.GetCurrentHealth() < targetAll.number) positions.Add(enemy.position);
+                    break;
+                case TargetAllCondition.HigherThanNumber:
+                    if (enemy.GetCurrentHealth() > targetAll.number) positions.Add(enemy.position);
+                    break;
+                case TargetAllCondition.FullHealth:
+                    if (enemy.GetCurrentHealth() == enemy.GetTotalHealth()) positions.Add(enemy.position);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return positions;
+    }
+
+    public bool ContainsEffect(EnemyUnit unit, StatusEffect effect)
+    {
+        foreach (EffectInfo e in unit.effects)
+        {
+            if (e.effect.GiveStatus() == effect) return true;
+        }
+        return false;
+    }
     public void DisplayMovementArrow(EnemyUnit unit, Vector2Int origin, Vector2Int movement)
     {
         if (unit.movementArrow != null)  Destroy(unit.movementArrow);

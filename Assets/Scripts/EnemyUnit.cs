@@ -235,14 +235,26 @@ public class EnemyUnit : MonoBehaviour
 
     void SetHealthBar()
     {
+        int currentHealth = GetCurrentHealth();
+        if (currentHealth < 0) currentHealth = 0;
+        healthBarRenderer.size = new(currentHealth, 1);
+    }
+
+    public int GetTotalHealth()
+    {
         int health = 0;
         for (int i = 0 + phase; i < enemy.phases.Count; i++)
         {
             health += enemy.phases[i].health;
         }
+        return health;
+    }
+
+    public int GetCurrentHealth()
+    {
+        int health = GetTotalHealth();
         int currentHealth = health - damageTaken;
-        if (currentHealth < 0) currentHealth = 0;
-        healthBarRenderer.size = new(currentHealth, 1);
+        return currentHealth;
     }
 
     public Vector2Int PlanSmartMovement(SmartMovement smartMovement)

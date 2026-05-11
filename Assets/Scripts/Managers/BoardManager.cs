@@ -220,6 +220,16 @@ public class BoardManager : MonoBehaviour
 
         TargetAdditionalCardEffects(heldCard);
 
+        if (heldCard.targetAll.doThis)
+        {
+            List<Vector2Int> positions = Manager.Instance.enemyManager.GetEnemyPositions(heldCard.targetAll);
+            foreach (Vector2Int space in positions)
+            {
+                TileEffect effect = heldCard.targetAll.effect;
+
+                TargetAndColorizeSpaces(effect, space);
+            }
+        }
         foreach (TileEffect effect in heldCard.tileEffects)
         {
             int repeat = (effect.repeatCount < 1) ? 1 : effect.repeatCount;
@@ -370,19 +380,12 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public AdditionalCardEffectReply DoAdditionalCardEffects(Card card)
+    public void DoAdditionalCardEffects(Card card)
     {
-        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
         foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
         {
-            AdditionalCardEffectReply effectReply = cardEffect.Activate(true);
-            if (effectReply.stop)
-            {
-                reply.stop = true;
-                return reply;
-            }
+            cardEffect.Activate(true);
         }
-        return reply;
     }
     //public IEnumerator IDoAdditionalCardEffects(Card card)
     //{
@@ -400,64 +403,78 @@ public class BoardManager : MonoBehaviour
     //    yield return null;
     //}
 
-    public AdditionalCardEffectReply TargetAdditionalCardEffects(Card card)
+    public void TargetAdditionalCardEffects(Card card)
     {
-        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
         foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
         {
-            AdditionalCardEffectReply effectReply = cardEffect.Activate(false);
-            if (effectReply.stop) reply.stop = true;
+            cardEffect.Activate(false);
         }
-        return reply;
     }
 
-    public AdditionalCardEffectReply DoConditionalCardEffects(Card card, CardConditions conditions) //Needs a better way to check for completions of conditions
-    {
-        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
-        foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
-        {
-            cardEffect.Conditional(conditions);
-        }
-        return reply;
-    }
+    //public void DoConditionalCardEffects(Card card, CardConditions conditions) //Needs a better way to check for completions of conditions
+    //{
+    //    foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+    //    {
+    //        cardEffect.Conditional(conditions);
+    //    }
+    //}
 
-    public void CheckCardConditions(Card card, AdditionalCardEffectReply reply)
+    public void CheckCardConditions(Card card)
     {
         CardConditions conditions = new CardConditions();
         conditions.killed = (Manager.Instance.enemyManager.KillOffEnemies() > 0) ? true : false;
-        conditions.hit = reply.hitEnemy;
-        DoConditionalCardEffects(card, conditions);
+        //conditions.hit = reply.hitEnemy;
+        //DoConditionalCardEffects(card, conditions);
     }
 
     IEnumerator DoCard(Card card, BoardSpace targetSpace = null)
     {
-        AdditionalCardEffectReply reply = DoAdditionalCardEffects(card);
-        if (reply.stop)
+        if (card.classResourceCost > Manager.Instance.playerManager.playerResource)
         {
             ResetCards();
             yield break;
         }
-        if (targetSpace == null)
+        Manager.Instance.busy = true;
+        int r = (card.classResourceCost == -1) ? Manager.Instance.playerManager.UseAllResource() : card.repeats;
+        for (int i = 0; i < r; i++)
         {
             //Do effect of card
+            yield return StartCoroutine(IDoCardEffect(card));
 
             //Check conditional
-            CheckCardConditions(card, reply);
-            //Finish card
+            //CheckCardConditions(card);
+
+            //Do tile-effects / attacks
+            yield return StartCoroutine(IDoCardAttack(card, targetSpace));
+        }
+        
+        yield return new WaitForSeconds(cardAnimExtraTime);
+        if (card.playAdditionalCardAfterThisOne != null)
+        {
+            StartCoroutine(DoCard(card.playAdditionalCardAfterThisOne, targetSpace));
+        }
+        else
+        {
             Manager.Instance.busy = false;
             FinishCardAction();
-            yield break;
         }
-        Manager.Instance.busy = true;
-        foreach (TileEffect effect in card.tileEffects)
+        yield return null;
+    }
+
+    public IEnumerator IDoCardEffect(Card card)
+    {
+        DoAdditionalCardEffects(card);
+        yield return new WaitForSeconds(cardAnimExtraTime);
+    }
+
+    public IEnumerator IDoCardAttack(Card card, BoardSpace targetSpace = null)
+    {
+        if (card.targetAll.doThis)
         {
-            Vector2Int targetPos = effect.gridPosition;
-
-            int repetitions = (effect.repeating) ? effect.repeatCount : 1;
-
-            for (int r = 0; r < repetitions; r++)
+            List<Vector2Int> positions = Manager.Instance.enemyManager.GetEnemyPositions(card.targetAll);
+            foreach (Vector2Int space in positions)
             {
-                Vector2Int space = targetSpace.position + targetPos;
+                TileEffect effect = card.targetAll.effect;
 
                 if (effect.projectiles.Count > 0)
                 {
@@ -480,22 +497,50 @@ public class BoardManager : MonoBehaviour
                         yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
                     }
                 }
-                CheckCardConditions(card, reply);
+                yield return new WaitForSeconds(effect.repeatInterval);
+                Manager.Instance.enemyManager.KillOffEnemies();
+            }
+        }
+
+        foreach (TileEffect effect in card.tileEffects)
+        {
+            Vector2Int targetPos = effect.gridPosition;
+
+            int repetitions = (effect.repeating) ? effect.repeatCount : 1;
+
+            Vector2Int space;
+            if (targetSpace != null)
+                space = targetSpace.position + targetPos;
+            else space = new(0, 0);
+
+            for (int r = 0; r < repetitions; r++)
+            {
+                if (effect.projectiles.Count > 0)
+                {
+                    foreach (ProjectileData projectile in effect.projectiles)
+                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
+                }
+                else
+                {
+                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+                    if (enemy)
+                    {
+                        ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                        Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
+                        enemy.TakeDamage(effect.damage + response.integer);
+                    }
+                    if (enemy && effect.pushDirection != Direction.None)
+                    {
+                        Vector2Int pushDir = GetDirection(effect.pushDirection);
+                        enemy.ForceMove(pushDir, effect.pushDistance);
+                        yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
+                    }
+                }
+                Manager.Instance.enemyManager.KillOffEnemies();
                 yield return new WaitForSeconds(effect.repeatInterval);
             }
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
-        yield return new WaitForSeconds(cardAnimExtraTime);
-        if (card.playAdditionalCardAfterThisOne != null)
-        {
-            StartCoroutine(DoCard(card.playAdditionalCardAfterThisOne, targetSpace));
-        }
-        else
-        {
-            Manager.Instance.busy = false;
-            FinishCardAction();
-        }
-        yield return null;
     }
 
     public void TargetAllEnemies(bool fire, TileEffect tileEffect, StatusEffect conditionalTarget = StatusEffect.None)
