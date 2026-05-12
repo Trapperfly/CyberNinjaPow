@@ -371,6 +371,7 @@ public class BoardManager : MonoBehaviour
                 {
                     Debug.Log("Dealing base " + data.projDamage + " plus item " + response.integer + " damage");
                     enemy.TakeDamage(data.projDamage + response.integer);
+                    OnHit(heldCard);
                 }
                 else
                 {
@@ -415,13 +416,13 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    //public void DoConditionalCardEffects(Card card, CardConditions conditions) //Needs a better way to check for completions of conditions
-    //{
-    //    foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
-    //    {
-    //        cardEffect.Conditional(conditions);
-    //    }
-    //}
+    public void DoConditionalCardEffects(Card card, CardConditions conditions) //Needs a better way to check for completions of conditions
+    {
+        foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+        {
+            cardEffect.Conditional(conditions);
+        }
+    }
 
     public void CheckCardConditions(Card card)
     {
@@ -475,6 +476,7 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator IDoCardAttack(Card card, BoardSpace targetSpace = null)
     {
+        CardConditions conditions = new();
         if (card.targetAll.doThis)
         {
             List<Vector2Int> positions = Manager.Instance.enemyManager.GetEnemyPositions(card.targetAll);
@@ -482,29 +484,7 @@ public class BoardManager : MonoBehaviour
             {
                 TileEffect effect = card.targetAll.effect;
 
-                if (effect.projectiles.Count > 0)
-                {
-                    foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
-                }
-                else
-                {
-                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                    if (enemy)
-                    {
-                        ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                        Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
-                        enemy.TakeDamage(effect.damage + response.integer);
-                    }
-                    if (enemy && effect.pushDirection != Direction.None)
-                    {
-                        Vector2Int pushDir = GetDirection(effect.pushDirection);
-                        enemy.ForceMove(pushDir, effect.pushDistance);
-                        yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
-                    }
-                }
-                yield return new WaitForSeconds(effect.repeatInterval);
-                Manager.Instance.enemyManager.KillOffEnemies();
+                yield return Attack(effect, space);
             }
         }
 
@@ -521,33 +501,58 @@ public class BoardManager : MonoBehaviour
 
             for (int r = 0; r < repetitions; r++)
             {
-                if (effect.projectiles.Count > 0)
-                {
-                    foreach (ProjectileData projectile in effect.projectiles)
-                        Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
-                }
-                else
-                {
-                    EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
-                    if (enemy)
-                    {
-                        ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                        Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
-                        enemy.TakeDamage(effect.damage + response.integer);
-                    }
-                    if (enemy && effect.pushDirection != Direction.None)
-                    {
-                        Vector2Int pushDir = GetDirection(effect.pushDirection);
-                        enemy.ForceMove(pushDir, effect.pushDistance);
-                        yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
-                    }
-                }
-                Manager.Instance.enemyManager.KillOffEnemies();
-                yield return new WaitForSeconds(effect.repeatInterval);
+                yield return Attack(effect, space);
             }
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
         yield return new WaitForSeconds(cardAnimExtraTime);
+    }
+
+    public IEnumerator Attack(TileEffect effect, Vector2Int space)
+    {
+        if (effect.projectiles.Count > 0)
+        {
+            foreach (ProjectileData projectile in effect.projectiles)
+                Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
+        }
+        else
+        {
+            EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+            if (enemy)
+            {
+                ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+                Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
+                enemy.TakeDamage(effect.damage + response.integer);
+                OnHit(heldCard);
+            }
+            if (enemy && effect.pushDirection != Direction.None)
+            {
+                Vector2Int pushDir = GetDirection(effect.pushDirection);
+                enemy.ForceMove(pushDir, effect.pushDistance);
+                yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
+            }
+        }
+        if (Manager.Instance.enemyManager.KillOffEnemies() > 0) OnKill(heldCard);
+        yield return new WaitForSeconds(effect.repeatInterval);
+    }
+
+    public void OnHit(Card card, EnemyUnit unit = null)
+    {
+        CardConditions conditions = new();
+        conditions.hit = true;
+        foreach (AdditionalCardEffect effect in card.additionalCardEffects)
+        {
+            effect.Conditional(conditions);
+        }
+    }
+    public void OnKill(Card card)
+    {
+        CardConditions conditions = new();
+        conditions.killed = true;
+        foreach (AdditionalCardEffect effect in card.additionalCardEffects)
+        {
+            effect.Conditional(conditions);
+        }
     }
 
     public void TargetAllEnemies(bool fire, TileEffect tileEffect, StatusEffect conditionalTarget = StatusEffect.None)
