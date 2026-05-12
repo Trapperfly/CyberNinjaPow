@@ -94,7 +94,7 @@ public class BoardManager : MonoBehaviour
 
     void Discard()
     {
-        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, true);
+        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, 0, true);
         ResetCards();
     }
 
@@ -146,9 +146,13 @@ public class BoardManager : MonoBehaviour
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
         StartCoroutine(DoCard(heldCard, target));
     }
-    void FinishCardAction()
+    void FinishCardAction(int cost = -100)
     {
-        Manager.Instance.deckManager.DiscardOrUseCard(heldCard);
+        if (cost == -100)
+        {
+            cost = heldCard.cost;
+        }
+        Manager.Instance.deckManager.DiscardOrUseCard(heldCard, cost);
         ResetCards();
     }
 
@@ -435,7 +439,7 @@ public class BoardManager : MonoBehaviour
             yield break;
         }
         Manager.Instance.busy = true;
-        int r = (card.classResourceCost == -1) ? Manager.Instance.playerManager.UseAllResource() : card.repeats;
+        int r = (card.classResourceCost == -1) ? Manager.Instance.playerManager.playerResource : card.repeats;
         for (int i = 0; i < r; i++)
         {
             //Do effect of card
@@ -456,7 +460,8 @@ public class BoardManager : MonoBehaviour
         else
         {
             Manager.Instance.busy = false;
-            FinishCardAction();
+            int cost = (heldCard.cost == -1) ? r : heldCard.cost; 
+            FinishCardAction(cost);
         }
         yield return null;
     }
@@ -464,7 +469,8 @@ public class BoardManager : MonoBehaviour
     public IEnumerator IDoCardEffect(Card card)
     {
         DoAdditionalCardEffects(card);
-        yield return new WaitForSeconds(cardAnimExtraTime);
+        //yield return new WaitForSeconds(cardAnimExtraTime);
+        yield return null;
     }
 
     public IEnumerator IDoCardAttack(Card card, BoardSpace targetSpace = null)
@@ -541,6 +547,7 @@ public class BoardManager : MonoBehaviour
             }
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
+        yield return new WaitForSeconds(cardAnimExtraTime);
     }
 
     public void TargetAllEnemies(bool fire, TileEffect tileEffect, StatusEffect conditionalTarget = StatusEffect.None)

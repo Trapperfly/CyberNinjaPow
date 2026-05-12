@@ -840,7 +840,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 200
@@ -889,7 +889,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &473259110
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1132,6 +1132,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530564105}
   m_CullTransparentMesh: 1
+--- !u!1 &605605017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 605605018}
+  m_Layer: 5
+  m_Name: ClassResource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &605605018
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605605017}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1674500300}
+  m_Father: {fileID: 1992698361}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &733507162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2446,6 +2482,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1620275622}
   m_CullTransparentMesh: 1
+--- !u!1 &1674500299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674500300}
+  m_Layer: 5
+  m_Name: ClassResourceAmmo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1674500300
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674500299}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 605605018}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -912, y: -225}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1691502544
 GameObject:
   m_ObjectHideFlags: 0
@@ -3122,6 +3193,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4eac9463625c6c74d83a5d8cc2571828, type: 3}
   - {fileID: 21300000, guid: d6b9dd176f9f79747b4dfae83348192c, type: 3}
   - {fileID: 21300000, guid: 72c57fe511cb0c546bc60eee191e91b2, type: 3}
+  - {fileID: 21300000, guid: 97e3c7adbf48a7343a6088a79780aa82, type: 3}
   rangeSprites:
   - {fileID: 21300000, guid: 77ee9ffd134d46b49acb0339042981fd, type: 3}
   - {fileID: 21300000, guid: 35fc09040ad0cc446a379d8e67c038f3, type: 3}
@@ -3187,14 +3259,14 @@ MonoBehaviour:
   targetedPosition: {x: 0, y: 0}
   board: {fileID: 1807019440}
   waitBetweenCardActions: 0
-  cardAnimExtraTime: 1
+  cardAnimExtraTime: 0.5
   inCardAction: 0
   cardTargetingLinePrefab: {fileID: 6578924736372930683, guid: 2738d687129da3f4993d7b332675bf4f, type: 3}
   cardTargetingLine: {fileID: 0}
   discard: {fileID: 493819756}
   hoveringDiscard: 0
-  xSpace: 1.05
-  ySpace: 0.95
+  xSpace: 1.1
+  ySpace: 1.05
   draggingCard: 0
   clickingCard: 0
   dangerSymbolsParent: {fileID: 1011086006}
@@ -3282,6 +3354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
   playerResource: 0
   maxPlayerResource: 6
+  classResourceAmmo: {fileID: 1674500300}
+  ammoPrefab: {fileID: 6473908022112061586, guid: 948684f2353c1d441b78ff5aec3de5bc, type: 3}
 --- !u!1 &1925991951
 GameObject:
   m_ObjectHideFlags: 0
@@ -3450,6 +3524,7 @@ RectTransform:
   - {fileID: 975809003}
   - {fileID: 473259110}
   - {fileID: 1769222905}
+  - {fileID: 605605018}
   - {fileID: 1011086006}
   - {fileID: 1696941415}
   - {fileID: 1354788637}

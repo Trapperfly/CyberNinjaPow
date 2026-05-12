@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Deck
   deckName: BaseDeck
   cards:
-  - {fileID: 11400000, guid: 2c4cfdc20ebfb114ea43692ed4d44f95, type: 2}
+  - {fileID: 11400000, guid: 03912a11d202f9d45856ceea4e77cd19, type: 2}
   - {fileID: 11400000, guid: bf3fffee0f45cd84eb59e9b37b4809e6, type: 2}
   - {fileID: 11400000, guid: 5db8821bdf6a49f428150081af2ac455, type: 2}
   - {fileID: 11400000, guid: f721101b6eedc4a4c8592492d14fbeef, type: 2}

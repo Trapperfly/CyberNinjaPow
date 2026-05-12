@@ -54,7 +54,7 @@ public class AdditionalCardEffect
                 //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 
                 break;
             case OtherCardEffects.AddClassResource:
-                if (fire) Manager.Instance.playerManager.AddResource(amount);
+                if (fire) Manager.Instance.playerManager.ChangeResource(amount);
                 break;
             case OtherCardEffects.AddCardToHand:
                 if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, card);
@@ -80,11 +80,11 @@ public class AdditionalCardEffect
                 break;
             case ConditionalCardEffects.GainClassResourceOnKill:
                 if (conditions.killed)
-                    Manager.Instance.playerManager.AddResource(amount);
+                    Manager.Instance.playerManager.ChangeResource(amount);
                 break;
             case ConditionalCardEffects.GainClassResourceOnHit:
                 if (conditions.hit)
-                    Manager.Instance.playerManager.AddResource(amount);
+                    Manager.Instance.playerManager.ChangeResource(amount);
                 break;
             case ConditionalCardEffects.DoubleDamageOnStatus:
                 reply.damageMultiplier = 2;

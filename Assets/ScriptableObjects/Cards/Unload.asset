@@ -16,8 +16,8 @@ MonoBehaviour:
   description: Repeat X times, where X is your current Ammo. Remove all Ammo. {NI}
   artwork: {fileID: 0}
   cardTags: 05000000
-  cost: 0
-  classResourceCost: 0
+  cost: -1
+  classResourceCost: -1
   repeats: 1
   range: 4
   extraTagSlots: 1
@@ -51,4 +51,9 @@ MonoBehaviour:
     number: 0
     statusEffect: 0
   playAdditionalCardAfterThisOne: {fileID: 0}
-  additionalCardEffects: []
+  additionalCardEffects:
+  - otherEffect: 5
+    conditionalEffect: 0
+    amount: -1
+    card: {fileID: 0}
+    animationTime: 0

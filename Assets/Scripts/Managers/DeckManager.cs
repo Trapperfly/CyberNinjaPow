@@ -156,7 +156,9 @@ public class DeckManager : MonoBehaviour
         cardObject.cardName.text = card.cardName;
         cardObject.cardDescription.text = card.description;
         cardObject.art.sprite = card.artwork;
-        cardObject.time.GetComponent<Image>().sprite = timeSprites[card.cost];
+        if (card.cost < 0) { cardObject.time.GetComponent<Image>().sprite = timeSprites[timeSprites.Count - 1]; }
+        else
+            cardObject.time.GetComponent<Image>().sprite = timeSprites[card.cost];
         cardObject.range.GetComponent<Image>().sprite = rangeSprites[(int)card.range];
         cardObject.tags.GetComponent<Image>().sprite = tagHolderSprites[card.extraTagSlots + card.cardTags.Count];
         cardObject.card = card;
@@ -191,7 +193,7 @@ public class DeckManager : MonoBehaviour
         return cardGO;
     }
 
-    public void AlignCards(int offset = 0)
+    public void AlignCards()
     {
         if (hand.Count == 0) return;
 
@@ -277,7 +279,7 @@ public class DeckManager : MonoBehaviour
             discard.RemoveAt(selected);
         }
     }
-    public void DiscardOrUseCard(Card card, bool discardTheCard = false)
+    public void DiscardOrUseCard(Card card, int cost, bool discardTheCard = false)
     {
         discard.Add(card);
 
@@ -288,7 +290,7 @@ public class DeckManager : MonoBehaviour
 
         AlignCards();
 
-        if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(card.cost);
+        if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(cost);
     }
 
     //public void DiscardRandomHandCard(int amount = 1)
