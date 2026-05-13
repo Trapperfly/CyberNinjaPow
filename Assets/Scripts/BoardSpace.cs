@@ -10,6 +10,7 @@ public class BoardSpace : MonoBehaviour
     public GameObject cardTargeting;
     public GameObject cardAvailableTargeting;
     public GameObject enemyTargeting;
+    public GameObject projectileTargeting;
     public void Colorize(GridSpaceSelection selectionMethod, int damageOnTile = 0)
     {
         switch (selectionMethod)
@@ -18,6 +19,10 @@ public class BoardSpace : MonoBehaviour
                 cardTargeting.SetActive(false);
                 enemyTargeting.SetActive(false);
                 cardAvailableTargeting.SetActive(false);
+                foreach (Transform child in projectileTargeting.transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
                 Clear();
                 break;
 
@@ -54,6 +59,24 @@ public class BoardSpace : MonoBehaviour
             case GridSpaceSelection.CardAvailableTargeting:
                 cardAvailableTargeting.SetActive(true);
                 break;
+            case GridSpaceSelection.EnemyProjectileVertical:
+                projectileTargeting.transform.GetChild(0).gameObject.SetActive(true);
+                break;
+            case GridSpaceSelection.EnemyProjectileHorizontal:
+                projectileTargeting.transform.GetChild(1).gameObject.SetActive(true);
+                break;
+            case GridSpaceSelection.EnemyProjectileDiagonal:
+                projectileTargeting.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            case GridSpaceSelection.PlayerProjectileVertical:
+                projectileTargeting.transform.GetChild(3).gameObject.SetActive(true);
+                break;
+            case GridSpaceSelection.PlayerProjectileHorizontal:
+                projectileTargeting.transform.GetChild(4).gameObject.SetActive(true);
+                break;
+            case GridSpaceSelection.PlayerProjectileDiagonal:
+                projectileTargeting.transform.GetChild(5).gameObject.SetActive(true);
+                break;
             default:
                 break;
         }
@@ -70,5 +93,10 @@ public enum GridSpaceSelection
     CardTargeting,
     EnemyAttack,
     CardAvailableTargeting,
-
+    EnemyProjectileVertical,
+    EnemyProjectileHorizontal,
+    EnemyProjectileDiagonal,
+    PlayerProjectileVertical,
+    PlayerProjectileHorizontal,
+    PlayerProjectileDiagonal,
 }

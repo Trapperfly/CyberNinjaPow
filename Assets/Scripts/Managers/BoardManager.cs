@@ -381,7 +381,21 @@ public class BoardManager : MonoBehaviour
                 if (data.pierce == 0) break;
                 else data.pierce--;
             }
-
+            else
+            {
+                if (source == GridSpaceSelection.EnemyAttack)
+                {
+                    if (dirVector.x == 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.EnemyProjectileVertical);
+                    if (dirVector.x != 0 && dirVector.y == 0) targetedSpace.Colorize(GridSpaceSelection.EnemyProjectileHorizontal);
+                    if (dirVector.x != 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.EnemyProjectileDiagonal);
+                }
+                if (source == GridSpaceSelection.CardTargeting)
+                {
+                    if (dirVector.x == 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.PlayerProjectileVertical);
+                    if (dirVector.x != 0 && dirVector.y == 0) targetedSpace.Colorize(GridSpaceSelection.PlayerProjectileHorizontal);
+                    if (dirVector.x != 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.PlayerProjectileDiagonal);
+                }
+            }
         }
     }
 
