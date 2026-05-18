@@ -369,9 +369,9 @@ public class BoardManager : MonoBehaviour
 
                 if (fire)
                 {
-                    Debug.Log("Dealing base " + data.projDamage + " plus item " + response.integer + " damage");
-                    enemy.TakeDamage(data.projDamage + response.integer);
-                    OnHit(heldCard);
+                    int bonusDamage = OnHit(data.projDamage + response.integer, heldCard);
+                    Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
+                    enemy.TakeDamage(data.projDamage + response.integer + bonusDamage);
                 }
                 else
                 {
@@ -535,9 +535,9 @@ public class BoardManager : MonoBehaviour
             if (enemy)
             {
                 ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " damage");
+                int bobnusDamage = OnHit(effect.damage + response.integer, heldCard);
+                Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " plus card " + bobnusDamage + " damage");
                 enemy.TakeDamage(effect.damage + response.integer);
-                OnHit(heldCard);
             }
             if (enemy && effect.pushDirection != Direction.None)
             {
@@ -550,14 +550,19 @@ public class BoardManager : MonoBehaviour
         yield return new WaitForSeconds(effect.repeatInterval);
     }
 
-    public void OnHit(Card card, EnemyUnit unit = null)
+    public int OnHit(int damage, Card card, EnemyUnit unit = null)
     {
         CardConditions conditions = new();
         conditions.hit = true;
+        conditions.rawDamage = damage;
+
+        int bonusDamage = 0;
+
         foreach (AdditionalCardEffect effect in card.additionalCardEffects)
         {
-            effect.Conditional(conditions);
+            bonusDamage += effect.Conditional(conditions);
         }
+        return bonusDamage;
     }
     public void OnKill(Card card)
     {

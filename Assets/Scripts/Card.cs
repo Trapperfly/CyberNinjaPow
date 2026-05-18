@@ -71,9 +71,9 @@ public class AdditionalCardEffect
         return reply;
     }
 
-    public AdditionalCardEffectReply Conditional(CardConditions conditions)
+    public int Conditional(CardConditions conditions)
     {
-        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
+        int bonusDamage = 0;
         switch (conditionalEffect)
         {
             case ConditionalCardEffects.None:
@@ -87,12 +87,14 @@ public class AdditionalCardEffect
                     Manager.Instance.playerManager.ChangeResource(amount);
                 break;
             case ConditionalCardEffects.DoubleDamageOnStatus:
-                reply.damageMultiplier = 2;
+                if (conditions.enemy == null) return 0;
+                else
+                    bonusDamage = conditions.rawDamage;
                 break;
             default:
                 break;
         }
-        return reply;
+        return bonusDamage;
     }
 }
 [System.Serializable]
@@ -117,9 +119,10 @@ public enum TargetAllCondition
 
 public class CardConditions
 {
+    public EnemyUnit enemy;
     public bool killed = false;
     public bool hit = false;
-
+    public int rawDamage;
 }
 
 public class AdditionalCardEffectReply
