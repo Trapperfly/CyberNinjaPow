@@ -71,7 +71,7 @@ public class AdditionalCardEffect
         return reply;
     }
 
-    public int Conditional(CardConditions conditions)
+    public int Conditional(CardConditions conditions, AdditionalCardEffect additionalCardEffect = null)
     {
         int bonusDamage = 0;
         switch (conditionalEffect)
@@ -91,6 +91,24 @@ public class AdditionalCardEffect
                 else
                     bonusDamage = conditions.rawDamage;
                 break;
+            case ConditionalCardEffects.PlayCardOnHitLocation:
+                Debug.Log(conditions.hit);
+                Debug.Log(conditions.enemy);
+                Debug.Log(additionalCardEffect);
+                if (conditions.hit && conditions.enemy && additionalCardEffect != null)
+                {
+                    Manager.Instance.boardManager.spaces.TryGetValue(conditions.enemy.position, out BoardSpace target);
+                    if (target)
+                    {
+                        CardTargeting targeting = new();
+                        targeting.card = additionalCardEffect.card;
+                        targeting.boardSpace = target;
+                        Manager.Instance.boardManager.additionalCardQueue.Add(targeting);
+                    }
+                }
+                break;
+            case ConditionalCardEffects.PlayCardOnHitSameTargeting:
+                break;
             default:
                 break;
         }
@@ -105,6 +123,12 @@ public class TargetAll
     public TargetAllCondition condition;
     public int number;
     public StatusEffect statusEffect;
+}
+
+public class CardTargeting
+{
+    public Card card;
+    public BoardSpace boardSpace;
 }
 
 public enum TargetAllCondition
@@ -153,6 +177,8 @@ public enum ConditionalCardEffects
     None,
     GainClassResourceOnKill,
     GainClassResourceOnHit,
+    PlayCardOnHitLocation,
+    PlayCardOnHitSameTargeting,
     DoubleDamageOnStatus,
 }
 

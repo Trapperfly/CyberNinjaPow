@@ -17,6 +17,8 @@ public class BoardManager : MonoBehaviour
     public float cardAnimExtraTime;
     public bool inCardAction = false;
 
+    public List<CardTargeting> additionalCardQueue = new();
+
     public GameObject cardTargetingLinePrefab;
     public GameObject cardTargetingLine;
 
@@ -144,7 +146,7 @@ public class BoardManager : MonoBehaviour
     {
         inCardAction = true;
         spaces.TryGetValue(targetedPosition, out BoardSpace target);
-        StartCoroutine(DoCard(heldCard, target));
+        DoCard(heldCard, target);
     }
     void FinishCardAction(int cost = -100)
     {
@@ -369,7 +371,7 @@ public class BoardManager : MonoBehaviour
 
                 if (fire)
                 {
-                    int bonusDamage = OnHit(data.projDamage + response.integer, heldCard);
+                    int bonusDamage = OnHit(data.projDamage + response.integer, heldCard, enemy);
                     Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
                     enemy.TakeDamage(data.projDamage + response.integer + bonusDamage);
                 }
@@ -446,7 +448,12 @@ public class BoardManager : MonoBehaviour
         //DoConditionalCardEffects(card, conditions);
     }
 
-    IEnumerator DoCard(Card card, BoardSpace targetSpace = null)
+    public void DoCard(Card card, BoardSpace targetSpace = null)
+    {
+        StartCoroutine(IDoCard(card, true, targetSpace));
+    }
+
+    IEnumerator IDoCard(Card card, bool finishAction = false, BoardSpace targetSpace = null)
     {
         if (card.classResourceCost > Manager.Instance.playerManager.playerResource)
         {
@@ -466,13 +473,21 @@ public class BoardManager : MonoBehaviour
             //Do tile-effects / attacks
             yield return StartCoroutine(IDoCardAttack(card, targetSpace));
         }
-        
+
         yield return new WaitForSeconds(cardAnimExtraTime);
+        if (finishAction) 
+            for (int i = 0; i < additionalCardQueue.Count; i++)
+            {
+                CardTargeting ct = additionalCardQueue[i];
+                Debug.Log("Playing additional Card");
+                yield return StartCoroutine(IDoCard(ct.card, ct.boardSpace));
+            }
+        additionalCardQueue.Clear();
         if (card.playAdditionalCardAfterThisOne != null)
         {
-            StartCoroutine(DoCard(card.playAdditionalCardAfterThisOne, targetSpace));
+            yield return StartCoroutine(IDoCard(card.playAdditionalCardAfterThisOne, targetSpace));
         }
-        else
+        if (finishAction)
         {
             Manager.Instance.busy = false;
             int cost = (heldCard.cost == -1) ? r : heldCard.cost; 
@@ -535,8 +550,8 @@ public class BoardManager : MonoBehaviour
             if (enemy)
             {
                 ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                int bobnusDamage = OnHit(effect.damage + response.integer, heldCard);
-                Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " plus card " + bobnusDamage + " damage");
+                int bonusDamage = OnHit(effect.damage + response.integer, heldCard, enemy);
+                Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
                 enemy.TakeDamage(effect.damage + response.integer);
             }
             if (enemy && effect.pushDirection != Direction.None)
@@ -555,12 +570,13 @@ public class BoardManager : MonoBehaviour
         CardConditions conditions = new();
         conditions.hit = true;
         conditions.rawDamage = damage;
+        conditions.enemy = unit;
 
         int bonusDamage = 0;
 
         foreach (AdditionalCardEffect effect in card.additionalCardEffects)
         {
-            bonusDamage += effect.Conditional(conditions);
+            bonusDamage += effect.Conditional(conditions, effect);
         }
         return bonusDamage;
     }
