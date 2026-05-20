@@ -18,6 +18,8 @@ public class EnemyManager : MonoBehaviour
     public List<EnemyUnit> actingEnemies = new();
     public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
 
+    public Dictionary<Vector2Int, Sprite> healthSprites = new();
+
     public float yOffset;
     public int timeOffset;
 
@@ -29,6 +31,17 @@ public class EnemyManager : MonoBehaviour
 
     public float bobbing;
     public float bobbingSpeed;
+
+    private void Start()
+    {
+        var loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Health/HP");
+        foreach (Sprite sprite in loaded)
+        {
+            int x = Mathf.RoundToInt(sprite.rect.x / 9);
+            int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 9) / 9);
+            healthSprites.Add(new Vector2Int(x, y), sprite);
+        }
+    }
 
     public EnemyUnit GetBlackBoardVariable(GameObject gameObject)
     {

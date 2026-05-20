@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class EnemyUnit : MonoBehaviour
 {
@@ -245,6 +246,7 @@ public class EnemyUnit : MonoBehaviour
 
     void CreateHealthBar()
     {
+        Sprite sprite;
         for (int p = 0; p < enemy.phases.Count; p++)
         {
             for (int h = 0; h < enemy.phases[p].health; h++)
@@ -253,31 +255,34 @@ public class EnemyUnit : MonoBehaviour
                 {
                     if (p == 0 && h == 0) //Start of healthbar
                     {
-                        Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = healthSprites[0];
+                        enemyManager.healthSprites.TryGetValue(new(0,0), out sprite);
                     }
                     else if (enemy.phases.Count == 1 && h == enemy.phases[p].health - 1) //End of health bar if 1 phase only
                     {
-                        Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = healthSprites[2];
+                        enemyManager.healthSprites.TryGetValue(new(2, 0), out sprite);
                     }
-                    else Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = healthSprites[1];
+                    else enemyManager.healthSprites.TryGetValue(new(1, 0), out sprite);
                 }
                 else
                 {
                     if (p == enemy.phases.Count - 1 && h == enemy.phases[p].health - 1) //End of health bar
                     {
-                        Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = healthSprites[5];
+                        enemyManager.healthSprites.TryGetValue(new(4, 0), out sprite);
                     }
-                    else Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = healthSprites[4];
+                    enemyManager.healthSprites.TryGetValue(new(3, 0), out sprite);
                 }
+                Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = sprite;
             }
+            enemyManager.healthSprites.TryGetValue(new(0, 6), out sprite);
             if (p != enemy.phases.Count - 1)
-                Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = healthSprites[3]; //Gate
+                Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = sprite; //Gate
         }
 
         AlignHealthBar();
     }
     void BreakPhase()
     {
+        Sprite sprite;
         for (int i = 0; i < enemy.phases[phase].health + 1; i++)
         {
             GameObject o = healthParent.GetChild(i).gameObject;
@@ -288,25 +293,28 @@ public class EnemyUnit : MonoBehaviour
         for (int i = 0; i < enemy.phases[phase + 1].health; i++)
         {
             if (i == 0)
-                healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = healthSprites[0]; //first segment
+                enemyManager.healthSprites.TryGetValue(new(0, 0), out sprite); //first segment
             else if (phase == enemy.phases.Count - 1 && enemy.phases[phase].health == i)
-                healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = healthSprites[2]; //end segment
+                enemyManager.healthSprites.TryGetValue(new(2, 0), out sprite); //end segment
             else
-                healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = healthSprites[1]; //mid segment
+                enemyManager.healthSprites.TryGetValue(new(1, 0), out sprite); //mid segment
+            healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = sprite;
         }
         AlignHealthBar();
     }
     void SetHealthBar()
     {
+        Sprite sprite;
         if (damageTaken > enemy.phases[phase].health) damageTaken = enemy.phases[phase].health;
         for (int i = 0; i < damageTaken; i++)
         {
             if (i == 0)
-                healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = healthSprites[6]; //damaged first segment
-            else if (enemy.phases[phase].health == i) 
-                healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = healthSprites[8]; //damaged end segment
-            else 
-                healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = healthSprites[7]; //damaged mid segment
+                enemyManager.healthSprites.TryGetValue(new(5, 0), out sprite); //damaged first segment
+            else if (enemy.phases[phase].health == i)
+                enemyManager.healthSprites.TryGetValue(new(7, 0), out sprite); //damaged end segment
+            else
+                enemyManager.healthSprites.TryGetValue(new(6, 0), out sprite); //damaged mid segment
+            healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite = sprite;
         }
         AlignHealthBar();
     }
