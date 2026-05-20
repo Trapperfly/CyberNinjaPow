@@ -622,16 +622,13 @@ public class BoardManager : MonoBehaviour
             switch (heldCard.range)
             {
                 case Range.Anywhere:
-                    keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
                     break;
                 case Range.Melee:
                     if (keyValue.Key.y <= 1) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
                     break;
                 case Range.Ranged:
-                    if (keyValue.Key.y > 1 && keyValue.Key.y < 4) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
                     break;
                 case Range.Rear:
-                    if (keyValue.Key.y > 3) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
                     break;
                 case Range.Projectile:
                     if (keyValue.Key.y == 0) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
