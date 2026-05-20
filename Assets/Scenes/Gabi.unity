@@ -3261,6 +3261,7 @@ MonoBehaviour:
   waitBetweenCardActions: 0
   cardAnimExtraTime: 0.5
   inCardAction: 0
+  additionalCardQueue: []
   cardTargetingLinePrefab: {fileID: 6578924736372930683, guid: 2738d687129da3f4993d7b332675bf4f, type: 3}
   cardTargetingLine: {fileID: 0}
   targetingSprites:
