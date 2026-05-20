@@ -2171,7 +2171,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.4
+  orthographic size: 7.2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3263,6 +3263,21 @@ MonoBehaviour:
   inCardAction: 0
   cardTargetingLinePrefab: {fileID: 6578924736372930683, guid: 2738d687129da3f4993d7b332675bf4f, type: 3}
   cardTargetingLine: {fileID: 0}
+  targetingSprites:
+  - {fileID: 21300000, guid: 8a8796feed898a642a42ebdf76e7d504, type: 3}
+  - {fileID: 21300000, guid: 91710fe1ab27e1345b70426567395504, type: 3}
+  - {fileID: 21300000, guid: d104a01528477354fa8007eea47c1fb2, type: 3}
+  - {fileID: -7253593945976386838, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
+  projectileDisplays:
+  - {fileID: 21300000, guid: 95d6e7cc0c5d75a43bf3426be27ebd61, type: 3}
+  - {fileID: 21300000, guid: de7150f9d4a64be47b0d700d3ebbc8cb, type: 3}
+  - {fileID: 21300000, guid: d88c7b9aa9a08ac418af0a29f4b962ae, type: 3}
+  - {fileID: 21300000, guid: 5f9a059387c826a4194891eae1c1f4ff, type: 3}
+  - {fileID: 21300000, guid: dfefd87b8377c3a4e97ac1273da6613b, type: 3}
+  - {fileID: 21300000, guid: c83825cbd895a9f4797a20ee08b347e5, type: 3}
+  - {fileID: 21300000, guid: 8b468949d8fd377498fea5aa9b532d0b, type: 3}
+  - {fileID: 21300000, guid: 15f5362809b19204f80d2c5f8c1bd22f, type: 3}
+  - {fileID: 21300000, guid: ff511a4b32bcd584e9f5ed20ba9ef250, type: 3}
   discard: {fileID: 493819756}
   hoveringDiscard: 0
   xSpace: 1.1

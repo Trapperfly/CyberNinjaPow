@@ -7,79 +7,92 @@ public class BoardSpace : MonoBehaviour
 
     public GameObject damage;
 
-    public GameObject cardTargeting;
-    public GameObject cardAvailableTargeting;
-    public GameObject enemyTargeting;
+    public GameObject targetDisplay;
     public GameObject projectileTargeting;
     public void Colorize(GridSpaceSelection selectionMethod, int damageOnTile = 0)
     {
+        SpriteRenderer renderer = targetDisplay.transform.GetChild(0).GetComponent<SpriteRenderer>();
         switch (selectionMethod)
         {
             case GridSpaceSelection.None:
-                cardTargeting.SetActive(false);
-                enemyTargeting.SetActive(false);
-                cardAvailableTargeting.SetActive(false);
-                foreach (Transform child in projectileTargeting.transform)
-                {
-                    child.gameObject.SetActive(false);
-                }
+                targetDisplay.SetActive(false);
+                projectileTargeting.SetActive(false);
                 Clear();
                 break;
 
             case GridSpaceSelection.CardTargeting:
-                cardTargeting.SetActive(true);
+                renderer.sprite = Manager.Instance.boardManager.targetingSprites[0];
 
-                if (damage != null)
-                {
-                    //Destroy(damage);
-                    damage.GetComponent<TMP_Text>().text += "+" + damageOnTile.ToString();
-                    return;
-                }
-                if (damageOnTile == 0) return;
-                damage = Instantiate(Manager.Instance.boardManager.damageNumberForTilePrefab, Manager.Instance.boardManager.boardInformation);
-                damage.transform.position = Camera.main.WorldToScreenPoint(transform.position) + (Vector3)Manager.Instance.boardManager.damageNumberOffset;
+                targetDisplay.SetActive(true);
 
-                damage.GetComponent<TMP_Text>().text = damageOnTile.ToString();
+                AddDamageNumber(damageOnTile);
                 break;
             case GridSpaceSelection.EnemyAttack:
-                enemyTargeting.SetActive(true);
+                renderer.sprite = Manager.Instance.boardManager.targetingSprites[1];
 
-                if (damage != null)
-                {
-                    //Destroy(damage);
-                    damage.GetComponent<TMP_Text>().text += "+" + damageOnTile.ToString();
-                    return;
-                }
-                if (damageOnTile == 0) return;
-                damage = Instantiate(Manager.Instance.boardManager.damageNumberForTilePrefab, Manager.Instance.boardManager.boardInformation);
-                damage.transform.position = Camera.main.WorldToScreenPoint(transform.position) + (Vector3)Manager.Instance.boardManager.damageNumberOffset;
+                targetDisplay.SetActive(true);
 
-                damage.GetComponent<TMP_Text>().text = damageOnTile.ToString();
+                AddDamageNumber(damageOnTile);
+                break;
+            case GridSpaceSelection.AllyAttack:
+                renderer.sprite = Manager.Instance.boardManager.targetingSprites[2];
+
+                targetDisplay.SetActive(true);
+
+                AddDamageNumber(damageOnTile);
                 break;
             case GridSpaceSelection.CardAvailableTargeting:
-                cardAvailableTargeting.SetActive(true);
-                break;
-            case GridSpaceSelection.EnemyProjectileVertical:
-                projectileTargeting.transform.GetChild(0).gameObject.SetActive(true);
-                break;
-            case GridSpaceSelection.EnemyProjectileHorizontal:
-                projectileTargeting.transform.GetChild(1).gameObject.SetActive(true);
-                break;
-            case GridSpaceSelection.EnemyProjectileDiagonal:
-                projectileTargeting.transform.GetChild(2).gameObject.SetActive(true);
-                break;
-            case GridSpaceSelection.PlayerProjectileVertical:
-                projectileTargeting.transform.GetChild(3).gameObject.SetActive(true);
-                break;
-            case GridSpaceSelection.PlayerProjectileHorizontal:
-                projectileTargeting.transform.GetChild(4).gameObject.SetActive(true);
-                break;
-            case GridSpaceSelection.PlayerProjectileDiagonal:
-                projectileTargeting.transform.GetChild(5).gameObject.SetActive(true);
+                renderer.sprite = Manager.Instance.boardManager.targetingSprites[3];
+
+                targetDisplay.SetActive(true);
                 break;
             default:
                 break;
         }
+    }
+
+    public void AddDamageNumber(int damageOnTile)
+    {
+        if (damage != null)
+        {
+            //Destroy(damage);
+            damage.GetComponent<TMP_Text>().text += "+" + damageOnTile.ToString();
+            return;
+        }
+        if (damageOnTile == 0) return;
+        damage = Instantiate(Manager.Instance.boardManager.damageNumberForTilePrefab, Manager.Instance.boardManager.boardInformation);
+        damage.transform.position = Camera.main.WorldToScreenPoint(transform.position) + (Vector3)Manager.Instance.boardManager.damageNumberOffset;
+
+        damage.GetComponent<TMP_Text>().text = damageOnTile.ToString();
+    }
+
+    public void RangedColorize(Vector2Int rangedDirection, GridSpaceSelection source, int damageOnTile = 0)
+    {
+        SpriteRenderer renderer = projectileTargeting.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        if (source == GridSpaceSelection.EnemyAttack)
+        {
+            if (rangedDirection.x == 0 && rangedDirection.y != 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[0];
+            if (rangedDirection.x != 0 && rangedDirection.y == 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[1];
+            if (rangedDirection.x != 0 && rangedDirection.y != 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[2];
+
+        }
+        if (source == GridSpaceSelection.CardTargeting)
+        {
+            if (rangedDirection.x == 0 && rangedDirection.y != 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[3];
+            if (rangedDirection.x != 0 && rangedDirection.y == 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[4];
+            if (rangedDirection.x != 0 && rangedDirection.y != 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[5];
+        }
+        if (source == GridSpaceSelection.AllyAttack)
+        {
+            if (rangedDirection.x == 0 && rangedDirection.y != 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[6];
+            if (rangedDirection.x != 0 && rangedDirection.y == 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[7];
+            if (rangedDirection.x != 0 && rangedDirection.y != 0) renderer.sprite = Manager.Instance.boardManager.projectileDisplays[8];
+        }
+        if ((rangedDirection.x < 0 && rangedDirection.y < 0) || (rangedDirection.x > 0 && rangedDirection.y > 0))
+            renderer.flipX = false;
+        else
+            renderer.flipX = true;
+        projectileTargeting.SetActive(true);
     }
 
     public void Clear()
@@ -92,11 +105,6 @@ public enum GridSpaceSelection
     None,
     CardTargeting,
     EnemyAttack,
+    AllyAttack,
     CardAvailableTargeting,
-    EnemyProjectileVertical,
-    EnemyProjectileHorizontal,
-    EnemyProjectileDiagonal,
-    PlayerProjectileVertical,
-    PlayerProjectileHorizontal,
-    PlayerProjectileDiagonal,
 }

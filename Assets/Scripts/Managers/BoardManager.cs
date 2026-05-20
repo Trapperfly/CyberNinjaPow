@@ -22,6 +22,9 @@ public class BoardManager : MonoBehaviour
     public GameObject cardTargetingLinePrefab;
     public GameObject cardTargetingLine;
 
+    public List<Sprite> targetingSprites = new();
+    public List<Sprite> projectileDisplays = new();
+
     public GameObject discard;
     public bool hoveringDiscard;
 
@@ -344,7 +347,6 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < 10; i++)
         {
-            space += dirVector;
             if (space.y < 0)
             {
                 if (!fire && source == GridSpaceSelection.EnemyAttack)
@@ -385,19 +387,9 @@ public class BoardManager : MonoBehaviour
             }
             else
             {
-                if (source == GridSpaceSelection.EnemyAttack)
-                {
-                    if (dirVector.x == 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.EnemyProjectileVertical);
-                    if (dirVector.x != 0 && dirVector.y == 0) targetedSpace.Colorize(GridSpaceSelection.EnemyProjectileHorizontal);
-                    if (dirVector.x != 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.EnemyProjectileDiagonal);
-                }
-                if (source == GridSpaceSelection.CardTargeting)
-                {
-                    if (dirVector.x == 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.PlayerProjectileVertical);
-                    if (dirVector.x != 0 && dirVector.y == 0) targetedSpace.Colorize(GridSpaceSelection.PlayerProjectileHorizontal);
-                    if (dirVector.x != 0 && dirVector.y != 0) targetedSpace.Colorize(GridSpaceSelection.PlayerProjectileDiagonal);
-                }
+                targetedSpace.RangedColorize(dirVector, source);
             }
+            space += dirVector;
         }
     }
 
