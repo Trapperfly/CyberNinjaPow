@@ -75,9 +75,4 @@ MonoBehaviour:
     number: 0
     statusEffect: 0
   playAdditionalCardAfterThisOne: {fileID: 0}
-  additionalCardEffects:
-  - otherEffect: 0
-    conditionalEffect: 0
-    amount: 0
-    card: {fileID: 0}
-    animationTime: 0
+  additionalCardEffects: []

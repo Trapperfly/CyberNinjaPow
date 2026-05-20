@@ -92,11 +92,12 @@ public class AdditionalCardEffect
                     bonusDamage = conditions.rawDamage;
                 break;
             case ConditionalCardEffects.PlayCardOnHitLocation:
-                Debug.Log(conditions.hit);
-                Debug.Log(conditions.enemy);
-                Debug.Log(additionalCardEffect);
+                //Debug.Log(conditions.hit);
+                //Debug.Log(conditions.enemy);
+                //Debug.Log(additionalCardEffect);
                 if (conditions.hit && conditions.enemy && additionalCardEffect != null)
                 {
+                    Debug.Log("Adding card to queue due to all checks being positive (" + additionalCardEffect + conditions.enemy + conditions.hit + ")");
                     Manager.Instance.boardManager.spaces.TryGetValue(conditions.enemy.position, out BoardSpace target);
                     if (target)
                     {
@@ -124,7 +125,7 @@ public class TargetAll
     public int number;
     public StatusEffect statusEffect;
 }
-
+[System.Serializable]
 public class CardTargeting
 {
     public Card card;

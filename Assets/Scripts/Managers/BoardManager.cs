@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
 using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.Audio.ProcessorInstance;
 
 public class BoardManager : MonoBehaviour
 {
@@ -115,7 +117,7 @@ public class BoardManager : MonoBehaviour
             if (target.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in target.projectiles)
-                    Projectile(false, GridSpaceSelection.EnemyAttack, origin + target.gridPosition, projectile);
+                    Projectile(false, GridSpaceSelection.EnemyAttack, origin + target.gridPosition, projectile, heldCard);
             }
             else
             {
@@ -265,7 +267,7 @@ public class BoardManager : MonoBehaviour
             if (effect.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in effect.projectiles)
-                    Projectile(false, GridSpaceSelection.CardTargeting, space, projectile);
+                    Projectile(false, GridSpaceSelection.CardTargeting, space, projectile, heldCard);
             }
             else
             {
@@ -287,7 +289,7 @@ public class BoardManager : MonoBehaviour
             if (effect.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in effect.projectiles)
-                    Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
+                    Projectile(true, GridSpaceSelection.CardTargeting, space, projectile, heldCard);
             }
             else
             {
@@ -334,7 +336,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, ProjectileData projectile, Card damageCard = null)
+    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, ProjectileData projectile, Card card = null, Card damageCard = null)
     {
         Vector2Int space = origin;
         ProjectileData data = new();
@@ -367,21 +369,30 @@ public class BoardManager : MonoBehaviour
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
-                ItemResponse response = new();
-                if (source == GridSpaceSelection.CardTargeting)
-                    response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-
-                if (fire)
+                if (source == GridSpaceSelection.EnemyAttack || source == GridSpaceSelection.AllyAttack)
                 {
-                    int bonusDamage = OnHit(data.projDamage + response.integer, heldCard, enemy);
-                    Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
-                    enemy.TakeDamage(data.projDamage + response.integer + bonusDamage);
+                    if (fire)
+                        enemy.TakeDamage(data.projDamage);
+                    else
+                        targetedSpace.Colorize(source, data.projDamage);
                 }
                 else
                 {
-                    targetedSpace.Colorize(source, data.projDamage + response.integer);
-                }
+                    ItemResponse response = new();
+                    if (source == GridSpaceSelection.CardTargeting)
+                        response = Manager.Instance.itemManager.TriggerOnHit(enemy);
 
+                    if (fire)
+                    {
+                        int bonusDamage = OnHit(data.projDamage + response.integer, card, enemy);
+                        Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
+                        enemy.TakeDamage(data.projDamage);
+                    }
+                    else
+                    {
+                        targetedSpace.Colorize(source, data.projDamage + response.integer);
+                    }
+                }
                 if (data.pierce == 0) break;
                 else data.pierce--;
             }
@@ -467,20 +478,20 @@ public class BoardManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(cardAnimExtraTime);
-        if (finishAction) 
-            for (int i = 0; i < additionalCardQueue.Count; i++)
-            {
-                CardTargeting ct = additionalCardQueue[i];
-                Debug.Log("Playing additional Card");
-                yield return StartCoroutine(IDoCard(ct.card, ct.boardSpace));
-            }
-        additionalCardQueue.Clear();
+
         if (card.playAdditionalCardAfterThisOne != null)
         {
-            yield return StartCoroutine(IDoCard(card.playAdditionalCardAfterThisOne, targetSpace));
+            yield return StartCoroutine(IDoCard(card.playAdditionalCardAfterThisOne, false, targetSpace));
         }
         if (finishAction)
         {
+            for (int i = 0; i < additionalCardQueue.Count; i++)
+            {
+                CardTargeting ct = additionalCardQueue[i];
+                yield return StartCoroutine(IDoCard(ct.card, false, ct.boardSpace));
+            }
+            additionalCardQueue.Clear();
+
             Manager.Instance.busy = false;
             int cost = (heldCard.cost == -1) ? r : heldCard.cost; 
             FinishCardAction(cost);
@@ -505,7 +516,7 @@ public class BoardManager : MonoBehaviour
             {
                 TileEffect effect = card.targetAll.effect;
 
-                yield return Attack(effect, space);
+                yield return Attack(card, effect, space);
             }
         }
 
@@ -522,19 +533,19 @@ public class BoardManager : MonoBehaviour
 
             for (int r = 0; r < repetitions; r++)
             {
-                yield return Attack(effect, space);
+                yield return Attack(card, effect, space);
             }
             yield return new WaitForSeconds(waitBetweenCardActions);
         }
         yield return new WaitForSeconds(cardAnimExtraTime);
     }
 
-    public IEnumerator Attack(TileEffect effect, Vector2Int space)
+    public IEnumerator Attack(Card card, TileEffect effect, Vector2Int space)
     {
         if (effect.projectiles.Count > 0)
         {
             foreach (ProjectileData projectile in effect.projectiles)
-                Projectile(true, GridSpaceSelection.CardTargeting, space, projectile);
+                Projectile(true, GridSpaceSelection.CardTargeting, space, projectile, card);
         }
         else
         {
@@ -542,7 +553,7 @@ public class BoardManager : MonoBehaviour
             if (enemy)
             {
                 ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-                int bonusDamage = OnHit(effect.damage + response.integer, heldCard, enemy);
+                int bonusDamage = OnHit(effect.damage + response.integer, card, enemy);
                 Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
                 enemy.TakeDamage(effect.damage + response.integer);
             }
