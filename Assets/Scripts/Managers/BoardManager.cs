@@ -456,7 +456,7 @@ public class BoardManager : MonoBehaviour
         StartCoroutine(IDoCard(card, true, targetSpace));
     }
 
-    IEnumerator IDoCard(Card card, bool finishAction = false, BoardSpace targetSpace = null)
+    IEnumerator IDoCard(Card card, bool firstCard, BoardSpace targetSpace = null)
     {
         if (card.classResourceCost > Manager.Instance.playerManager.playerResource)
         {
@@ -483,7 +483,7 @@ public class BoardManager : MonoBehaviour
         {
             yield return StartCoroutine(IDoCard(card.playAdditionalCardAfterThisOne, false, targetSpace));
         }
-        if (finishAction)
+        if (firstCard)
         {
             for (int i = 0; i < additionalCardQueue.Count; i++)
             {
