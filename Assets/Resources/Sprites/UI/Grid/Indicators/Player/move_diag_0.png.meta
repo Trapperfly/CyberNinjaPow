@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: eb051de55c9181b4987d42d290217144
+guid: 1696afa9a0365a44588e41db3265e9fe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5735559937691550626
-    second: move_hori_0_0
+      213: 1562601076212280490
+    second: move_diag_0_0
   - first:
-      213: -1458272145293598273
-    second: move_hori_0_1
+      213: -40399355939779333
+    second: move_diag_0_1
   - first:
-      213: -8416833770830037708
-    second: move_hori_0_2
+      213: -8556033326788243014
+    second: move_diag_0_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: move_hori_0_0
+      name: move_diag_0_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 17
+        x: 0
+        y: 16
         width: 16
-        height: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +121,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2a30112006dc89f40800000000000000
-      internalID: 5735559937691550626
+      spriteID: aaca64956697fa510800000000000000
+      internalID: 1562601076212280490
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: move_hori_0_1
+      name: move_diag_0_1
       rect:
         serializedVersion: 2
         x: 8
-        y: 9
+        y: 8
         width: 16
-        height: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fb1ade9c53d23cbe0800000000000000
-      internalID: -1458272145293598273
+      spriteID: bfc0e04fff8707ff0800000000000000
+      internalID: -40399355939779333
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: move_hori_0_2
+      name: move_diag_0_2
       rect:
         serializedVersion: 2
-        x: 8
-        y: 1
+        x: 16
+        y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +165,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43df92c9746613b80800000000000000
-      internalID: -8416833770830037708
+      spriteID: ab11266650dd24980800000000000000
+      internalID: -8556033326788243014
       vertices: []
       indices: 
       edges: []
@@ -185,9 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      move_hori_0_0: 5735559937691550626
-      move_hori_0_1: -1458272145293598273
-      move_hori_0_2: -8416833770830037708
+      move_diag_0_0: 1562601076212280490
+      move_diag_0_1: -40399355939779333
+      move_diag_0_2: -8556033326788243014
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
