@@ -20,6 +20,11 @@ public class EnemyManager : MonoBehaviour
 
     public Dictionary<Vector2Int, Sprite> healthSprites = new();
 
+    public List<Sprite> movementSprites = new();
+
+    public Dictionary<Vector2Int, Sprite> attackSprites = new();
+    public GameObject attackArrowPrefab;
+
     public float yOffset;
     public int timeOffset;
 
@@ -40,6 +45,20 @@ public class EnemyManager : MonoBehaviour
             int x = Mathf.RoundToInt(sprite.rect.x / 9);
             int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 9) / 9);
             healthSprites.Add(new Vector2Int(x, y), sprite);
+        }
+        //loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Indicators/Enemy");
+        //foreach (Sprite sprite in loaded)
+        //{
+        //    int x = Mathf.RoundToInt(sprite.rect.x / 22);
+        //    int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 22) / 22);
+        //    movementSprites.Add(new Vector2Int(x, y), sprite);
+        //}
+        loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Indicators/melee_sheet_all");
+        foreach (Sprite sprite in loaded)
+        {
+            int x = Mathf.RoundToInt(sprite.rect.x / 22);
+            int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 22) / 22);
+            attackSprites.Add(new Vector2Int(x, y), sprite);
         }
     }
 
@@ -165,9 +184,27 @@ public class EnemyManager : MonoBehaviour
         if (unit.movementArrow != null)  Destroy(unit.movementArrow);
         if (movement == Vector2Int.zero || CheckIfCellIsOutsideOfBoard(origin + movement)) return;
         unit.movementArrow = Instantiate(enemyMovementArrowPrefab, Vector3.zero, Quaternion.identity, null);
-        LineRenderer line = unit.movementArrow.GetComponent<LineRenderer>();
-        line.SetPosition(0, GetWorldPos(origin));
-        line.SetPosition(1, GetWorldPos(origin + movement));
+        SpriteRenderer sprite = unit.movementArrow.GetComponent<SpriteRenderer>();
+        unit.movementArrow.transform.position = Vector3.Lerp(GetWorldPos(origin), GetWorldPos(origin + movement), 0.5f);
+        if (movement.x == 0 || movement.y == 0) sprite.sprite = movementSprites[0];
+        else sprite.sprite = movementSprites[1];
+
+        if (movement.x > 0 && movement.y == 0) //East
+            unit.movementArrow.transform.eulerAngles = new(0, 0, 0);
+        if (movement.x == 0 && movement.y < 0) //South
+            unit.movementArrow.transform.eulerAngles = new(0, 0, -90);
+        if (movement.x < 0 && movement.y == 0) //West
+            unit.movementArrow.transform.eulerAngles = new(0, 0, -180);
+        if (movement.x == 0 && movement.y > 0) //North
+            unit.movementArrow.transform.eulerAngles = new(0, 0, -270);
+        if (movement.x > 0 && movement.y < 0) //SouthEast
+            unit.movementArrow.transform.eulerAngles = new(0, 0, 0);
+        if (movement.x < 0 && movement.y < 0) //SouthWest
+            unit.movementArrow.transform.eulerAngles = new(0, 0, -90);
+        if (movement.x < 0 && movement.y > 0) //NorthWest
+            unit.movementArrow.transform.eulerAngles = new(0, 0, -180);
+        if (movement.x > 0 && movement.y > 0) //NorthEast
+            unit.movementArrow.transform.eulerAngles = new(0, 0, -270);
     }
 
     public void ShowIntentionsOfEnemies()

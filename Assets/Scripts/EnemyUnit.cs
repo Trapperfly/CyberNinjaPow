@@ -4,6 +4,8 @@ using System.Xml.Serialization;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.U2D;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.UI.Image;
 
 public class EnemyUnit : MonoBehaviour
 {
@@ -38,6 +40,7 @@ public class EnemyUnit : MonoBehaviour
     public float healthBarSpread = 1f;
 
     public GameObject movementArrow;
+    public List<GameObject> attackArrows = new();
 
     EnemyManager enemyManager;
 
@@ -169,7 +172,59 @@ public class EnemyUnit : MonoBehaviour
 
     public void PaintAttack()
     {
-        Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
+        //Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
+        for (int i = 0; i < attackArrows.Count; i++)
+        {
+            Destroy(attackArrows[i]);
+        }
+        attackArrows.Clear();
+        foreach (TileEffect target in intendedAttack)
+        {
+            if (target.projectiles.Count > 0)
+            {
+                foreach (ProjectileData projectile in target.projectiles)
+                    Manager.Instance.boardManager.Projectile(false, GridSpaceSelection.EnemyAttack, position + target.gridPosition, projectile);
+            }
+            else
+            {
+                if ((position + target.gridPosition).y < 0)
+                {
+                    //dangerSymbolsParent.GetChild(position.x + target.gridPosition.x).gameObject.SetActive(true);
+                    continue;
+                }
+                Manager.Instance.boardManager.spaces.TryGetValue(position + target.gridPosition, out BoardSpace targetSpace);
+                if (targetSpace == null) continue;
+
+                targetSpace.Colorize(GridSpaceSelection.EnemyAttack, target.damage);
+            }
+            if (target.gridPosition.x < 2 && target.gridPosition.x > -2 && target.gridPosition.y < 2 && target.gridPosition.y > -2)
+            {
+                Transform arrow = Instantiate(Manager.Instance.enemyManager.attackArrowPrefab, Vector3.zero, Quaternion.identity, null).transform;
+                arrow.position = 
+                    Vector3.Lerp(
+                        Manager.Instance.enemyManager.GetWorldPos(position), 
+                        Manager.Instance.enemyManager.GetWorldPos(position + target.gridPosition), 0.5f);
+                SpriteRenderer renderer = arrow.GetComponent<SpriteRenderer>();
+                Sprite sprite = null;
+                if (target.gridPosition.x == 0 && target.gridPosition.y > 0) //North
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(0, 0), out sprite);
+                if (target.gridPosition.x > 0 && target.gridPosition.y > 0) //NorthEast
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(1, 0), out sprite);
+                if (target.gridPosition.x > 0 && target.gridPosition.y == 0) //East
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(2, 0), out sprite);
+                if (target.gridPosition.x > 0 && target.gridPosition.y < 0) //SouthEast
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(3, 0), out sprite);
+                if (target.gridPosition.x == 0 && target.gridPosition.y < 0) //South
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(4, 0), out sprite);
+                if (target.gridPosition.x < 0 && target.gridPosition.y < 0) //SouthWest
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(5, 0), out sprite);
+                if (target.gridPosition.x < 0 && target.gridPosition.y == 0) //West
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(6, 0), out sprite);
+                if (target.gridPosition.x < 0 && target.gridPosition.y > 0) //NorthWest
+                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(7, 0), out sprite);
+                renderer.sprite = sprite;
+            }
+        }
     }
 
     public void ShowIntentions()

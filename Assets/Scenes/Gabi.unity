@@ -3302,7 +3302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   enemyPrefab: {fileID: 4184783195207525563, guid: eefe41e9d7041934f963abfb757a040e, type: 3}
-  enemyMovementArrowPrefab: {fileID: 3498137276543333406, guid: 4dcaab8bdc72fe243bf72bd829d2880b, type: 3}
+  enemyMovementArrowPrefab: {fileID: 3498137276543333406, guid: 361bc9f26820c5c4f87919e1ecc3f0aa, type: 3}
   enemyParent: {fileID: 121886795}
   spawningFunds: 10
   boardCost: 0
@@ -3315,6 +3315,10 @@ MonoBehaviour:
   enemies: []
   actingEnemies: []
   deadEnemies: []
+  movementSprites:
+  - {fileID: 21300000, guid: ef60c4cb9659ed247984b3cc786174fd, type: 3}
+  - {fileID: 21300000, guid: b7c3c3c1334dd37478f5a683ca54a72e, type: 3}
+  attackArrowPrefab: {fileID: 3498137276543333406, guid: 5fa32ae5337f5df41aa5dc576b8cc7f3, type: 3}
   yOffset: 0.2
   timeOffset: 0
   timeAnim: 0.1
