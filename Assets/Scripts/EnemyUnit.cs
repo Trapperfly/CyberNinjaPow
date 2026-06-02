@@ -387,6 +387,8 @@ public class EnemyUnit : MonoBehaviour
             float x = (currentSprite == sprite) ? previousX + 0.125f : previousX + healthBarSpread; // - (((count - 1) * healthBarSpread) * 0.5f);
             healthParent.GetChild(i).localPosition = new Vector3(x, 0, 0);
         }
+        float xAlign = healthParent.GetChild(healthParent.childCount-1).localPosition.x * 0.5f;
+        healthParent.localPosition = new(-xAlign, healthParent.localPosition.y, 0);
     }
 
     public int GetTotalHealth()
