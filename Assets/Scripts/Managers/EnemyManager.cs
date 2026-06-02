@@ -39,11 +39,11 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        var loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Health/HP");
+        var loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Health/HP_2");
         foreach (Sprite sprite in loaded)
         {
-            int x = Mathf.RoundToInt(sprite.rect.x / 9);
-            int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 9) / 9);
+            int x = Mathf.RoundToInt(sprite.rect.x / 10);
+            int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 10) / 10);
             healthSprites.Add(new Vector2Int(x, y), sprite);
         }
         //loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Indicators/Enemy");

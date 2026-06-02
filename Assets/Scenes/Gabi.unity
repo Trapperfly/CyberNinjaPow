@@ -2171,7 +2171,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.2
+  orthographic size: 5.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3319,7 +3319,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ef60c4cb9659ed247984b3cc786174fd, type: 3}
   - {fileID: 21300000, guid: b7c3c3c1334dd37478f5a683ca54a72e, type: 3}
   attackArrowPrefab: {fileID: 3498137276543333406, guid: 5fa32ae5337f5df41aa5dc576b8cc7f3, type: 3}
-  yOffset: 0.2
+  yOffset: 0
   timeOffset: 0
   timeAnim: 0.1
   moveAnimTime: 0.5

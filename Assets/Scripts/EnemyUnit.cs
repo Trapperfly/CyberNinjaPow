@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using Unity.Behavior;
 using UnityEngine;
-using UnityEngine.U2D;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.UI.Image;
 
 public class EnemyUnit : MonoBehaviour
 {
@@ -38,6 +35,9 @@ public class EnemyUnit : MonoBehaviour
     public GameObject healthbarGatePrefab;
     public List<Sprite> healthSprites;
     public float healthBarSpread = 1f;
+    public int segmentWidth = 1;
+    public int gateWidth = 1;
+    public int afterGateWidth = 1;
 
     public GameObject movementArrow;
     public List<GameObject> attackArrows = new();
@@ -377,15 +377,24 @@ public class EnemyUnit : MonoBehaviour
     void AlignHealthBar()
     {
         int count = healthParent.childCount;
+        bool gate = false;
         for (int i = 0; i < count; i++)
         {
-            float previousX = (i != 0) ? healthParent.GetChild(i-1).localPosition.x : 0;
+            if (i == 0) continue;
+
+            float previousX = healthParent.GetChild(i-1).localPosition.x;
 
             Sprite currentSprite = healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite;
             enemyManager.healthSprites.TryGetValue(new(0, 6), out Sprite sprite);
 
-            float x = (currentSprite == sprite) ? previousX + 0.125f : previousX + healthBarSpread; // - (((count - 1) * healthBarSpread) * 0.5f);
+
+            float x; //= (currentSprite == sprite) ? previousX + (healthBarSpread * gateWidth) : ; // - (((count - 1) * healthBarSpread) * 0.5f);
+            if (currentSprite == sprite) x = previousX + (healthBarSpread * gateWidth);
+            else if (gate) x = previousX + (healthBarSpread * afterGateWidth);
+            else x = previousX + (healthBarSpread * segmentWidth);
             healthParent.GetChild(i).localPosition = new Vector3(x, 0, 0);
+
+            gate = (currentSprite == sprite) ? true : false;
         }
         float xAlign = healthParent.GetChild(healthParent.childCount-1).localPosition.x * 0.5f;
         healthParent.localPosition = new(-xAlign, healthParent.localPosition.y, 0);
