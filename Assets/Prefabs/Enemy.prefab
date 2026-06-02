@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 4184783195207525563}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6409f59dec66ab749a643da2d296cb22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
-  position: {x: 3, y: 4}
+  position: {x: 0, y: 0}
   enemy: {fileID: 0}
   attacking: 0
   intendedAttack: []
@@ -109,8 +109,9 @@ MonoBehaviour:
   - {fileID: -8544433864273523595, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
   - {fileID: -2657129162341392937, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
   - {fileID: -3338514898863107343, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
-  healthBarSpread: 0.1562
+  healthBarSpread: 0.15625
   movementArrow: {fileID: 0}
+  attackArrows: []
 --- !u!114 &3049264724274307427
 MonoBehaviour:
   m_ObjectHideFlags: 0

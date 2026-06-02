@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestingEnemyPhase2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPhase
   health: 3
-  actions: {fileID: 4566370744241057495, guid: 3a32f2672116b174a92053716851d3a5, type: 2}
+  actions: {fileID: 4566370744241057495, guid: be9465a8d3025a444af4a8c6036a826c, type: 2}
   sprite: {fileID: -8298362742124432106, guid: 30d8605a4c83db64ebdaf17dfc1ba1f3, type: 3}
   damageCard: {fileID: 11400000, guid: 8dceb049c133cce499a7edf666640280, type: 2}
   attackRange: 3

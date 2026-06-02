@@ -379,7 +379,12 @@ public class EnemyUnit : MonoBehaviour
         int count = healthParent.childCount;
         for (int i = 0; i < count; i++)
         {
-            float x = (healthBarSpread * i) - (((count - 1) * healthBarSpread) * 0.5f);
+            float previousX = (i != 0) ? healthParent.GetChild(i-1).localPosition.x : 0;
+
+            Sprite currentSprite = healthParent.GetChild(i).GetComponent<SpriteRenderer>().sprite;
+            enemyManager.healthSprites.TryGetValue(new(0, 6), out Sprite sprite);
+
+            float x = (currentSprite == sprite) ? previousX + 0.125f : previousX + healthBarSpread; // - (((count - 1) * healthBarSpread) * 0.5f);
             healthParent.GetChild(i).localPosition = new Vector3(x, 0, 0);
         }
     }
