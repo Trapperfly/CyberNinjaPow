@@ -90,7 +90,7 @@ public class DeckManager : MonoBehaviour
         while (deck.cards.Count > 0)
         {
             int selected = Random.Range(0, deck.cards.Count);
-            Debug.Log("Added " + deck.cards[selected].cardName + " back to the deck.");
+            //Debug.Log("Added " + deck.cards[selected].cardName + " back to the deck.");
             draw.Add(deck.cards[selected]);
             deck.cards.RemoveAt(selected);
         }

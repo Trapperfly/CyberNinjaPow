@@ -340,7 +340,7 @@ public class EnemyUnit : MonoBehaviour
         Sprite sprite;
         for (int i = 0; i < enemy.phases[phase].health + 1; i++)
         {
-            GameObject o = healthParent.GetChild(i).gameObject;
+            GameObject o = healthParent.GetChild(0).gameObject;
             o.transform.parent = null;
             Destroy(o);
         }

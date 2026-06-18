@@ -385,7 +385,7 @@ public class BoardManager : MonoBehaviour
                     if (fire)
                     {
                         int bonusDamage = OnHit(data.projDamage + response.integer, card, enemy);
-                        Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
+                        //Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
                         enemy.TakeDamage(data.projDamage);
                     }
                     else
@@ -554,7 +554,7 @@ public class BoardManager : MonoBehaviour
             {
                 ItemResponse response = Manager.Instance.itemManager.TriggerOnHit(enemy);
                 int bonusDamage = OnHit(effect.damage + response.integer, card, enemy);
-                Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
+                //Debug.Log("Dealing base " + effect.damage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
                 enemy.TakeDamage(effect.damage + response.integer);
             }
             if (enemy && effect.pushDirection != Direction.None)

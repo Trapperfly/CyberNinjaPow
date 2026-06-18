@@ -145,10 +145,10 @@ public class GameManager : MonoBehaviour
     public void ProgressSpawn()
     {
         float spawningBias = Mathf.Pow(1f - (currentThreat / maxThreat), threatCalculation);
-        Debug.Log("Bias for spawning an enemy is " + spawningBias * 100 + "%");
+        //Debug.Log("Bias for spawning an enemy is " + spawningBias * 100 + "%");
         if (Random.Range(0f,1f) < spawningBias)
         {
-            Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
+            //Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
 
             Manager.Instance.enemyManager.SpawnEnemy(Random.Range(0,5));
         }
