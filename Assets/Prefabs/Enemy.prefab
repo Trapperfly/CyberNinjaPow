@@ -109,7 +109,7 @@ MonoBehaviour:
   - {fileID: -8544433864273523595, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
   - {fileID: -2657129162341392937, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
   - {fileID: -3338514898863107343, guid: 13fc984d8846af149bb5469c08f00681, type: 3}
-  healthBarSpread: 0.03125
+  healthBarSpread: 0.03
   segmentWidth: 5
   gateWidth: 4
   afterGateWidth: 3

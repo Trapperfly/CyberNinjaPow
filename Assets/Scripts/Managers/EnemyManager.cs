@@ -205,6 +205,9 @@ public class EnemyManager : MonoBehaviour
             unit.movementArrow.transform.eulerAngles = new(0, 0, -180);
         if (movement.x > 0 && movement.y > 0) //NorthEast
             unit.movementArrow.transform.eulerAngles = new(0, 0, -270);
+
+        unit.movementArrow.transform.SetParent(unit.transform);
+        unit.movementArrow.transform.SetAsFirstSibling();
     }
 
     public void ShowIntentionsOfEnemies()

@@ -34,7 +34,7 @@ public class EnemyUnit : MonoBehaviour
     public GameObject healthbarSegmentPrefab;
     public GameObject healthbarGatePrefab;
     public List<Sprite> healthSprites;
-    public float healthBarSpread = 1f;
+    public float healthBarSpread = 1f; //0.03125
     public int segmentWidth = 1;
     public int gateWidth = 1;
     public int afterGateWidth = 1;
@@ -235,6 +235,26 @@ public class EnemyUnit : MonoBehaviour
 
         if (attacking) PaintAttack();
         Manager.Instance.enemyManager.DisplayMovementArrow(this, position, intendedMovement);
+        SortSprites();
+    }
+
+    public void SortSprites()
+    {
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.childCount > 0)
+            {
+                foreach (Transform grandChild in child)
+                {
+                    grandChild.GetComponent<SpriteRenderer>().sortingOrder = 1000 - position.y * 100 + i++;
+                }
+            }
+            else
+            {
+                child.GetComponent<SpriteRenderer>().sortingOrder = 1000 - position.y * 100 + i++;
+            }
+        }
     }
 
     public Vector2 GetWorldPos(Vector2Int gridPosition)
@@ -398,6 +418,8 @@ public class EnemyUnit : MonoBehaviour
         }
         float xAlign = healthParent.GetChild(healthParent.childCount-1).localPosition.x * 0.5f;
         healthParent.localPosition = new(-xAlign, healthParent.localPosition.y, 0);
+
+        SortSprites();
     }
 
     public int GetTotalHealth()
@@ -563,6 +585,7 @@ public class EnemyUnit : MonoBehaviour
         if (forced) { 
             Manager.Instance.boardManager.ClearSpaces();
         }
+        SortSprites();
         //Manager.Instance.boardManager.ClearSpaces();
         yield return null;
     }
@@ -606,7 +629,7 @@ public class EnemyUnit : MonoBehaviour
             DamageTile(position + attack.gridPosition, attack.damage);
             PushTile(position + attack.gridPosition, attack.pushDirection, attack.pushDistance);
         }
-
+        SortSprites();
         yield return null;
     }
     void DamageTile(Vector2Int targetTile, int damage, List<StatusEffect> statusEffects = null)
