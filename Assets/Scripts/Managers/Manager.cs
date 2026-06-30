@@ -8,6 +8,7 @@ public class Manager : MonoBehaviour
 
     private void Awake()
     {
+        //Random.InitState(10);
         if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
