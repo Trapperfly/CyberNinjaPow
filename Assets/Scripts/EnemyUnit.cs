@@ -223,6 +223,7 @@ public class EnemyUnit : MonoBehaviour
                 if (target.gridPosition.x < 0 && target.gridPosition.y > 0) //NorthWest
                     Manager.Instance.enemyManager.attackSprites.TryGetValue(new(7, 0), out sprite);
                 renderer.sprite = sprite;
+                attackArrows.Add(arrow.gameObject);
             }
         }
     }
@@ -416,7 +417,9 @@ public class EnemyUnit : MonoBehaviour
 
             gate = (currentSprite == sprite) ? true : false;
         }
-        float xAlign = healthParent.GetChild(healthParent.childCount-1).localPosition.x * 0.5f;
+        float firstChildPos = healthParent.GetChild(0).localPosition.x;
+        float lastChildPos = healthParent.GetChild(healthParent.childCount - 1).localPosition.x;
+        float xAlign = (lastChildPos + firstChildPos) * 0.5f;
         healthParent.localPosition = new(-xAlign, healthParent.localPosition.y, 0);
 
         SortSprites();
