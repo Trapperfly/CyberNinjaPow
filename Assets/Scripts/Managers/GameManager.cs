@@ -5,6 +5,8 @@ using TMPro;
 using JetBrains.Annotations;
 public class GameManager : MonoBehaviour
 {
+    EnemyManager enemyManager;
+
     public bool waveInProgress = false;
 
     public int playerHealth;
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        enemyManager = Manager.Instance.enemyManager;
         AlterMoney(0);
         //for (int i = 0; i < Manager.Instance.boardManager.boardSize.x; i++)
         //{
@@ -61,20 +64,41 @@ public class GameManager : MonoBehaviour
 
     public void ProgressTime(int time)
     {
-        switch (mainObjective)
-        {
-            case Objective.SurviveCertainAmountOfTime:
-            case Objective.SurviveThenKillElite:
-            case Objective.SurviveThenKillBoss:
-                mainObjectiveTracker += time;
-                break;
-        }
 
-        Manager.Instance.enemyManager.ProgressTime(time);
+        StartCoroutine(IProgressTimeProgressively(time));
+    }
+
+    public IEnumerator IProgressTimeProgressively(int time)
+    {
+        Manager.Instance.busy = true;
+        for (int i = 0; i < time; i++)
+        {
+            switch (mainObjective)
+            {
+                case Objective.SurviveCertainAmountOfTime:
+                case Objective.SurviveThenKillElite:
+                case Objective.SurviveThenKillBoss:
+                    mainObjectiveTracker += time;
+                    break;
+            }
+
+            yield return StartCoroutine(enemyManager.IProgressTime());
+        }
+        AfterTimeProgress();
+        yield return null;
     }
 
     public void AfterTimeProgress()
     {
+        foreach (EnemyUnit enemy in enemyManager.enemies)
+        {
+            enemy.timer += enemyManager.timeOffset;
+            //Debug.Log("Added " + timeOffset + " to " + enemy.enemy.enemyName);
+            enemy.SetTimer();
+        }
+        enemyManager.timeOffset = 0;
+        Manager.Instance.busy = false;
+
         bool finished = CheckIfWaveIsFinished();
 
         if (finished) { FinishWave(); return; }
@@ -148,9 +172,9 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Bias for spawning an enemy is " + spawningBias * 100 + "%");
         if (Random.Range(0f,1f) < spawningBias)
         {
-            //Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
+            Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
 
-            Manager.Instance.enemyManager.SpawnEnemy(Random.Range(0,5));
+            enemyManager.SpawnEnemy(Random.Range(0,5));
         }
     }
 
@@ -206,7 +230,7 @@ public class GameManager : MonoBehaviour
             int column = Random.Range(0, Manager.Instance.boardManager.boardSize.x);
             int row = Random.Range(Manager.Instance.boardManager.boardSize.y - startEnemyYPosition, Manager.Instance.boardManager.boardSize.y);
 
-            Manager.Instance.enemyManager.SpawnEnemy(column, row);
+            enemyManager.SpawnEnemy(column, row);
             yield return new WaitForSeconds(enemySpawnDelay);
         }
 

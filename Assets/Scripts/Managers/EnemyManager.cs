@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public int spawningFunds = 10;
     public int boardCost = 0;
     public List<EnemyInfo> enemyRepertoire = new List<EnemyInfo>();
-    public List<EnemyData> enemyQueue = new List<EnemyData>();
+    public List<Enemy> enemyQueue = new List<Enemy>();
     public List<EnemyUnit> enemies = new List<EnemyUnit>();
     public List<EnemyUnit> actingEnemies = new();
     public List<EnemyUnit> deadEnemies = new List<EnemyUnit>();
@@ -24,6 +24,8 @@ public class EnemyManager : MonoBehaviour
 
     public Dictionary<Vector2Int, Sprite> attackSprites = new();
     public GameObject attackArrowPrefab;
+
+    public List<Card> damageCards = new();
 
     public float yOffset;
     public int timeOffset;
@@ -36,6 +38,9 @@ public class EnemyManager : MonoBehaviour
 
     public float bobbing;
     public float bobbingSpeed;
+
+    public int enemyMoveInterval;
+    public int currentEnemyMoveTracker;
 
     private void Start()
     {
@@ -68,58 +73,42 @@ public class EnemyManager : MonoBehaviour
         agent.GetVariable("Unit", out BlackboardVariable<EnemyUnit> unit);
         return (EnemyUnit)unit;
     }
-    public void MoveAllEnemies(int times, Vector2Int direction)
+    public void MoveAllEnemies()
     {
-        for (int t = 0; t < times; t++)
-        {
-            for (int y = 0; y < Manager.Instance.boardManager.boardSize.y; y++)
-            {
-                foreach (EnemyUnit enemy in enemies)
-                {
-                    if (enemy.position.y == y) enemy.ForceMove(direction, 1);
-                }
-            }
-        }
-    }
-
-    public void ProgressTime(int time = 1)
-    {
-        StartCoroutine(IProgressTime(time));
-    }
-
-    IEnumerator IProgressTime(int time = 1)
-    {
-        Manager.Instance.busy = true;
-        for (int i = 0; i < time; i++)
-        {
-            Manager.Instance.itemManager.TriggerOnTimeTick();
-            foreach (EnemyUnit enemy in enemies)
-            {
-                enemy.Timer();
-            }
-            foreach (EnemyUnit enemy in actingEnemies)
-            {
-                yield return new WaitForSeconds(timeAnim);
-                Manager.Instance.itemManager.TriggerOnEnemyAct(enemy);
-                //enemy.Act();
-                if (!enemy.dead)
-                    yield return StartCoroutine(enemy.IAct());
-                //yield return new WaitForSeconds(addTimeAnim);
-                addTimeAnim = 0;
-            }
-            actingEnemies.Clear();
-            KillOffEnemies();
-            yield return new WaitForSeconds(timeAnim);
-        }
         foreach (EnemyUnit enemy in enemies)
         {
-            enemy.timer += timeOffset;
-            //Debug.Log("Added " + timeOffset + " to " + enemy.enemy.enemyName);
-            enemy.SetTimer();
+            enemy.Move();
         }
-        timeOffset = 0;
-        Manager.Instance.busy = false;
-        Manager.Instance.gameManager.AfterTimeProgress();
+    }
+
+    public IEnumerator IProgressTime()
+    {
+        Manager.Instance.itemManager.TriggerOnTimeTick();
+        foreach (EnemyUnit enemy in enemies)
+        {
+            enemy.Timer();
+        }
+        foreach (EnemyUnit enemy in actingEnemies)
+        {
+            yield return new WaitForSeconds(timeAnim);
+            Manager.Instance.itemManager.TriggerOnEnemyAct(enemy);
+            //enemy.Act();
+            if (!enemy.dead)
+                yield return StartCoroutine(enemy.IAct());
+            //yield return new WaitForSeconds(addTimeAnim);
+            addTimeAnim = 0;
+        }
+        actingEnemies.Clear();
+        KillOffEnemies();
+        currentEnemyMoveTracker++;
+        Debug.Log(currentEnemyMoveTracker);
+        if (currentEnemyMoveTracker >= enemyMoveInterval)
+        {
+            MoveAllEnemies();
+            currentEnemyMoveTracker = 0;
+            Debug.Log("Moving all enemies");
+        }
+        //yield return new WaitForSeconds(timeAnim);
         yield return null;
     }
 
@@ -338,9 +327,9 @@ public class EnemyManager : MonoBehaviour
         deadEnemies.Clear();
     }
 
-    public List<EnemyData> GetRandomEnemies(int amount = 0, int funds = 0)
+    public List<Enemy> GetRandomEnemies(int amount = 0, int funds = 0)
     {
-        List<EnemyData> enemyList = new List<EnemyData>();
+        List<Enemy> enemyList = new List<Enemy>();
 
         Vector2Int minMax = GetMinCostMaxCost();
 
@@ -360,9 +349,9 @@ public class EnemyManager : MonoBehaviour
 
         return enemyList;
     }
-    public EnemyData GetRandomEnemy(int funds = 0)
+    public Enemy GetRandomEnemy(int funds = 0)
     {
-        EnemyData enemy;
+        Enemy enemy;
 
         Vector2Int minMax = GetMinCostMaxCost();
 

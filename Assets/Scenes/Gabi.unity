@@ -3887,7 +3887,7 @@ MonoBehaviour:
   collisionDamage: 1
   money: 20
   currentThreat: 0
-  maxThreat: 20
+  maxThreat: 10
   threatCalculation: 1.5
   mainObjective: 3
   sideObjectives: []
@@ -4076,10 +4076,14 @@ MonoBehaviour:
   spawningFunds: 10
   boardCost: 0
   enemyRepertoire:
-  - enemy: {fileID: 11400000, guid: 5933becb87fed294c94b3ef2ce895b65, type: 2}
+  - enemy: {fileID: 11400000, guid: fbe0a103d1d99d549a1539e0f26df6fd, type: 2}
     cost: 1
-  - enemy: {fileID: 11400000, guid: 40949fae0f7acc24ab63914ff6971806, type: 2}
-    cost: 1
+  - enemy: {fileID: 11400000, guid: c8615fd8a7d941040a4516d3f854307c, type: 2}
+    cost: 2
+  - enemy: {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
+    cost: 3
+  - enemy: {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
+    cost: 4
   enemyQueue: []
   enemies: []
   actingEnemies: []
@@ -4088,6 +4092,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ef60c4cb9659ed247984b3cc786174fd, type: 3}
   - {fileID: 21300000, guid: b7c3c3c1334dd37478f5a683ca54a72e, type: 3}
   attackArrowPrefab: {fileID: 3498137276543333406, guid: 5fa32ae5337f5df41aa5dc576b8cc7f3, type: 3}
+  damageCards: []
   yOffset: 0
   timeOffset: 0
   timeAnim: 0.1
@@ -4097,6 +4102,8 @@ MonoBehaviour:
   addTimeAnim: 0
   bobbing: 0
   bobbingSpeed: 0
+  enemyMoveInterval: 3
+  currentEnemyMoveTracker: 0
 --- !u!114 &1900229854
 MonoBehaviour:
   m_ObjectHideFlags: 0

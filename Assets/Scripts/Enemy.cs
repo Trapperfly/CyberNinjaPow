@@ -6,28 +6,33 @@ using UnityEngine;
 public class Enemy : ScriptableObject
 {
     public string enemyName = "Gringus";
-    public List<EnemyHealth> enemyHealth = new();
-    public Sprite sprite;
-    public IntentionLooping looping;
+    public List<int> health = new();
+    public List<Sprite> sprite;
+    public int movement = 0;
+    public int readySpeed = 0;
+    public Range range;
+    public Damage damage;
+    public int attacks = 1;
+    public float threat = 0;
 }
 [System.Serializable]
-public class Intention
-{
-    public int timer = 5;
-    public Vector2Int movement;
-    public SmartMovement smartMovement;
-    public List<TileEffect> attack = new();
-    public EffectApplication effect;
-}
+//public class Intention
+//{
+//    public int timer = 5;
+//    public Vector2Int movement;
+//    public SmartMovement smartMovement;
+//    public List<TileEffect> attack = new();
+//    public EffectApplication effect;
+//}
 
-[System.Serializable]
-public class EnemyHealth
-{
-    public int gateHealth;
-    public HealthGateSpecialAction specialAction;
-    public bool keepPreviousIntentions = true;
-    public List<Intention> intentions = new();
-}
+//[System.Serializable]
+//public class EnemyHealth
+//{
+//    public int gateHealth;
+//    public HealthGateSpecialAction specialAction;
+//    public bool keepPreviousIntentions = true;
+//    public List<Intention> intentions = new();
+//}
 [BlackboardEnum]
 public enum SmartMovement
 {
@@ -50,20 +55,15 @@ public enum HealthGateSpecialAction
 }
 
 [System.Serializable]
-public enum IntentionLooping
-{
-    none,
-    Loop,
-    ReverseLoop,
-    PingPong,
-    RepeatEnd,
-    Random,
-    RandomStart,
-}
-[System.Serializable]
 public class EnemyInfo
 {
-    public EnemyData enemy;
+    public Enemy enemy;
     public int cost;
 
+}
+public enum Damage
+{
+    Small,
+    Medium,
+    Large,
 }

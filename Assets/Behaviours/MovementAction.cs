@@ -16,7 +16,7 @@ public partial class MovementAction : Action
         unit = Manager.Instance.enemyManager.GetBlackBoardVariable(GameObject);
         if (unit.position.y <= unit.attackRange) 
         {
-            unit.intendedMovement = Vector2Int.zero;
+            //unit.intendedMovement = Vector2Int.zero;
             return Status.Success;
         }
         Vector2Int movement;
@@ -25,7 +25,7 @@ public partial class MovementAction : Action
         else
             movement = unit.PlanSmartMovement((SmartMovement)SmartMovement);
 
-        unit.intendedMovement = movement;
+        //unit.intendedMovement = movement;
 
         return Status.Success;
     }

@@ -1,20 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using Unity.Behavior;
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyUnit : MonoBehaviour
 {
     public Vector2Int position;
     //public Enemy enemy;
-    public EnemyData enemy;
-    BehaviorGraphAgent agent;
+    public Enemy enemy;
     public bool attacking;
+    public bool inRange;
     public List<TileEffect> intendedAttack;
+    public List<TileEffect> attack;
     public int iAttackCounter = -1;
     public int attackRange;
-    public Vector2Int intendedMovement;
     public int actionTimer = 0;
     public int timer = 0;
     public int phase = 0;
@@ -48,25 +47,24 @@ public class EnemyUnit : MonoBehaviour
 
     private void Start()
     {
-        agent = GetComponent<BehaviorGraphAgent>();
-        
         enemyManager = Manager.Instance.enemyManager;
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = enemy.phases[phase].sprite;
+        spriteRenderer.sprite = enemy.sprite[phase];
+
+        actionTimer = enemy.readySpeed;
 
         enemyManager.enemies.Add(this);
-        //if (enemy.looping == IntentionLooping.Random) intention = Random.Range(0, intentions.Count);
 
         Vector2 targetPosition = GetWorldPos(position);
         transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
-        
-        StartCoroutine(GetAndDisplayIntentionsRightAfterSpawn());
-
 
         CreateHealthBar();
-        //intendedMovement = PlanMovement();
 
         bobbingOffset = Random.Range(0, 9000f);
+
+        attackRange = (enemy.range == Range.Melee) ? 2 : 20;
+
+        CreateAttack();
     }
 
     public void Act()
@@ -75,32 +73,60 @@ public class EnemyUnit : MonoBehaviour
         StartCoroutine(IAct());
     }
 
+    void CreateAttack()
+    {
+        if (enemy.range != Range.Melee)
+        {
+            TileEffect effect = new TileEffect();
+            ProjectileData projectile = new ProjectileData();
+            switch (enemy.range)
+            {
+                case Range.Anywhere:
+                    break;
+                case Range.Melee:
+                    effect.gridPosition = Vector2Int.down;
+                    effect.damage = (int)enemy.damage + 1;
+                    break;
+                case Range.Ranged:
+                    projectile.direction = Direction.South;
+                    projectile.projDamage = effect.damage = (int)enemy.damage + 1;
+                    effect.gridPosition = position;
+                    effect.projectiles.Add(projectile);
+                    break;
+                case Range.Rear:
+                    break;
+                case Range.Projectile:
+                    break;
+                default:
+                    break;
+            }
+
+            for (int i = 0; i < enemy.attacks; i++)
+            {
+                attack.Add(effect);
+            }
+        }
+    }
+    public void Move()
+    {
+        StartCoroutine(IMove(enemy.movement));
+    }
+
+    public IEnumerator IMove(int movement)
+    {
+        int spaces = CheckMove();
+        Debug.Log("Trying to move " + spaces + " spaces.");
+
+        if (spaces != 0)
+        {
+            StartCoroutine(MoveUnit(spaces));
+
+            yield return new WaitForSeconds(enemyManager.moveAnimTime * spaces);
+        }
+    }
+
     public IEnumerator IAct()
     {
-        Vector2Int doingMove = CheckMove();
-        //if (doingMove != new Vector2Int(0, 0))
-        //{
-        //    enemyManager.addTimeAnim += enemyManager.moveAnimTime;
-        //}
-        //if (attacking && intendedAttack.Count > 0)
-        //{
-        //    enemyManager.addTimeAnim += enemyManager.attackAnimTime * intendedAttack.Count;
-        //}
-        List<TileEffect> attacks = new List<TileEffect>();
-        foreach (TileEffect effect in intendedAttack)
-        {
-            attacks.Add(effect);
-        }
-
-        GetIntentions();
-
-        StartCoroutine(Move(position)); //Move sprite to actual position
-
-        if (doingMove != new Vector2Int(0, 0))
-        {
-            yield return new WaitForSeconds(enemyManager.moveAnimTime);
-        }
-
         if (attacking)
         {
             StartCoroutine(Attack());
@@ -108,59 +134,9 @@ public class EnemyUnit : MonoBehaviour
             yield return new WaitForSeconds(enemyManager.attackAnimTime);
         }
 
-        StartCoroutine(ShowIntentionsWhenReady());
-
         timer = 0;
         SetTimer();
 
-        yield return null;
-    }
-
-    private void GetIntentions()
-    {
-        if (dead) return;
-
-        readyToShowIntentions = false;
-
-        intendedAttack.Clear();
-        iAttackCounter = -1;
-        agent.Graph = null;
-        agent.Graph = Instantiate(enemy.phases[phase].actions);
-        agent.Init();
-
-        if (agent.GetVariable("IntentionsReady", out BlackboardVariable<bool> ready))
-            ready.Value = false;
-        if (agent.GetVariable("Unit", out BlackboardVariable<EnemyUnit> unit))
-            unit.Value = this;
-
-        agent.Graph.Restart();
-    }
-    IEnumerator GetAndDisplayIntentionsRightAfterSpawn()
-    {
-        attackRange = enemy.phases[phase].attackRange;
-        attacking = (position.y <= attackRange) ? true : false;
-
-        yield return new WaitUntil(() =>
-        {
-            return agent.isActiveAndEnabled;
-        });
-
-        GetIntentions();
-
-        StartCoroutine(ShowIntentionsWhenReady());
-    }
-
-    IEnumerator ShowIntentionsWhenReady()
-    {
-        agent.GetVariable("IntentionsReady", out BlackboardVariable<bool> ready);
-
-        yield return new WaitUntil(() =>
-        {
-            agent.GetVariable("IntentionsReady", out BlackboardVariable<bool> r);
-            return r?.Value == true;
-        });
-        readyToShowIntentions = true;
-        ShowIntentions();
         yield return null;
     }
 
@@ -231,11 +207,9 @@ public class EnemyUnit : MonoBehaviour
     public void ShowIntentions()
     {
         if (dead) return;
-        attackRange = enemy.phases[phase].attackRange;
-        attacking = (position.y <= attackRange) ? true : false;
+        //attacking = (position.y < attackRange) ? true : false;
 
-        if (attacking) PaintAttack();
-        Manager.Instance.enemyManager.DisplayMovementArrow(this, position, intendedMovement);
+        //if (attacking) PaintAttack();
         SortSprites();
     }
 
@@ -270,7 +244,7 @@ public class EnemyUnit : MonoBehaviour
         //Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
-        if (damageTaken >= enemy.phases[phase].health)
+        if (damageTaken >= enemy.health[phase])
         {
             //Debug.Log(enemy.enemyName + " took enough damage to go to next phase. Had taken " + (damageTaken - damage) + " and it took " + damage + " damage");
             NextPhase();
@@ -283,7 +257,7 @@ public class EnemyUnit : MonoBehaviour
     {
         //Debug.Log(enemy.enemyName + " is at phase " + phase + ", and is going to phase " + (phase + 1) + ". Its max phases is " + (enemy.enemyHealth.Count - 1));
         
-        if (enemy.phases.Count - 1 <= phase)
+        if (enemy.health.Count - 1 <= phase)
         {
             dead = true;
             SetHealthBar();
@@ -298,9 +272,7 @@ public class EnemyUnit : MonoBehaviour
         phase++;
 
         damageTaken = 0;
-        spriteRenderer.sprite = enemy.phases[phase].sprite;
-        intendedMovement = Vector2Int.zero;
-        intendedAttack.Clear();
+        spriteRenderer.sprite = enemy.sprite[phase];
 
         ShowIntentions();
 
@@ -314,18 +286,18 @@ public class EnemyUnit : MonoBehaviour
 
     public void Die(bool rewards = true)
     {
-        if (rewards) Manager.Instance.gameManager.AlterMoney((int)enemy.strength);
-        Manager.Instance.gameManager.KilledAnEnemy(enemy.threat, enemy.strength);
-        Destroy(movementArrow);
+        //if (rewards) Manager.Instance.gameManager.AlterMoney((int)enemy.strength);
+        //Manager.Instance.gameManager.KilledAnEnemy(enemy.threat, enemy.strength);
+        //Destroy(movementArrow);
         Destroy(gameObject);
     }
 
     void CreateHealthBar()
     {
         Sprite sprite;
-        for (int p = 0; p < enemy.phases.Count; p++)
+        for (int p = 0; p < enemy.health.Count; p++)
         {
-            for (int h = 0; h < enemy.phases[p].health; h++)
+            for (int h = 0; h < enemy.health[p]; h++)
             {
                 if (p == 0) //First phase
                 {
@@ -333,7 +305,7 @@ public class EnemyUnit : MonoBehaviour
                     {
                         enemyManager.healthSprites.TryGetValue(new(0,0), out sprite);
                     }
-                    else if (enemy.phases.Count == 1 && h == enemy.phases[p].health - 1) //End of health bar if 1 phase only
+                    else if (enemy.health.Count == 1 && h == enemy.health[p] - 1) //End of health bar if 1 phase only
                     {
                         enemyManager.healthSprites.TryGetValue(new(2, 0), out sprite);
                     }
@@ -341,7 +313,7 @@ public class EnemyUnit : MonoBehaviour
                 }
                 else
                 {
-                    if (p == enemy.phases.Count - 1 && h == enemy.phases[p].health - 1) //End of health bar
+                    if (p == enemy.health.Count - 1 && h == enemy.health[p] - 1) //End of health bar
                     {
                         enemyManager.healthSprites.TryGetValue(new(4, 0), out sprite);
                     }
@@ -350,7 +322,7 @@ public class EnemyUnit : MonoBehaviour
                 Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = sprite;
             }
             enemyManager.healthSprites.TryGetValue(new(0, 6), out sprite);
-            if (p != enemy.phases.Count - 1)
+            if (p != enemy.health.Count - 1)
                 Instantiate(healthbarSegmentPrefab, healthParent).GetComponent<SpriteRenderer>().sprite = sprite; //Gate
         }
 
@@ -359,18 +331,18 @@ public class EnemyUnit : MonoBehaviour
     void BreakPhase()
     {
         Sprite sprite;
-        for (int i = 0; i < enemy.phases[phase].health + 1; i++)
+        for (int i = 0; i < enemy.health[phase] + 1; i++)
         {
             GameObject o = healthParent.GetChild(0).gameObject;
             o.transform.parent = null;
             Destroy(o);
         }
 
-        for (int i = 0; i < enemy.phases[phase + 1].health; i++)
+        for (int i = 0; i < enemy.health[phase + 1]; i++)
         {
             if (i == 0)
                 enemyManager.healthSprites.TryGetValue(new(0, 0), out sprite); //first segment
-            else if (phase == enemy.phases.Count - 1 && enemy.phases[phase].health == i)
+            else if (phase == enemy.health.Count - 1 && enemy.health[phase] == i)
                 enemyManager.healthSprites.TryGetValue(new(2, 0), out sprite); //end segment
             else
                 enemyManager.healthSprites.TryGetValue(new(1, 0), out sprite); //mid segment
@@ -381,12 +353,12 @@ public class EnemyUnit : MonoBehaviour
     void SetHealthBar()
     {
         Sprite sprite;
-        if (damageTaken > enemy.phases[phase].health) damageTaken = enemy.phases[phase].health;
+        if (damageTaken > enemy.health[phase]) damageTaken = enemy.health[phase];
         for (int i = 0; i < damageTaken; i++)
         {
             if (i == 0)
                 enemyManager.healthSprites.TryGetValue(new(5, 0), out sprite); //damaged first segment
-            else if (enemy.phases[phase].health == i)
+            else if (enemy.health[phase] == i)
                 enemyManager.healthSprites.TryGetValue(new(7, 0), out sprite); //damaged end segment
             else
                 enemyManager.healthSprites.TryGetValue(new(6, 0), out sprite); //damaged mid segment
@@ -428,9 +400,9 @@ public class EnemyUnit : MonoBehaviour
     public int GetTotalHealth()
     {
         int health = 0;
-        for (int i = 0 + phase; i < enemy.phases.Count; i++)
+        for (int i = 0 + phase; i < enemy.health.Count; i++)
         {
-            health += enemy.phases[i].health;
+            health += enemy.health[i];
         }
         return health;
     }
@@ -473,6 +445,8 @@ public class EnemyUnit : MonoBehaviour
     public void Timer()
     {  
         EffectOnTimer();
+        inRange = (position.y < attackRange) ? true : false;
+        if (!inRange) return;
         if (actionTimer > timer) {
             timer++;
             SetTimer();
@@ -521,31 +495,44 @@ public class EnemyUnit : MonoBehaviour
         }
     }
 
-    public Vector2Int CheckMove()
+    public bool CheckSpace(Vector2Int specificSpace)
     {
-        if (movementArrow != null)
-            Destroy(movementArrow);
+        bool occupied = enemyManager.CheckIfCellIsOccupied(specificSpace);
+        bool outside = enemyManager.CheckIfCellIsOutsideOfBoard(specificSpace);
 
-        if (intendedMovement == new Vector2Int(0, 0))
+        if (occupied || outside)
         {
-            return new(0,0);
+            return false;
         }
+        return true;
+    }
 
-        EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + intendedMovement);
+    public bool CheckSpace(Vector2Int origin, int movement)
+    {
+        bool occupied = enemyManager.CheckIfCellIsOccupied(position - new Vector2Int(0, movement));
+        bool outside = enemyManager.CheckIfCellIsOutsideOfBoard(position - new Vector2Int(0, movement));
 
-        if (intendedMovement != new Vector2Int(0, 0) && potentialCrash != null) {
-            TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            potentialCrash.TakeDamage(Manager.Instance.gameManager.collisionDamage);
-            return new(0,0);
+        if (occupied || outside)
+        {
+            return false;
         }
-        if (enemyManager.CheckIfCellIsOutsideOfBoard(position + intendedMovement)) return new(0,0);
+        return true;
+    }
 
-        position += intendedMovement;
-
-        return intendedMovement;
-
-        //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
-        //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
+    public int CheckMove()
+    {
+        int movement = 0;
+        if (enemy.movement < 0) movement = -1; else movement = 1;
+        int distance = 0;
+        for (int i = 0; i < Mathf.Abs(enemy.movement); i++) 
+        {
+            if (CheckSpace(position, movement)) 
+            {
+                distance++;
+            }
+            else return distance * movement;
+        }
+        return distance * movement;
     }
 
     public void ForceMove(Vector2Int direction, int amount)
@@ -561,35 +548,25 @@ public class EnemyUnit : MonoBehaviour
                 return;
             }
             if (enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
-
-            position += direction;
         }
-        StartCoroutine(Move(position, true));
-
-        //Vector2 targetPosition = Manager.Instance.boardManager.spaces[position].transform.position;
-        //transform.localPosition = new Vector3(targetPosition.x, targetPosition.y + enemyManager.yOffset, 0);
+        StartCoroutine(MoveUnit(1, direction, true));
     }
 
-    public IEnumerator Move(Vector2Int moveTo, bool forced = false)
+    public IEnumerator MoveUnit(int movement, Vector2Int? direction = null, bool forced = false)
     {
-        readyToShowIntentions = false;
-        Manager.Instance.boardManager.ClearSpaces();
+        if (direction == null) direction = Vector2Int.down;
         float seconds = Manager.Instance.enemyManager.collideAnimTime;
         float i = 0;
         Vector2 originalPos = transform.position;
-        Vector2 targetPos = Manager.Instance.boardManager.spaces[moveTo].transform.position;
+        Vector2 targetPos = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].transform.position;
         while (i < seconds)
         {
             i += Time.deltaTime;
             transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i / seconds);
             yield return null;
         }
-        readyToShowIntentions = true;
-        if (forced) { 
-            Manager.Instance.boardManager.ClearSpaces();
-        }
+        position = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].position;
         SortSprites();
-        //Manager.Instance.boardManager.ClearSpaces();
         yield return null;
     }
     public IEnumerator Crash(Vector2Int moveTo, EnemyUnit crashInto)
@@ -609,7 +586,9 @@ public class EnemyUnit : MonoBehaviour
         crashInto.TakeDamage(Manager.Instance.gameManager.collisionDamage);
 
         if (!dead)
+        {
             transform.position = originalPos;
+        }
 
         yield return null;
     }
@@ -626,8 +605,8 @@ public class EnemyUnit : MonoBehaviour
                     true, 
                     GridSpaceSelection.EnemyAttack, 
                     position + attack.gridPosition, 
-                    projectile, 
-                    enemy.phases[phase].damageCard);
+                    projectile,
+                    enemyManager.damageCards[(int)enemy.damage]);
             }
             DamageTile(position + attack.gridPosition, attack.damage);
             PushTile(position + attack.gridPosition, attack.pushDirection, attack.pushDistance);
@@ -639,7 +618,7 @@ public class EnemyUnit : MonoBehaviour
     {
         if (targetTile.y < 0)
         {
-            Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, enemy.phases[phase].damageCard);
+            Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, enemyManager.damageCards[(int)enemy.damage]);
         }
         EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
         if (unit == null) return;
