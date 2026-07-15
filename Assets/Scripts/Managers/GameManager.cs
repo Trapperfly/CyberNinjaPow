@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         enemyManager = Manager.Instance.enemyManager;
         AlterMoney(0);
+        StartWave();
         //for (int i = 0; i < Manager.Instance.boardManager.boardSize.x; i++)
         //{
         //    int timer = Random.Range(spawnDelay.x, spawnDelay.y + 1);
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!waveInProgress && Input.GetKeyDown(KeyCode.Space)) StartWave();
+        //if (!waveInProgress && Input.GetKeyDown(KeyCode.Space)) StartWave();
         if (waveInProgress && Input.GetKeyDown(KeyCode.S)) FinishWave();
     }
 
