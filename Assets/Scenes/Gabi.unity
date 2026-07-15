@@ -4194,7 +4194,7 @@ MonoBehaviour:
   dangerSymbolsParent: {fileID: 1011086006}
   boardInformation: {fileID: 2067845652}
   damageNumberForTilePrefab: {fileID: 3418328696284837204, guid: 051228dda3fa2754ea35408a9fc08e0a, type: 3}
-  damageNumberOffset: {x: 0, y: 50}
+  damageNumberOffset: {x: 0, y: 5}
 --- !u!114 &1900229853
 MonoBehaviour:
   m_ObjectHideFlags: 0

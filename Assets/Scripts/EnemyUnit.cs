@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyUnit : MonoBehaviour
 {
@@ -64,7 +65,11 @@ public class EnemyUnit : MonoBehaviour
 
         attackRange = (enemy.range == Range.Melee) ? 2 : 20;
 
+        SetTimer();
+
         CreateAttack();
+
+        ShowIntentions();
     }
 
     public void Act()
@@ -75,59 +80,41 @@ public class EnemyUnit : MonoBehaviour
 
     void CreateAttack()
     {
-        if (enemy.range != Range.Melee)
+        TileEffect effect = new TileEffect();
+        
+        switch (enemy.range)
         {
-            TileEffect effect = new TileEffect();
-            ProjectileData projectile = new ProjectileData();
-            switch (enemy.range)
-            {
-                case Range.Anywhere:
-                    break;
-                case Range.Melee:
-                    effect.gridPosition = Vector2Int.down;
-                    effect.damage = (int)enemy.damage + 1;
-                    break;
-                case Range.Ranged:
-                    projectile.direction = Direction.South;
-                    projectile.projDamage = effect.damage = (int)enemy.damage + 1;
-                    effect.gridPosition = position;
-                    effect.projectiles.Add(projectile);
-                    break;
-                case Range.Rear:
-                    break;
-                case Range.Projectile:
-                    break;
-                default:
-                    break;
-            }
-
-            for (int i = 0; i < enemy.attacks; i++)
-            {
-                attack.Add(effect);
-            }
+            case Range.Anywhere:
+                break;
+            case Range.Melee:
+                effect.gridPosition = Vector2Int.down;
+                effect.damage = (int)enemy.damage + 1;
+                break;
+            case Range.Ranged:
+                ProjectileData projectile = new ProjectileData();
+                projectile.direction = Direction.South;
+                projectile.projDamage = effect.damage = (int)enemy.damage + 1;
+                effect.gridPosition = position + Vector2Int.down;
+                effect.projectiles.Add(projectile);
+                break;
+            case Range.Rear:
+                break;
+            case Range.Projectile:
+                break;
+            default:
+                break;
         }
-    }
-    public void Move()
-    {
-        StartCoroutine(IMove(enemy.movement));
-    }
 
-    public IEnumerator IMove(int movement)
-    {
-        int spaces = CheckMove();
-        Debug.Log("Trying to move " + spaces + " spaces.");
-
-        if (spaces != 0)
+        for (int i = 0; i < enemy.attacks; i++)
         {
-            StartCoroutine(MoveUnit(spaces));
-
-            yield return new WaitForSeconds(enemyManager.moveAnimTime * spaces);
+            //Debug.Log("Adding attack");
+            attack.Add(effect);
         }
     }
 
     public IEnumerator IAct()
     {
-        if (attacking)
+        if (timer > enemy.readySpeed)
         {
             StartCoroutine(Attack());
 
@@ -148,13 +135,14 @@ public class EnemyUnit : MonoBehaviour
 
     public void PaintAttack()
     {
+        Debug.Log("Trying to paint attack");
         //Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
         for (int i = 0; i < attackArrows.Count; i++)
         {
             Destroy(attackArrows[i]);
         }
         attackArrows.Clear();
-        foreach (TileEffect target in intendedAttack)
+        foreach (TileEffect target in attack)
         {
             if (target.projectiles.Count > 0)
             {
@@ -173,43 +161,44 @@ public class EnemyUnit : MonoBehaviour
 
                 targetSpace.Colorize(GridSpaceSelection.EnemyAttack, target.damage);
             }
-            if (target.gridPosition.x < 2 && target.gridPosition.x > -2 && target.gridPosition.y < 2 && target.gridPosition.y > -2)
-            {
-                Transform arrow = Instantiate(Manager.Instance.enemyManager.attackArrowPrefab, Vector3.zero, Quaternion.identity, null).transform;
-                arrow.position = 
-                    Vector3.Lerp(
-                        Manager.Instance.enemyManager.GetWorldPos(position), 
-                        Manager.Instance.enemyManager.GetWorldPos(position + target.gridPosition), 0.5f);
-                SpriteRenderer renderer = arrow.GetComponent<SpriteRenderer>();
-                Sprite sprite = null;
-                if (target.gridPosition.x == 0 && target.gridPosition.y > 0) //North
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(0, 0), out sprite);
-                if (target.gridPosition.x > 0 && target.gridPosition.y > 0) //NorthEast
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(1, 0), out sprite);
-                if (target.gridPosition.x > 0 && target.gridPosition.y == 0) //East
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(2, 0), out sprite);
-                if (target.gridPosition.x > 0 && target.gridPosition.y < 0) //SouthEast
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(3, 0), out sprite);
-                if (target.gridPosition.x == 0 && target.gridPosition.y < 0) //South
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(4, 0), out sprite);
-                if (target.gridPosition.x < 0 && target.gridPosition.y < 0) //SouthWest
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(5, 0), out sprite);
-                if (target.gridPosition.x < 0 && target.gridPosition.y == 0) //West
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(6, 0), out sprite);
-                if (target.gridPosition.x < 0 && target.gridPosition.y > 0) //NorthWest
-                    Manager.Instance.enemyManager.attackSprites.TryGetValue(new(7, 0), out sprite);
-                renderer.sprite = sprite;
-                attackArrows.Add(arrow.gameObject);
-            }
+            attackArrows.Add(PaintAttackArrow(target));
         }
+    }
+
+    public GameObject PaintAttackArrow(TileEffect target)
+    {
+        Transform arrow = Instantiate(Manager.Instance.enemyManager.attackArrowPrefab, Vector3.zero, Quaternion.identity, null).transform;
+        arrow.position =
+            Vector3.Lerp(
+                Manager.Instance.enemyManager.GetWorldPos(position),
+                Manager.Instance.enemyManager.GetWorldPos(position) + target.gridPosition, 0.5f);
+        SpriteRenderer renderer = arrow.GetComponent<SpriteRenderer>();
+        Sprite sprite = null;
+        if (target.gridPosition.x == 0 && target.gridPosition.y > 0) //North
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(0, 0), out sprite);
+        if (target.gridPosition.x > 0 && target.gridPosition.y > 0) //NorthEast
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(1, 0), out sprite);
+        if (target.gridPosition.x > 0 && target.gridPosition.y == 0) //East
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(2, 0), out sprite);
+        if (target.gridPosition.x > 0 && target.gridPosition.y < 0) //SouthEast
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(3, 0), out sprite);
+        if (target.gridPosition.x == 0 && target.gridPosition.y < 0) //South
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(4, 0), out sprite);
+        if (target.gridPosition.x < 0 && target.gridPosition.y < 0) //SouthWest
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(5, 0), out sprite);
+        if (target.gridPosition.x < 0 && target.gridPosition.y == 0) //West
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(6, 0), out sprite);
+        if (target.gridPosition.x < 0 && target.gridPosition.y > 0) //NorthWest
+            Manager.Instance.enemyManager.attackSprites.TryGetValue(new(7, 0), out sprite);
+        renderer.sprite = sprite;
+        return renderer.gameObject;
     }
 
     public void ShowIntentions()
     {
         if (dead) return;
-        //attacking = (position.y < attackRange) ? true : false;
-
-        //if (attacking) PaintAttack();
+        Debug.Log("I am " + enemy.enemyName + " at " + position.x + "," + position.y + " and I am " + (inRange ? "in range" : "not in range"));
+        if (inRange) PaintAttack();
         SortSprites();
     }
 
@@ -445,7 +434,6 @@ public class EnemyUnit : MonoBehaviour
     public void Timer()
     {  
         EffectOnTimer();
-        inRange = (position.y < attackRange) ? true : false;
         if (!inRange) return;
         if (actionTimer > timer) {
             timer++;
@@ -509,8 +497,8 @@ public class EnemyUnit : MonoBehaviour
 
     public bool CheckSpace(Vector2Int origin, int movement)
     {
-        bool occupied = enemyManager.CheckIfCellIsOccupied(position - new Vector2Int(0, movement));
-        bool outside = enemyManager.CheckIfCellIsOutsideOfBoard(position - new Vector2Int(0, movement));
+        bool occupied = enemyManager.CheckIfCellIsOccupied(origin - new Vector2Int(0, movement));
+        bool outside = enemyManager.CheckIfCellIsOutsideOfBoard(origin - new Vector2Int(0, movement));
 
         if (occupied || outside)
         {
@@ -518,17 +506,35 @@ public class EnemyUnit : MonoBehaviour
         }
         return true;
     }
+    public void Move()
+    {
+        StartCoroutine(IMove(enemy.movement));
+    }
 
+    public IEnumerator IMove(int movement)
+    {
+        int spaces = CheckMove();
+        Debug.Log("Trying to move " + spaces + " spaces.");
+
+        if (spaces != 0)
+        {
+            StartCoroutine(MoveUnit(spaces));
+
+            yield return new WaitForSeconds(enemyManager.moveAnimTime * spaces);
+        }
+    }
     public int CheckMove()
     {
         int movement = 0;
         if (enemy.movement < 0) movement = -1; else movement = 1;
         int distance = 0;
+        Vector2Int pos = position;
         for (int i = 0; i < Mathf.Abs(enemy.movement); i++) 
         {
-            if (CheckSpace(position, movement)) 
+            if (CheckSpace(pos, movement)) 
             {
                 distance++;
+                pos = pos - new Vector2Int(0, movement);
             }
             else return distance * movement;
         }
@@ -558,7 +564,7 @@ public class EnemyUnit : MonoBehaviour
         float seconds = Manager.Instance.enemyManager.collideAnimTime;
         float i = 0;
         Vector2 originalPos = transform.position;
-        Vector2 targetPos = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].transform.position;
+        Vector2 targetPos = Manager.Instance.boardManager.spaces[position + movement * (Vector2Int)direction].transform.position;
         while (i < seconds)
         {
             i += Time.deltaTime;
@@ -566,6 +572,8 @@ public class EnemyUnit : MonoBehaviour
             yield return null;
         }
         position = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].position;
+        inRange = (position.y < attackRange);
+        Manager.Instance.boardManager.ClearSpaces();
         SortSprites();
         yield return null;
     }
@@ -588,8 +596,9 @@ public class EnemyUnit : MonoBehaviour
         if (!dead)
         {
             transform.position = originalPos;
+            inRange = (position.y < attackRange);
         }
-
+        Manager.Instance.boardManager.ClearSpaces();
         yield return null;
     }
 
@@ -597,7 +606,7 @@ public class EnemyUnit : MonoBehaviour
     {
         readyToShowIntentions = false;
 
-        foreach (TileEffect attack in intendedAttack)
+        foreach (TileEffect attack in attack)
         {
             foreach (ProjectileData projectile in attack.projectiles)
             {
@@ -611,6 +620,7 @@ public class EnemyUnit : MonoBehaviour
             DamageTile(position + attack.gridPosition, attack.damage);
             PushTile(position + attack.gridPosition, attack.pushDirection, attack.pushDistance);
         }
+        Manager.Instance.boardManager.ClearSpaces();
         SortSprites();
         yield return null;
     }
@@ -630,7 +640,7 @@ public class EnemyUnit : MonoBehaviour
     {
         EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
         if (unit == null) return;
-        Vector2Int dirVector = Manager.Instance.boardManager.GetDirection(direction);
+        Vector2Int dirVector = Manager.Instance.boardManager.GetVector2IntFromDirection(direction);
         unit.ForceMove(dirVector, amount);
     }
 }

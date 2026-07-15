@@ -206,7 +206,8 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (EnemyUnit unit in Manager.Instance.enemyManager.enemies)
         {
-            if (unit.readyToShowIntentions) unit.ShowIntentions();
+            unit.ShowIntentions();
+            //if (unit.readyToShowIntentions) 
         }
     }
     public void ShowIntentionsOfEnemy(EnemyUnit unit)

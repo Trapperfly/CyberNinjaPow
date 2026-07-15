@@ -3,8 +3,10 @@ using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UIElements;
 using static UnityEngine.Audio.ProcessorInstance;
+using static UnityEngine.GraphicsBuffer;
 
 public class BoardManager : MonoBehaviour
 {
@@ -302,14 +304,14 @@ public class BoardManager : MonoBehaviour
                 }
                 if (enemy && effect.pushDirection != Direction.None)
                 {
-                    Vector2Int pushDir = GetDirection(effect.pushDirection);
+                    Vector2Int pushDir = GetVector2IntFromDirection(effect.pushDirection);
                     enemy.ForceMove(pushDir, effect.pushDistance);
                 }
             }
         }
     }
 
-    public Vector2Int GetDirection(Direction direction)
+    public Vector2Int GetVector2IntFromDirection(Direction direction)
     {
         switch (direction)
         {
@@ -336,6 +338,19 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public Direction GetDirectionFromVector2Int(Vector2Int vector)
+    {
+        if (vector.x == 0 && vector.y > 0) return Direction.North;       //North
+        if (vector.x > 0 && vector.y > 0) return Direction.NorthEast;    //NorthEast
+        if (vector.x > 0 && vector.y == 0) return Direction.East;        //East
+        if (vector.x > 0 && vector.y < 0) return Direction.SouthEast;    //SouthEast
+        if (vector.x == 0 && vector.y < 0) return Direction.South;       //South
+        if (vector.x < 0 && vector.y < 0) return Direction.SouthWest;    //SouthWest
+        if (vector.x < 0 && vector.y == 0) return Direction.West;        //West
+        if (vector.x < 0 && vector.y > 0) return Direction.NorthWest;    //NorthWest
+        else return Direction.South;
+    }
+
     public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, ProjectileData projectile, Card card = null, Card damageCard = null)
     {
         Vector2Int space = origin;
@@ -345,7 +360,7 @@ public class BoardManager : MonoBehaviour
         data.pierce = projectile.pierce;
         data.direction = projectile.direction;
 
-        Vector2Int dirVector = GetDirection(data.direction);
+        Vector2Int dirVector = GetVector2IntFromDirection(data.direction);
 
         for (int i = 0; i < 10; i++)
         {
@@ -559,7 +574,7 @@ public class BoardManager : MonoBehaviour
             }
             if (enemy && effect.pushDirection != Direction.None)
             {
-                Vector2Int pushDir = GetDirection(effect.pushDirection);
+                Vector2Int pushDir = GetVector2IntFromDirection(effect.pushDirection);
                 enemy.ForceMove(pushDir, effect.pushDistance);
                 yield return new WaitForSeconds(Manager.Instance.enemyManager.collideAnimTime);
             }
