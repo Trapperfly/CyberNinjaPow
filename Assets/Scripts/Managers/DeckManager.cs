@@ -153,6 +153,15 @@ public class DeckManager : MonoBehaviour
     {
         GameObject cardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
         CardObject cardObject = cardGO.GetComponent<CardObject>();
+        if (card == null)
+        {
+            Debug.LogError("CreateCard called with null card!");
+            return null; // or handle gracefully
+        }
+        if (cardObject.cardName == null)
+        {
+            Debug.LogError($"cardName Text field unassigned on prefab '{cardPrefab.name}'", cardGO);
+        }
         cardObject.cardName.text = card.cardName;
         cardObject.cardDescription.text = card.description;
         cardObject.art.sprite = card.artwork;

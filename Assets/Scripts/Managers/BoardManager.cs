@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UIElements;
+using static Unity.VisualScripting.Member;
 using static UnityEngine.Audio.ProcessorInstance;
 using static UnityEngine.GraphicsBuffer;
 
@@ -110,30 +111,6 @@ public class BoardManager : MonoBehaviour
     private void FixedUpdate()
     {
         CheckCardTargeting(CheckMouseTargeting());
-    }
-
-    public void PaintAttack(List<TileEffect> targets, Vector2Int origin)
-    {
-        foreach (TileEffect target in targets)
-        {
-            if (target.projectiles.Count > 0)
-            {
-                foreach (ProjectileData projectile in target.projectiles)
-                    Projectile(false, GridSpaceSelection.EnemyAttack, origin + target.gridPosition, projectile, heldCard);
-            }
-            else
-            {
-                if ((origin + target.gridPosition).y < 0)
-                {
-                    dangerSymbolsParent.GetChild(origin.x + target.gridPosition.x).gameObject.SetActive(true);
-                    continue;
-                }
-                spaces.TryGetValue(origin + target.gridPosition, out BoardSpace targetSpace);
-                if (targetSpace == null) continue;
-
-                targetSpace.Colorize(GridSpaceSelection.EnemyAttack, target.damage);
-            }
-        }
     }
 
     public void BeginCardTargeting(Vector2 cardPos)
@@ -269,7 +246,7 @@ public class BoardManager : MonoBehaviour
             if (effect.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in effect.projectiles)
-                    Projectile(false, GridSpaceSelection.CardTargeting, space, projectile, heldCard);
+                    PlayerProjectile(false, space, projectile, heldCard);
             }
             else
             {
@@ -291,7 +268,7 @@ public class BoardManager : MonoBehaviour
             if (effect.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in effect.projectiles)
-                    Projectile(true, GridSpaceSelection.CardTargeting, space, projectile, heldCard);
+                    PlayerProjectile(true, space, projectile, heldCard);
             }
             else
             {
@@ -351,7 +328,59 @@ public class BoardManager : MonoBehaviour
         else return Direction.South;
     }
 
-    public void Projectile(bool fire, GridSpaceSelection source, Vector2Int origin, ProjectileData projectile, Card card = null, Card damageCard = null)
+    public void PlayerProjectile (bool fire, Vector2Int origin, ProjectileData projectile, Card card = null)
+    {
+        Vector2Int space = origin;
+        ProjectileData data = new();
+
+        data.projDamage = projectile.projDamage;
+        data.pierce = projectile.pierce;
+        data.direction = projectile.direction;
+
+        Vector2Int dirVector = GetVector2IntFromDirection(data.direction);
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (Manager.Instance.enemyManager.CheckIfCellIsOutsideOfBoard(space))
+            {
+                break; // always break when out of bounds
+            }
+
+            spaces.TryGetValue(space, out BoardSpace targetedSpace);
+            if (targetedSpace == null)
+            {
+                continue;
+            }
+
+            EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
+            if (enemy)
+            {
+
+                ItemResponse response = new();
+                response = Manager.Instance.itemManager.TriggerOnHit(enemy);
+
+                if (fire)
+                {
+                    int bonusDamage = OnHit(data.projDamage + response.integer, card, enemy);
+                    //Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
+                    enemy.TakeDamage(data.projDamage);
+                }
+                else
+                {
+                    targetedSpace.Colorize(GridSpaceSelection.CardTargeting, data.projDamage + response.integer);
+                }
+                if (data.pierce == 0) break;
+                else data.pierce--;
+            }
+            else
+            {
+                targetedSpace.RangedColorize(dirVector, GridSpaceSelection.CardTargeting);
+            }
+            space += dirVector;
+        }
+    }
+
+    public void EnemyProjectile(bool fire, Vector2Int origin, ProjectileData projectile, Card damageCard = null)
     {
         Vector2Int space = origin;
         ProjectileData data = new();
@@ -366,10 +395,10 @@ public class BoardManager : MonoBehaviour
         {
             if (space.y < 0)
             {
-                if (!fire && source == GridSpaceSelection.EnemyAttack)
+                if (!fire)
                     dangerSymbolsParent.GetChild(space.x).gameObject.SetActive(true);
 
-                if (fire && source == GridSpaceSelection.EnemyAttack)
+                if (fire)
                 {
                     Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
                 }
@@ -384,36 +413,16 @@ public class BoardManager : MonoBehaviour
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
-                if (source == GridSpaceSelection.EnemyAttack || source == GridSpaceSelection.AllyAttack)
-                {
-                    if (fire)
-                        enemy.TakeDamage(data.projDamage);
-                    else
-                        targetedSpace.Colorize(source, data.projDamage);
-                }
+                if (fire)
+                    enemy.TakeDamage(data.projDamage);
                 else
-                {
-                    ItemResponse response = new();
-                    if (source == GridSpaceSelection.CardTargeting)
-                        response = Manager.Instance.itemManager.TriggerOnHit(enemy);
-
-                    if (fire)
-                    {
-                        int bonusDamage = OnHit(data.projDamage + response.integer, card, enemy);
-                        //Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
-                        enemy.TakeDamage(data.projDamage);
-                    }
-                    else
-                    {
-                        targetedSpace.Colorize(source, data.projDamage + response.integer);
-                    }
-                }
+                    targetedSpace.Colorize(GridSpaceSelection.EnemyAttack, data.projDamage);
                 if (data.pierce == 0) break;
                 else data.pierce--;
             }
             else
             {
-                targetedSpace.RangedColorize(dirVector, source);
+                targetedSpace.RangedColorize(dirVector, GridSpaceSelection.EnemyAttack);
             }
             space += dirVector;
         }
@@ -560,7 +569,7 @@ public class BoardManager : MonoBehaviour
         if (effect.projectiles.Count > 0)
         {
             foreach (ProjectileData projectile in effect.projectiles)
-                Projectile(true, GridSpaceSelection.CardTargeting, space, projectile, card);
+                PlayerProjectile(true, space, projectile, card);
         }
         else
         {

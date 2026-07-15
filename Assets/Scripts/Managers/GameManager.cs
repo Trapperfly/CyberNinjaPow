@@ -78,11 +78,13 @@ public class GameManager : MonoBehaviour
                 case Objective.SurviveCertainAmountOfTime:
                 case Objective.SurviveThenKillElite:
                 case Objective.SurviveThenKillBoss:
-                    mainObjectiveTracker += time;
+                    mainObjectiveTracker++;
                     break;
             }
 
             yield return StartCoroutine(enemyManager.IProgressTime());
+            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
         AfterTimeProgress();
         yield return null;

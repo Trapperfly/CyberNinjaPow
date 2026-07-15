@@ -52,8 +52,6 @@ public class EnemyUnit : MonoBehaviour
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = enemy.sprite[phase];
 
-        actionTimer = enemy.readySpeed;
-
         enemyManager.enemies.Add(this);
 
         Vector2 targetPosition = GetWorldPos(position);
@@ -69,7 +67,7 @@ public class EnemyUnit : MonoBehaviour
 
         CreateAttack();
 
-        ShowIntentions();
+        Manager.Instance.boardManager.ClearSpaces();
     }
 
     public void Act()
@@ -94,7 +92,7 @@ public class EnemyUnit : MonoBehaviour
                 ProjectileData projectile = new ProjectileData();
                 projectile.direction = Direction.South;
                 projectile.projDamage = effect.damage = (int)enemy.damage + 1;
-                effect.gridPosition = position + Vector2Int.down;
+                effect.gridPosition = Vector2Int.down;
                 effect.projectiles.Add(projectile);
                 break;
             case Range.Rear:
@@ -114,12 +112,9 @@ public class EnemyUnit : MonoBehaviour
 
     public IEnumerator IAct()
     {
-        if (timer > enemy.readySpeed)
-        {
-            StartCoroutine(Attack());
+        StartCoroutine(Attack());
 
-            yield return new WaitForSeconds(enemyManager.attackAnimTime);
-        }
+        yield return new WaitForSeconds(enemyManager.attackAnimTime);
 
         timer = 0;
         SetTimer();
@@ -135,7 +130,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void PaintAttack()
     {
-        Debug.Log("Trying to paint attack");
+        //Debug.Log("Trying to paint attack");
         //Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
         for (int i = 0; i < attackArrows.Count; i++)
         {
@@ -147,7 +142,7 @@ public class EnemyUnit : MonoBehaviour
             if (target.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in target.projectiles)
-                    Manager.Instance.boardManager.Projectile(false, GridSpaceSelection.EnemyAttack, position + target.gridPosition, projectile);
+                    Manager.Instance.boardManager.EnemyProjectile(false, position + target.gridPosition, projectile);
             }
             else
             {
@@ -171,7 +166,7 @@ public class EnemyUnit : MonoBehaviour
         arrow.position =
             Vector3.Lerp(
                 Manager.Instance.enemyManager.GetWorldPos(position),
-                Manager.Instance.enemyManager.GetWorldPos(position) + target.gridPosition, 0.5f);
+                Manager.Instance.enemyManager.GetWorldPos(position) + target.gridPosition, 0.7f);
         SpriteRenderer renderer = arrow.GetComponent<SpriteRenderer>();
         Sprite sprite = null;
         if (target.gridPosition.x == 0 && target.gridPosition.y > 0) //North
@@ -197,7 +192,8 @@ public class EnemyUnit : MonoBehaviour
     public void ShowIntentions()
     {
         if (dead) return;
-        Debug.Log("I am " + enemy.enemyName + " at " + position.x + "," + position.y + " and I am " + (inRange ? "in range" : "not in range"));
+        inRange = (position.y < attackRange);
+        //Debug.Log("I am " + enemy.enemyName + " at " + position.x + "," + position.y + " and I am " + (inRange ? "in range" : "not in range"));
         if (inRange) PaintAttack();
         SortSprites();
     }
@@ -230,7 +226,7 @@ public class EnemyUnit : MonoBehaviour
     {
         if (dead || damage == 0) { return; }
 
-        //Debug.Log(enemy.enemyName + " took " + damage + " damage");
+        Debug.Log(enemy.enemyName + " took " + damage + " damage");
         damageTaken += damage;
         
         if (damageTaken >= enemy.health[phase])
@@ -275,9 +271,13 @@ public class EnemyUnit : MonoBehaviour
 
     public void Die(bool rewards = true)
     {
-        //if (rewards) Manager.Instance.gameManager.AlterMoney((int)enemy.strength);
-        //Manager.Instance.gameManager.KilledAnEnemy(enemy.threat, enemy.strength);
+        if (rewards) Manager.Instance.gameManager.AlterMoney((int)enemy.threat);
+        Manager.Instance.gameManager.KilledAnEnemy(enemy.threat);
         //Destroy(movementArrow);
+        for (int i = 0; i < attackArrows.Count; i++) {
+            Destroy(attackArrows[i]);
+        }
+        attackArrows.Clear();
         Destroy(gameObject);
     }
 
@@ -435,7 +435,7 @@ public class EnemyUnit : MonoBehaviour
     {  
         EffectOnTimer();
         if (!inRange) return;
-        if (actionTimer > timer) {
+        if (enemy.readySpeed > timer) {
             timer++;
             SetTimer();
             return; 
@@ -445,8 +445,8 @@ public class EnemyUnit : MonoBehaviour
 
     public void SetTimer()
     {
-        timerSpriteRenderer.size = new(actionTimer - timer, 1);
-        if (actionTimer <= timer)
+        timerSpriteRenderer.size = new(enemy.readySpeed - timer, 1);
+        if (enemy.readySpeed <= timer)
         {
             timerSpriteRenderer.sprite = timerDanger;
             timerSpriteRenderer.size = new(1, 1);
@@ -514,7 +514,7 @@ public class EnemyUnit : MonoBehaviour
     public IEnumerator IMove(int movement)
     {
         int spaces = CheckMove();
-        Debug.Log("Trying to move " + spaces + " spaces.");
+        //Debug.Log("Trying to move " + spaces + " spaces.");
 
         if (spaces != 0)
         {
@@ -572,7 +572,6 @@ public class EnemyUnit : MonoBehaviour
             yield return null;
         }
         position = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].position;
-        inRange = (position.y < attackRange);
         Manager.Instance.boardManager.ClearSpaces();
         SortSprites();
         yield return null;
@@ -596,7 +595,6 @@ public class EnemyUnit : MonoBehaviour
         if (!dead)
         {
             transform.position = originalPos;
-            inRange = (position.y < attackRange);
         }
         Manager.Instance.boardManager.ClearSpaces();
         yield return null;
@@ -606,19 +604,22 @@ public class EnemyUnit : MonoBehaviour
     {
         readyToShowIntentions = false;
 
-        foreach (TileEffect attack in attack)
+        Debug.Log("Attacking");
+        foreach (TileEffect a in attack)
         {
-            foreach (ProjectileData projectile in attack.projectiles)
+            Debug.Log("one attack");
+            foreach (ProjectileData projectile in a.projectiles)
             {
-                Manager.Instance.boardManager.Projectile(
+                Debug.Log("sending projectile");
+                Manager.Instance.boardManager.EnemyProjectile(
                     true, 
-                    GridSpaceSelection.EnemyAttack, 
-                    position + attack.gridPosition, 
-                    projectile,
+                    position + a.gridPosition, 
+                    projectile, 
                     enemyManager.damageCards[(int)enemy.damage]);
             }
-            DamageTile(position + attack.gridPosition, attack.damage);
-            PushTile(position + attack.gridPosition, attack.pushDirection, attack.pushDistance);
+            Debug.Log("trying to damage specific tile");
+            DamageTile(position + a.gridPosition, a.damage);
+            PushTile(position + a.gridPosition, a.pushDirection, a.pushDistance);
         }
         Manager.Instance.boardManager.ClearSpaces();
         SortSprites();
