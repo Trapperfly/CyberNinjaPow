@@ -239,26 +239,6 @@ public class ProjectileData
     public int pierce;
 }
 
-public enum CardTag
-{
-    None,
-    Damage,         //Damage taken by player
-    Flame,          //Usually applies or manipulates flame status effect
-    Thunder,        //Usually applies or manipulates thunder status effect
-    Hacking,        //Usually applies or manipulates hacking status effect
-    Projectile,     //Is something that launches projectiles
-    Precision,      //Is something that targets one single tile
-    Area,           //Is something that targest a lot of tiles
-    Cryo,           //Usually applies or manipulates cryo status effect
-    Deployment,     //Is something or manipulates stuff on the tactical grid
-    Explosive,      //Is something explosive, usually coupled with Area
-    Trap,           //Is something placed on the tactical grid that triggers
-    Cleave,         //Probably not used, but large melee
-    Cards,          //Usually relates to drawing, discarding, and making cards
-    Repair,         //Usually relates to healing self or deployment
-    TimeWarp,       //Usually relates to changing time in either direction
-    Defence,        //Usually relates to blocking damage
-}
 public enum Range
 {
     Anywhere,
