@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Deck
   deckName: BaseDeck
   cards:
-  - {fileID: 11400000, guid: 03912a11d202f9d45856ceea4e77cd19, type: 2}
-  - {fileID: 11400000, guid: bf3fffee0f45cd84eb59e9b37b4809e6, type: 2}
+  - {fileID: 11400000, guid: c4877c12e7180b44ab1d95010b73743c, type: 2}
+  - {fileID: 11400000, guid: 5db8821bdf6a49f428150081af2ac455, type: 2}
   - {fileID: 11400000, guid: acf07903ea0b3e04db1f3d1453f4bb15, type: 2}
-  - {fileID: 11400000, guid: eb5814d78e6b97b408adc286b10375f8, type: 2}
+  - {fileID: 11400000, guid: 88ff5179d3204c04bb59739d588c108c, type: 2}
   - {fileID: 11400000, guid: 3dcc3cfbffcc9054480b6b666305b37c, type: 2}
   possibleCards:
   - {fileID: 11400000, guid: fb96778abfabe9043b2381e8175922a4, type: 2}

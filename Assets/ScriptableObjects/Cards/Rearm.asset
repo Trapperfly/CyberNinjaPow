@@ -22,6 +22,7 @@ MonoBehaviour:
   range: 0
   extraTagSlots: 1
   rarity: 3
+  original: {fileID: 0}
   tileEffects: []
   targetAll:
     doThis: 0

@@ -104,7 +104,7 @@ public class BoardManager : MonoBehaviour
 
     void Discard()
     {
-        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, 0, true);
+        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard.original, 0, true);
         ResetCards();
     }
 
@@ -138,7 +138,7 @@ public class BoardManager : MonoBehaviour
         {
             cost = heldCard.cost;
         }
-        Manager.Instance.deckManager.DiscardOrUseCard(heldCard, cost);
+        Manager.Instance.deckManager.DiscardOrUseCard(heldCard.original, cost);
         ResetCards();
     }
 

@@ -15,13 +15,14 @@ MonoBehaviour:
   cardName: Barrage
   description: 
   artwork: {fileID: 21300000, guid: a72dd2b1376484546b8c3daa2bf3227e, type: 3}
-  cardTags: 05000000
+  cardTags: 
   cost: 3
   classResourceCost: 0
   repeats: 5
   range: 4
   extraTagSlots: 1
   rarity: 2
+  original: {fileID: 0}
   tileEffects:
   - gridPosition: {x: 0, y: 0}
     damage: 0

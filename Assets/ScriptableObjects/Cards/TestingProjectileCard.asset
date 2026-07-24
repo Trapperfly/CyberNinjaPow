@@ -22,6 +22,7 @@ MonoBehaviour:
   range: 0
   extraTagSlots: 0
   rarity: 4
+  original: {fileID: 0}
   tileEffects:
   - gridPosition: {x: -1, y: 1}
     damage: 0

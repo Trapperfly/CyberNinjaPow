@@ -34,10 +34,10 @@ public class EnemyUnit : MonoBehaviour
     public GameObject healthbarSegmentPrefab;
     public GameObject healthbarGatePrefab;
     public List<Sprite> healthSprites;
-    public float healthBarSpread = 1f; //0.03125
-    public int segmentWidth = 1;
-    public int gateWidth = 1;
-    public int afterGateWidth = 1;
+    public float healthBarSpread = 0.03125f; //0.03125 0.15625
+    public int segmentWidth = 5;
+    public int gateWidth = 4;
+    public int afterGateWidth = 3;
 
     public GameObject movementArrow;
     public List<GameObject> attackArrows = new();

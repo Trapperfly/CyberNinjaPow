@@ -9,13 +9,16 @@ public class Card : ScriptableObject
     public string cardName;
     public string description;
     public Sprite artwork;
-    public List<CardTag> cardTags;
+    public List<CardTag> cardTags = new();
+    public List<Tag> tags = new();
     public int cost = 0;
     public int classResourceCost = 0;
     public int repeats = 1;
     public Range range;
     public int extraTagSlots;
     public CardRarity rarity;
+
+    [HideInInspector] public Card original;
 
     [Tooltip("Each entry defines what happens on one tile of the grid when this card is played.")]
     public List<TileEffect> tileEffects = new();
@@ -64,6 +67,9 @@ public class AdditionalCardEffect
                 break;
             case OtherCardEffects.AddCardToDraw:
                 if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Draw, card);
+                break;
+            case OtherCardEffects.ActivateBurn:
+                if (fire) Manager.Instance.enemyManager.TriggerStatusesOnAllEnemies(StatusEffect.Burning);
                 break;
             default:
                 break;
@@ -171,6 +177,7 @@ public enum OtherCardEffects
     AddCardToHand,
     AddCardToDiscard,
     AddCardToDraw,
+    ActivateBurn
 }
 
 public enum ConditionalCardEffects

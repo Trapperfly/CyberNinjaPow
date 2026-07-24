@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
+using UnityEngine.Rendering;
 public enum WhereDoesTheCardGo
 {
     Nowhere,
@@ -77,7 +78,7 @@ public class DeckManager : MonoBehaviour
         discard.Clear();
         foreach (Card card in hand)
         {
-            deck.cards.Add(card);
+            deck.cards.Add(card.original);
         }
         Debug.Log(deck.cards.Count);
         hand.Clear();
@@ -151,17 +152,11 @@ public class DeckManager : MonoBehaviour
 
     public GameObject CreateCard(Card card)
     {
+        Card oldCard = card;
+        card = AddTagEffectsToCard(Instantiate(card));
+        card.original = oldCard;
         GameObject cardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
         CardObject cardObject = cardGO.GetComponent<CardObject>();
-        if (card == null)
-        {
-            Debug.LogError("CreateCard called with null card!");
-            return null; // or handle gracefully
-        }
-        if (cardObject.cardName == null)
-        {
-            Debug.LogError($"cardName Text field unassigned on prefab '{cardPrefab.name}'", cardGO);
-        }
         cardObject.cardName.text = card.cardName;
         cardObject.cardDescription.text = card.description;
         cardObject.art.sprite = card.artwork;
@@ -193,13 +188,132 @@ public class DeckManager : MonoBehaviour
             Image image = tagIconRect.GetComponent<Image>();
 
             image.sprite = tagSprites[new Vector2Int(0 + variant, (int)tag)];
-            //tagIconRect.sizeDelta = new Vector2(
-            //    image.sprite.rect.width,
-            //    image.sprite.rect.height
-            //) * 32;
+
             i++;
         }
         return cardGO;
+    }
+
+    public Tag CreateTagFromEnum(CardTag tag)
+    {
+        switch (tag)
+        {
+            case CardTag.None:
+                return null;
+            case CardTag.Damage:
+                return null;
+            case CardTag.Flame:
+                return new Burn();
+            case CardTag.Hacking:
+                return new Hack();
+            case CardTag.Explosive:
+                return new Explosive();
+            case CardTag.Cards:
+                return new Cards();
+            case CardTag.Swift:
+                return new Swift();
+            case CardTag.Flexible:
+                return new Flexible();
+            case CardTag.Power:
+                return new Power();
+            default:
+                return null;
+        }
+    }
+
+    public Card AddTagEffectsToCard(Card card)
+    {
+        foreach (CardTag tag in card.cardTags)
+        {
+            card.tags.Add(CreateTagFromEnum(tag));
+        }
+        if (card.tags.Count == 0) return card;
+        TagResponse response = new TagResponse();
+        foreach (Tag tag in card.tags)
+        {
+            if (tag == null) continue;
+
+            if (card.tileEffects.Count > 0 || card.targetAll.doThis)
+            {
+                response = tag.OnTarget(response);
+            }
+            else
+            {
+                response = tag.OnNonTarget(response);
+            }
+        }
+        Debug.Log(card.cardName);
+        response.Print();
+        //Cost
+        card.cost += response.costChange;
+        if (card.cost < 0) card.cost = 0;
+        //Omni
+        foreach (AdditionalCardEffect ace in card.additionalCardEffects)
+        {
+            ace.amount += response.omniboost;
+        }
+        //Draw card
+        if(response.cardDraw > 0)
+        {
+            AdditionalCardEffect additionalDraw = new AdditionalCardEffect();
+            additionalDraw.otherEffect = OtherCardEffects.DrawCards;
+            additionalDraw.amount += response.cardDraw;
+            card.additionalCardEffects.Add(additionalDraw);
+        }
+        //Activate burn
+        if (response.activateBurn)
+        {
+            AdditionalCardEffect addBurningTrigger = new AdditionalCardEffect();
+            addBurningTrigger.otherEffect = OtherCardEffects.ActivateBurn;
+            card.additionalCardEffects.Add(addBurningTrigger);
+        }
+        //Class resource
+        if (response.classResource != 0)
+        {
+            AdditionalCardEffect addClassResource = new AdditionalCardEffect();
+            addClassResource.otherEffect = OtherCardEffects.AddClassResource;
+            addClassResource.amount += response.classResource;
+            card.additionalCardEffects.Add(addClassResource);
+        }
+        //Add repeats
+        card.repeats += response.additionalRepeats;
+        //Card draw when discarded
+        //For later
+
+        //Add status effect
+        foreach (TileEffect effect in card.tileEffects)
+        {
+            foreach (StatusEffect status in response.statusEffects)
+            {
+                StatusEffectEntry statusEntry = new StatusEffectEntry();
+                statusEntry.effect = status;
+                statusEntry.stacks = 1;
+                statusEntry.duration = 1;
+
+                effect.statusEffects.Add(statusEntry);
+            }
+        }
+        //Damage or pierce
+        foreach (TileEffect effect in card.tileEffects)
+        {
+            if (effect.projectiles.Count > 0)
+                foreach (ProjectileData projectile in effect.projectiles)
+                {
+                    projectile.pierce += response.bonusToPierceOrDamage;
+                }
+            else
+                effect.damage += response.bonusToPierceOrDamage;
+        }
+        //Target anywhere
+        if (response.targetAnywhere) card.range = Range.Anywhere;
+        //Push north, can probably be direction of attack or something later.
+        if (response.pushNorth != 0)
+        foreach (TileEffect effect in card.tileEffects)
+        {
+            effect.pushDirection = Direction.North;
+            effect.pushDistance = response.pushNorth;
+        }
+        return card;
     }
 
     public void AlignCards()
@@ -290,10 +404,10 @@ public class DeckManager : MonoBehaviour
     }
     public void DiscardOrUseCard(Card card, int cost, bool discardTheCard = false)
     {
-        discard.Add(card);
+        discard.Add(card.original);
 
         handCards.Remove(physicalCardHeld.transform);
-        hand.Remove(card);
+        hand.Remove(card.original);
 
         Destroy(physicalCardHeld.gameObject);
 

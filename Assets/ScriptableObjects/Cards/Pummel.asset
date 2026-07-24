@@ -15,13 +15,14 @@ MonoBehaviour:
   cardName: Pummel
   description: 
   artwork: {fileID: 0}
-  cardTags: 0c000000
+  cardTags: 08000000
   cost: 1
   classResourceCost: 0
   repeats: 1
   range: 1
   extraTagSlots: 2
   rarity: 1
+  original: {fileID: 11400000}
   tileEffects:
   - gridPosition: {x: 0, y: 0}
     damage: 2

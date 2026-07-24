@@ -12,6 +12,18 @@ public abstract class Effect
     {
 
     }
+    public virtual void OnMove(EnemyUnit enemyUnit)
+    {
+
+    }
+    public virtual void OnAfterMove(EnemyUnit enemyUnit)
+    {
+
+    }
+    public virtual void OnTrigger(EnemyUnit enemyUnit)
+    {
+
+    }
 }
 public enum EffectsEnum
 {
@@ -37,8 +49,13 @@ public class Burning : Effect
     {
         return StatusEffect.Burning;
     }
-    public override void OnAct(EnemyUnit enemyUnit)
+    public override void OnMove(EnemyUnit enemyUnit)
     {
-        base.OnAct(enemyUnit);
+        enemyUnit.TakeDamage(1);
+    }
+
+    public override void OnTrigger(EnemyUnit enemyUnit)
+    {
+        enemyUnit.TakeDamage(1);
     }
 }

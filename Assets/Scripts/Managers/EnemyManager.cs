@@ -79,7 +79,39 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (EnemyUnit enemy in enemies)
         {
+            foreach(EffectInfo effect in enemy.effects) {
+                effect.effect.OnMove(enemy);
+            }
             enemy.Move();
+            foreach (EffectInfo effect in enemy.effects)
+            {
+                effect.effect.OnAfterMove(enemy);
+            }
+        }
+    }
+
+    public void TriggerStatusesOnAllEnemies(StatusEffect statusEffect = StatusEffect.None)
+    {
+        foreach (EnemyUnit enemy in enemies)
+        {
+            TriggerStatuses(enemy, statusEffect);
+        }
+    }
+
+    public void TriggerStatuses(EnemyUnit enemy, StatusEffect statusEffect = StatusEffect.None)
+    {
+        
+        if (statusEffect == StatusEffect.None)
+            foreach (EffectInfo effect in enemy.effects)
+            {
+                effect.effect.OnTrigger(enemy);
+            }
+        else
+        {
+            foreach (EffectInfo effect in enemy.effects)
+            {
+                if (effect.effect.GiveStatus() == statusEffect) effect.effect.OnTrigger(enemy);
+            }
         }
     }
 

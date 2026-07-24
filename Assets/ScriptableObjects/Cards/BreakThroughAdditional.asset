@@ -15,13 +15,14 @@ MonoBehaviour:
   cardName: Break Through AdditionalHit
   description: Splits when hitting an enemy, hitting enemies behind. {NI}
   artwork: {fileID: 0}
-  cardTags: 05000000
+  cardTags: 
   cost: 0
   classResourceCost: 0
   repeats: 1
   range: 4
   extraTagSlots: 0
   rarity: 0
+  original: {fileID: 0}
   tileEffects:
   - gridPosition: {x: -1, y: 1}
     damage: 0
