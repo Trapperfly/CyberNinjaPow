@@ -2819,7 +2819,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.2
+  orthographic size: 5.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4045,6 +4045,7 @@ MonoBehaviour:
   handSize: 5
   cardSpread: 1200
   cardRedied: 0
+  drawCost: 3
   drawAnimTime: 0.3
   canvas: {fileID: 1992698360}
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}

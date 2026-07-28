@@ -252,14 +252,16 @@ public enum Range
     Melee,
     Ranged,
     Rear,
-    Projectile
+    Projectile,
+    NotTarget
 
 }
 [BlackboardEnum]
 public enum StatusEffect
 {
     None,
-    Burning,   
+    Burning,
+    Acid,
     Hacked,    
     Marked,    
     Conductive,

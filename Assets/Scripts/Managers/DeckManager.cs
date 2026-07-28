@@ -17,6 +17,7 @@ public class DeckManager : MonoBehaviour
     public int handSize = 5;
     public float cardSpread = 600f;
     public bool cardRedied = false;
+    public int drawCost = 1;
     public float drawAnimTime = 0.1f;
 
     public Canvas canvas;
@@ -174,7 +175,7 @@ public class DeckManager : MonoBehaviour
             int variant = 0;
             foreach (TagVariant setting in tagVisualSettings)
             {
-                if (setting.tag == tag)
+                if (setting.tag.tag == tag.tag)
                 {
                     variant = setting.variant;
                     break;
@@ -182,39 +183,39 @@ public class DeckManager : MonoBehaviour
             }
             Transform tagGO = cardObject.tags.GetChild(i);
             tagGO.gameObject.SetActive(true);
-            tagGO.GetChild(0).GetComponent<Image>().sprite = tagBackgroundSprites[(int)tag];
+            tagGO.GetChild(0).GetComponent<Image>().sprite = tagBackgroundSprites[(int)tag.tag];
 
             RectTransform tagIconRect = tagGO.GetChild(1).GetComponent<RectTransform>();
             Image image = tagIconRect.GetComponent<Image>();
 
-            image.sprite = tagSprites[new Vector2Int(0 + variant, (int)tag)];
+            image.sprite = tagSprites[new Vector2Int(0 + variant, (int)tag.tag)];
 
             i++;
         }
         return cardGO;
     }
 
-    public Tag CreateTagFromEnum(CardTag tag)
+    public Tag CreateTagFromEnum(TagEnum tag)
     {
         switch (tag)
         {
-            case CardTag.None:
+            case TagEnum.None:
                 return null;
-            case CardTag.Damage:
+            case TagEnum.Damage:
                 return null;
-            case CardTag.Flame:
+            case TagEnum.Flame:
                 return new Burn();
-            case CardTag.Hacking:
+            case TagEnum.Hacking:
                 return new Hack();
-            case CardTag.Explosive:
+            case TagEnum.Explosive:
                 return new Explosive();
-            case CardTag.Cards:
+            case TagEnum.Cards:
                 return new Cards();
-            case CardTag.Swift:
+            case TagEnum.Swift:
                 return new Swift();
-            case CardTag.Flexible:
+            case TagEnum.Flexible:
                 return new Flexible();
-            case CardTag.Power:
+            case TagEnum.Power:
                 return new Power();
             default:
                 return null;
@@ -225,7 +226,7 @@ public class DeckManager : MonoBehaviour
     {
         foreach (CardTag tag in card.cardTags)
         {
-            card.tags.Add(CreateTagFromEnum(tag));
+            if (!tag.nonFunctional) card.tags.Add(CreateTagFromEnum(tag.tag));
         }
         if (card.tags.Count == 0) return card;
         TagResponse response = new TagResponse();

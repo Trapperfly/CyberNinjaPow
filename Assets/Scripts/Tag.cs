@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public abstract class Tag
 {
     public abstract string GiveName();
-    public abstract CardTag GiveTag();
+    public abstract TagEnum GiveTag();
     public virtual TagResponse OnTarget(TagResponse response)
     {
         return null;
@@ -45,28 +45,37 @@ public class TagResponse
         Debug.Log("Play the card again: " + additionalRepeats.ToString());
     }
 }
-public enum CardTag
+public enum TagEnum
 {
     None,
     Damage,         //Damage taken by player
+    Basic,          //Is on the starting cards, does nothing.
     Flame,          //Usually applies or manipulates flame status effect
-    //Thunder,        //Usually applies or manipulates thunder status effect
+    Acid,           //Usually applies or manipulates acid status effect
     Hacking,        //Usually applies or manipulates hacking status effect
-    //Projectile,     //Is something that launches projectiles
-    //Precision,      //Is something that targets one single tile
-    //Area,           //Is something that targest a lot of tiles
-    //Cryo,           //Usually applies or manipulates cryo status effect
-    //Deployment,     //Is something or manipulates stuff on the tactical grid
     Explosive,      //Is something explosive, usually coupled with Area
-    //Trap,           //Is something placed on the tactical grid that triggers
-    //Cleave,         //Probably not used, but large melee
     Cards,          //Usually relates to drawing, discarding, and making cards
-    //Repair,         //Usually relates to healing self or deployment
-    //TimeWarp,       //Usually relates to changing time in either direction
-    //Defence,        //Usually relates to blocking damage
-    Swift,
-    Flexible,
-    Power,
+    Swift,          //Is on cheap cards, makes cards cost less.
+    Flexible,       //Is on cards that areeasy to use, add to make easy to use or flexible.
+    Power,          //Is on cards that are strong, add to make stronger.
+
+}
+//Thunder,        //Usually applies or manipulates thunder status effect
+//Projectile,     //Is something that launches projectiles
+//Precision,      //Is something that targets one single tile
+//Area,           //Is something that targest a lot of tiles
+//Cryo,           //Usually applies or manipulates cryo status effect
+//Deployment,     //Is something or manipulates stuff on the tactical grid
+//Trap,           //Is something placed on the tactical grid that triggers
+//Cleave,         //Probably not used, but large melee
+//Repair,         //Usually relates to healing self or deployment
+//TimeWarp,       //Usually relates to changing time in either direction
+//Defence,        //Usually relates to blocking damage
+[System.Serializable]
+public class CardTag
+{
+    public bool nonFunctional = false;
+    public TagEnum tag;
 }
 public class Burn : Tag
 {
@@ -74,9 +83,9 @@ public class Burn : Tag
     {
         return "Burn";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Flame;
+        return TagEnum.Flame;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
@@ -95,13 +104,34 @@ public class Hack : Tag
     {
         return "Hacking";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Hacking;
+        return TagEnum.Hacking;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
         response.statusEffects.Add(StatusEffect.Hacked);
+        return response;
+    }
+    public override TagResponse OnNonTarget(TagResponse response)
+    {
+        response.omniboost++;
+        return response;
+    }
+}
+public class Acid : Tag
+{
+    public override string GiveName()
+    {
+        return "Acid";
+    }
+    public override TagEnum GiveTag()
+    {
+        return TagEnum.Acid;
+    }
+    public override TagResponse OnTarget(TagResponse response)
+    {
+        response.statusEffects.Add(StatusEffect.Acid);
         return response;
     }
     public override TagResponse OnNonTarget(TagResponse response)
@@ -116,9 +146,9 @@ public class Cards : Tag
     {
         return "Cards";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Cards;
+        return TagEnum.Cards;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
@@ -137,9 +167,9 @@ public class Explosive : Tag
     {
         return "Explosive";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Explosive;
+        return TagEnum.Explosive;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
@@ -158,9 +188,9 @@ public class Swift : Tag
     {
         return "Swift";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Swift;
+        return TagEnum.Swift;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
@@ -179,9 +209,9 @@ public class Flexible : Tag
     {
         return "Flexible";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Flexible;
+        return TagEnum.Flexible;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
@@ -200,9 +230,9 @@ public class Power : Tag
     {
         return "Power";
     }
-    public override CardTag GiveTag()
+    public override TagEnum GiveTag()
     {
-        return CardTag.Power;
+        return TagEnum.Power;
     }
     public override TagResponse OnTarget(TagResponse response)
     {
@@ -215,16 +245,37 @@ public class Power : Tag
         return response;
     }
 }
+public class Basic : Tag
+{
+    public override string GiveName()
+    {
+        return "Basic";
+    }
+    public override TagEnum GiveTag()
+    {
+        return TagEnum.Basic;
+    }
+    public override TagResponse OnTarget(TagResponse response)
+    {
+        //Effect
+        return response;
+    }
+    public override TagResponse OnNonTarget(TagResponse response)
+    {
+        //Effect
+        return response;
+    }
+}
 //public class Name : Tag
 //{
 //    public override string GiveName()
 //    {
 //        return "Name";
 //    }
-//    public override CardTag GiveTag()
-//    {
-//        return CardTag.Tag;
-//    }
+//public override TagEnum GiveTag()
+//{
+//    return TagEnum.Tag;
+//}
 //    public override TagResponse OnTarget(TagResponse response)
 //    {
 //        //Effect
