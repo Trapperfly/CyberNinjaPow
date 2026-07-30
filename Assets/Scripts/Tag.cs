@@ -136,7 +136,7 @@ public class Acid : Tag
     }
     public override TagResponse OnNonTarget(TagResponse response)
     {
-        response.omniboost++;
+        //exhaust maybe?
         return response;
     }
 }

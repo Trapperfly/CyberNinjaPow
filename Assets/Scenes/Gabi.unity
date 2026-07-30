@@ -4049,7 +4049,7 @@ MonoBehaviour:
   drawAnimTime: 0.3
   canvas: {fileID: 1992698360}
   cardPrefab: {fileID: 5754041304381252053, guid: 94ccff0debe2c154590cb08b961196bc, type: 3}
-  deck: {fileID: 11400000, guid: bc83b5b618095ec498bf4a15bc9723d2, type: 2}
+  deck: {fileID: 11400000, guid: f55099275cd73304db7cf034cc37f482, type: 2}
   accumulatedDamageCards: []
   handTransform: {fileID: 1696941415}
   handHoldingCardTransform: {fileID: 1354788637}
@@ -4059,39 +4059,73 @@ MonoBehaviour:
   hand: []
   handCards: []
   tagVisualSettings:
-  - tag: 0
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 0
-  - tag: 1
-    variant: 3
-  - tag: 2
+  - tag:
+      nonFunctional: 0
+      tag: 1
     variant: 0
-  - tag: 3
+  - tag:
+      nonFunctional: 0
+      tag: 0
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 3
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 4
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 5
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 7
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 8
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 9
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 10
+    variant: 0
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 1
-  - tag: 4
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 2
-  - tag: 5
-    variant: 0
-  - tag: 6
-    variant: 3
-  - tag: 7
-    variant: 4
-  - tag: 8
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 2
-  - tag: 9
-    variant: 8
-  - tag: 10
-    variant: 1
-  - tag: 11
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 2
-  - tag: 12
-    variant: 2
-  - tag: 13
-    variant: 2
-  - tag: 14
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 7
-  - tag: 15
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 1
-  - tag: 16
+  - tag:
+      nonFunctional: 0
+      tag: 0
     variant: 7
   timeSprites:
   - {fileID: 21300000, guid: e3b74bc399ab0f7479093a84892421d3, type: 3}

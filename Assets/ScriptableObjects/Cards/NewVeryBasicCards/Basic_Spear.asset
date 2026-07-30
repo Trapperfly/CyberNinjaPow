@@ -15,12 +15,12 @@ MonoBehaviour:
   cardName: Spear
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: []
   cost: 2
   classResourceCost: 0
   repeats: 1
   range: 1
-  extraTagSlots: 1
+  extraTagSlots: 2
   rarity: 1
   original: {fileID: 0}
   tileEffects:

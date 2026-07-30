@@ -15,7 +15,9 @@ MonoBehaviour:
   cardName: Draw
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags:
+  - nonFunctional: 1
+    tag: 7
   cost: 1
   classResourceCost: 0
   repeats: 1

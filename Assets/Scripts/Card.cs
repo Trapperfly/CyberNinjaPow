@@ -51,7 +51,7 @@ public class AdditionalCardEffect
             case OtherCardEffects.Parry://REWORK THIS INTO BASE CARD EFFECT
                 break;
             case OtherCardEffects.DrawCards:
-                if (fire) Manager.Instance.deckManager.DrawPile(amount, 0);
+                if (fire) Manager.Instance.deckManager.DrawPile(amount, 0, true);
                 break;
             case OtherCardEffects.DiscardCards:
                 //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 

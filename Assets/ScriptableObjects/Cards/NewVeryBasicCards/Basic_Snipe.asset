@@ -15,7 +15,9 @@ MonoBehaviour:
   cardName: Snipe
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags:
+  - nonFunctional: 1
+    tag: 9
   cost: 2
   classResourceCost: 0
   repeats: 1

@@ -15,7 +15,9 @@ MonoBehaviour:
   cardName: Strike
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags:
+  - nonFunctional: 0
+    tag: 2
   cost: 1
   classResourceCost: 0
   repeats: 1

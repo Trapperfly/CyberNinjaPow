@@ -352,25 +352,29 @@ public class DeckManager : MonoBehaviour
         //}
     }
 
-    public void DrawPile(int amount = 1, int timeProgress = 1)
+    public void DrawPile(int amount = 1, int timeProgress = 1, bool cardDraw = false)
     {
-        StartCoroutine(IDrawPile(amount, timeProgress));
+        StartCoroutine(IDrawPile(amount, timeProgress, cardDraw));
     }
 
-    public IEnumerator IDrawPile(int amount = 1, int timeProgress = 1)
+    public IEnumerator IDrawPile(int amount = 1, int timeProgress = 1, bool cardDraw = false)
     {
         Manager.Instance.busy = true;
+        amount = cardDraw ? amount + 1 : amount;
         yield return null;
         for (int i = 0; i < amount; i++)
         {
             if (hand.Count >= handSize) { break; }
 
             DrawCard();
+            Debug.Log("Drawing Cards");
 
             yield return new WaitForSeconds(drawAnimTime);
         }
 
         Manager.Instance.gameManager.ProgressTime(timeProgress);
+        AlignCards();
+        AlignCardsAsSiblings();
         Manager.Instance.busy = false;
         yield return null;
     }
@@ -389,7 +393,6 @@ public class DeckManager : MonoBehaviour
 
         AlignCards();
         AlignCardsAsSiblings();
-
 
         return drawnCard;
     }
