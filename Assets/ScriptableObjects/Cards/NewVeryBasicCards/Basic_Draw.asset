@@ -45,6 +45,7 @@ MonoBehaviour:
   additionalCardEffects:
   - otherEffect: 3
     conditionalEffect: 0
-    amount: 2
+    doXTimes: 2
+    amount: 1
     card: {fileID: 0}
-    animationTime: 0.3
+    animationTime: 0.7

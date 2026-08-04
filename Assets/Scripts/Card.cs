@@ -35,47 +35,47 @@ public class AdditionalCardEffect
 {
     public OtherCardEffects otherEffect;
     public ConditionalCardEffects conditionalEffect;
+    public int doXTimes = 1;
     public int amount;
     public Card card;
-    public float animationTime;
 
-    public AdditionalCardEffectReply Activate(bool fire)
-    {
-        AdditionalCardEffectReply reply = new AdditionalCardEffectReply();
-        switch (otherEffect)
-        {
-            case OtherCardEffects.None:
-                break;
-            case OtherCardEffects.Block://REWORK THIS INTO BASE CARD EFFECT
-                break;
-            case OtherCardEffects.Parry://REWORK THIS INTO BASE CARD EFFECT
-                break;
-            case OtherCardEffects.DrawCards:
-                if (fire) Manager.Instance.deckManager.DrawPile(amount, 0, true);
-                break;
-            case OtherCardEffects.DiscardCards:
-                //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 
-                break;
-            case OtherCardEffects.AddClassResource:
-                if (fire) Manager.Instance.playerManager.ChangeResource(amount);
-                break;
-            case OtherCardEffects.AddCardToHand:
-                if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, card);
-                break;
-            case OtherCardEffects.AddCardToDiscard:
-                if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Discard, card);
-                break;
-            case OtherCardEffects.AddCardToDraw:
-                if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Draw, card);
-                break;
-            case OtherCardEffects.ActivateBurn:
-                if (fire) Manager.Instance.enemyManager.TriggerStatusesOnAllEnemies(StatusEffect.Burning);
-                break;
-            default:
-                break;
-        }
-        return reply;
-    }
+    //public AdditionalCardEffectReply Activate(bool fire)
+    //{
+    //    AdditionalCardEffectReply reply = new ();
+    //    switch (otherEffect)
+    //    {
+    //        case OtherCardEffects.None:
+    //            break;
+    //        case OtherCardEffects.Block://REWORK THIS INTO BASE CARD EFFECT
+    //            break;
+    //        case OtherCardEffects.Parry://REWORK THIS INTO BASE CARD EFFECT
+    //            break;
+    //        case OtherCardEffects.DrawCards:
+    //            if (fire) Manager.Instance.deckManager.DrawCard(amount);
+    //            break;
+    //        case OtherCardEffects.DiscardCards:
+    //            //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 
+    //            break;
+    //        case OtherCardEffects.AddClassResource:
+    //            if (fire) Manager.Instance.playerManager.ChangeResource(amount);
+    //            break;
+    //        case OtherCardEffects.AddCardToHand:
+    //            if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, card);
+    //            break;
+    //        case OtherCardEffects.AddCardToDiscard:
+    //            if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Discard, card);
+    //            break;
+    //        case OtherCardEffects.AddCardToDraw:
+    //            if (fire) Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Draw, card);
+    //            break;
+    //        case OtherCardEffects.ActivateBurn:
+    //            if (fire) Manager.Instance.enemyManager.TriggerStatusesOnAllEnemies(StatusEffect.Burning);
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //    return reply;
+    //}
 
     public int Conditional(CardConditions conditions, AdditionalCardEffect additionalCardEffect = null)
     {

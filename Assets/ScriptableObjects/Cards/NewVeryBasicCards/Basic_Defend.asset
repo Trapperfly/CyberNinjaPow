@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Draw
   description: 
   artwork: {fileID: 0}
-  cardTags: 
+  cardTags: []
   cost: 2
   classResourceCost: 0
   repeats: 1
@@ -43,6 +43,7 @@ MonoBehaviour:
   additionalCardEffects:
   - otherEffect: 1
     conditionalEffect: 0
+    doXTimes: 1
     amount: 2
     card: {fileID: 0}
     animationTime: 0.3

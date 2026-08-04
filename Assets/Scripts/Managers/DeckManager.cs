@@ -351,38 +351,35 @@ public class DeckManager : MonoBehaviour
         //    co.transform.SetSiblingIndex(co.handIndex);
         //}
     }
-
-    public void DrawPile(int amount = 1, int timeProgress = 1, bool cardDraw = false)
+    public void DrawCard(int amount = 1)
     {
-        StartCoroutine(IDrawPile(amount, timeProgress, cardDraw));
+        StartCoroutine(IDrawCard(amount));
     }
-
-    public IEnumerator IDrawPile(int amount = 1, int timeProgress = 1, bool cardDraw = false)
+    public IEnumerator IDrawCard(int amount, int time = 0)
     {
         Manager.Instance.busy = true;
-        amount = cardDraw ? amount + 1 : amount;
-        yield return null;
         for (int i = 0; i < amount; i++)
         {
             if (hand.Count >= handSize) { break; }
 
-            DrawCard();
-            Debug.Log("Drawing Cards");
+            DrawCardToHand();
 
             yield return new WaitForSeconds(drawAnimTime);
         }
-
-        Manager.Instance.gameManager.ProgressTime(timeProgress);
-        AlignCards();
-        AlignCardsAsSiblings();
-        Manager.Instance.busy = false;
-        yield return null;
+        if (time > 0)
+            Manager.Instance.gameManager.ProgressTime(time);
     }
-    public Card DrawCard()
+
+    public void DrawPile()
+    {
+        StartCoroutine(IDrawCard(handSize, drawCost));
+    }
+
+    public Card DrawCardToHand()
     {
         if (draw.Count <= 0) ShuffleDiscardIntoDraw();
 
-        Card drawnCard = draw[Random.Range(0, draw.Count)];
+        Card drawnCard = draw[0];
         draw.Remove(drawnCard);
         hand.Add(drawnCard);
 
@@ -406,16 +403,19 @@ public class DeckManager : MonoBehaviour
             discard.RemoveAt(selected);
         }
     }
-    public void DiscardOrUseCard(Card card, int cost, bool discardTheCard = false)
+    public void DiscardOrUseCard(Card editedCard, int cost, bool discardTheCard = false)
     {
-        discard.Add(card.original);
+        discard.Add(editedCard.original);
 
         handCards.Remove(physicalCardHeld.transform);
-        hand.Remove(card.original);
+        Debug.Log(editedCard.original);
+        hand.Remove(editedCard.original);
 
+        physicalCardHeld.gameObject.SetActive(false);
         Destroy(physicalCardHeld.gameObject);
 
         AlignCards();
+        AlignCardsAsSiblings();
 
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(cost);
     }

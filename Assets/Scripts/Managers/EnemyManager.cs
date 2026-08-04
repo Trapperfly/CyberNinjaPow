@@ -90,11 +90,12 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    public void TriggerStatusesOnAllEnemies(StatusEffect statusEffect = StatusEffect.None)
+    public IEnumerator TriggerStatusesOnAllEnemies(StatusEffect statusEffect = StatusEffect.None)
     {
         foreach (EnemyUnit enemy in enemies)
         {
             TriggerStatuses(enemy, statusEffect);
+            yield return new WaitForSeconds(1);
         }
     }
 

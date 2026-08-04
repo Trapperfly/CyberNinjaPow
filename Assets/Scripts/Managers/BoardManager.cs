@@ -20,6 +20,7 @@ public class BoardManager : MonoBehaviour
     public Transform board;
     public float waitBetweenCardActions;
     public float cardAnimExtraTime;
+    public float cardExtraEffectAnimTime;
     public bool inCardAction = false;
 
     public List<CardTargeting> additionalCardQueue = new();
@@ -104,7 +105,7 @@ public class BoardManager : MonoBehaviour
 
     void Discard()
     {
-        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard.original, 0, true);
+        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, 0, true);
         ResetCards();
     }
 
@@ -138,7 +139,7 @@ public class BoardManager : MonoBehaviour
         {
             cost = heldCard.cost;
         }
-        Manager.Instance.deckManager.DiscardOrUseCard(heldCard.original, cost);
+        Manager.Instance.deckManager.DiscardOrUseCard(heldCard, cost);
         ResetCards();
     }
 
@@ -151,6 +152,9 @@ public class BoardManager : MonoBehaviour
         ClearSpaces();
         EndCardTargeting();
         ResetCardSizes();
+
+        Manager.Instance.deckManager.AlignCards();
+        Manager.Instance.deckManager.AlignCardsAsSiblings();
 
         clickingCard = false;
         draggingCard = false;
@@ -208,7 +212,7 @@ public class BoardManager : MonoBehaviour
 
         ClearSpaces();
 
-        TargetAdditionalCardEffects(heldCard);
+        //TargetAdditionalCardEffects(heldCard);
 
         if (heldCard.targetAll.doThis)
         {
@@ -428,11 +432,46 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void DoAdditionalCardEffects(Card card)
+    public IEnumerator DoAdditionalCardEffects(Card card)
     {
         foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
         {
-            cardEffect.Activate(true);
+            for (int i = 0; i < cardEffect.doXTimes; i++)
+            {
+                switch (cardEffect.otherEffect)
+                {
+                    case OtherCardEffects.None:
+                        break;
+                    case OtherCardEffects.Block://REWORK THIS INTO BASE CARD EFFECT
+                        break;
+                    case OtherCardEffects.Parry://REWORK THIS INTO BASE CARD EFFECT
+                        break;
+                    case OtherCardEffects.DrawCards:
+                        StartCoroutine(Manager.Instance.deckManager.IDrawCard(cardEffect.amount));
+                        break;
+                    case OtherCardEffects.DiscardCards:
+                        //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 
+                        break;
+                    case OtherCardEffects.AddClassResource:
+                        Manager.Instance.playerManager.ChangeResource(cardEffect.amount);
+                        break;
+                    case OtherCardEffects.AddCardToHand:
+                        Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, card);
+                        break;
+                    case OtherCardEffects.AddCardToDiscard:
+                        Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Discard, card);
+                        break;
+                    case OtherCardEffects.AddCardToDraw:
+                        Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Draw, card);
+                        break;
+                    case OtherCardEffects.ActivateBurn:
+                        StartCoroutine(Manager.Instance.enemyManager.TriggerStatusesOnAllEnemies(StatusEffect.Burning));
+                        break;
+                    default:
+                        break;
+                }
+                yield return null;
+            }
         }
     }
     //public IEnumerator IDoAdditionalCardEffects(Card card)
@@ -451,13 +490,13 @@ public class BoardManager : MonoBehaviour
     //    yield return null;
     //}
 
-    public void TargetAdditionalCardEffects(Card card)
-    {
-        foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
-        {
-            cardEffect.Activate(false);
-        }
-    }
+    //public void TargetAdditionalCardEffects(Card card)
+    //{
+    //    foreach (AdditionalCardEffect cardEffect in card.additionalCardEffects)
+    //    {
+    //        cardEffect.Activate(false);
+    //    }
+    //}
 
     public void DoConditionalCardEffects(Card card, CardConditions conditions) //Needs a better way to check for completions of conditions
     {
@@ -525,9 +564,7 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator IDoCardEffect(Card card)
     {
-        DoAdditionalCardEffects(card);
-        //yield return new WaitForSeconds(cardAnimExtraTime);
-        yield return null;
+        yield return StartCoroutine(DoAdditionalCardEffects(card));
     }
 
     public IEnumerator IDoCardAttack(Card card, BoardSpace targetSpace = null)
