@@ -243,8 +243,8 @@ public class DeckManager : MonoBehaviour
                 response = tag.OnNonTarget(response);
             }
         }
-        Debug.Log(card.cardName);
-        response.Print();
+        //Debug.Log(card.cardName);
+        //response.Print();
         //Cost
         card.cost += response.costChange;
         if (card.cost < 0) card.cost = 0;
