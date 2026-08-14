@@ -204,11 +204,18 @@ public class BoardManager : MonoBehaviour
     {
         if (Manager.Instance.busy) return;
 
-        if (targetSpace == null) return;
+        if (!targetSpace) return;
 
         if (targetedPosition == targetSpace.position) return;
 
         targetedPosition = targetSpace.position;
+
+        if (targetedPosition == new Vector2Int(-99, -99)) return;
+
+        if (!heldCard) return;
+
+        Debug.Log("Checking card Targeting");
+
 
         ClearSpaces();
 

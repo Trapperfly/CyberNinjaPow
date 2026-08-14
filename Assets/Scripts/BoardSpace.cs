@@ -32,14 +32,14 @@ public class BoardSpace : MonoBehaviour
 
                 targetDisplay.SetActive(true);
 
-                AddDamageNumber(damageOnTile);
+                //AddDamageNumber(damageOnTile);
                 break;
             case GridSpaceSelection.AllyAttack:
                 renderer.sprite = Manager.Instance.boardManager.targetingSprites[2];
 
                 targetDisplay.SetActive(true);
 
-                AddDamageNumber(damageOnTile);
+                //AddDamageNumber(damageOnTile);
                 break;
             case GridSpaceSelection.CardAvailableTargeting:
                 renderer.sprite = Manager.Instance.boardManager.targetingSprites[3];
@@ -97,7 +97,10 @@ public class BoardSpace : MonoBehaviour
 
     public void Clear()
     {
+        if (!damage) return;
+        damage.SetActive(false);
         Destroy(damage);
+        damage = null;
     }
 }
 public enum GridSpaceSelection

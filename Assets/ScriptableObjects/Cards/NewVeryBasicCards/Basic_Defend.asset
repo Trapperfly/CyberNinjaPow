@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
   m_Name: Basic_Defend
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardName: Draw
+  cardName: Defend
   description: 
   artwork: {fileID: 0}
-  cardTags: []
+  cardTags:
+  - nonFunctional: 1
+    tag: 2
   cost: 2
   classResourceCost: 0
   repeats: 1
@@ -46,4 +48,3 @@ MonoBehaviour:
     doXTimes: 1
     amount: 2
     card: {fileID: 0}
-    animationTime: 0.3
