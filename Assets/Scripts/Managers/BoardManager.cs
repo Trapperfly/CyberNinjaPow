@@ -411,7 +411,7 @@ public class BoardManager : MonoBehaviour
 
                 if (fire)
                 {
-                    Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
+                    Manager.Instance.playerManager.TakeDamage(damageCard);
                 }
                 break; // always break when out of bounds
             }
@@ -450,6 +450,7 @@ public class BoardManager : MonoBehaviour
                     case OtherCardEffects.None:
                         break;
                     case OtherCardEffects.Block://REWORK THIS INTO BASE CARD EFFECT
+                        Manager.Instance.playerManager.block += 2;
                         break;
                     case OtherCardEffects.Parry://REWORK THIS INTO BASE CARD EFFECT
                         break;

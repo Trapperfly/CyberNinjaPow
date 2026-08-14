@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour
     public Transform classResourceAmmo;
     public GameObject ammoPrefab;
 
+    public int block;
     public bool UseResource(int value)
     {
         if (playerResource < value) return false;
@@ -44,5 +45,14 @@ public class PlayerManager : MonoBehaviour
             Transform ammo = Instantiate(ammoPrefab, classResourceAmmo).transform;
             ammo.localPosition = new(39 * i, 0, 0);
         }
+    }
+    public void TakeDamage(Card damageCard)
+    {
+        if (block > 0)
+        {
+            block--;
+            return;
+        }
+        Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
     }
 }
