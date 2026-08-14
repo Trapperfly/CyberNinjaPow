@@ -9,7 +9,7 @@ public class BoardSpace : MonoBehaviour
 
     public GameObject targetDisplay;
     public GameObject projectileTargeting;
-    public void Colorize(GridSpaceSelection selectionMethod, int damageOnTile = 0)
+    public void Colorize(GridSpaceSelection selectionMethod, int damageOnTile = 0, bool showDamage = false)
     {
         SpriteRenderer renderer = targetDisplay.transform.GetChild(0).GetComponent<SpriteRenderer>();
         switch (selectionMethod)
@@ -32,14 +32,14 @@ public class BoardSpace : MonoBehaviour
 
                 targetDisplay.SetActive(true);
 
-                //AddDamageNumber(damageOnTile);
+                if (damageOnTile > 0 && showDamage) AddDamageNumber(damageOnTile);
                 break;
             case GridSpaceSelection.AllyAttack:
                 renderer.sprite = Manager.Instance.boardManager.targetingSprites[2];
 
                 targetDisplay.SetActive(true);
 
-                //AddDamageNumber(damageOnTile);
+                if (damageOnTile > 0 && showDamage) AddDamageNumber(damageOnTile);
                 break;
             case GridSpaceSelection.CardAvailableTargeting:
                 renderer.sprite = Manager.Instance.boardManager.targetingSprites[3];

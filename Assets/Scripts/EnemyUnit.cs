@@ -128,7 +128,7 @@ public class EnemyUnit : MonoBehaviour
         spriteRenderer.transform.localPosition = Mathf.Sin(Time.time * enemyManager.bobbingSpeed + bobbingOffset) * enemyManager.bobbing * new Vector3(0, 1, 0);
     }
 
-    public void PaintAttack()
+    public void PaintAttack(bool showDamage = false)
     {
         //Debug.Log("Trying to paint attack");
         //Manager.Instance.boardManager.PaintAttack(intendedAttack, position);
@@ -154,7 +154,7 @@ public class EnemyUnit : MonoBehaviour
                 Manager.Instance.boardManager.spaces.TryGetValue(position + target.gridPosition, out BoardSpace targetSpace);
                 if (targetSpace == null) continue;
 
-                targetSpace.Colorize(GridSpaceSelection.EnemyAttack, target.damage);
+                targetSpace.Colorize(GridSpaceSelection.EnemyAttack, target.damage, showDamage);
             }
             attackArrows.Add(PaintAttackArrow(target));
         }
@@ -189,12 +189,12 @@ public class EnemyUnit : MonoBehaviour
         return renderer.gameObject;
     }
 
-    public void ShowIntentions()
+    public void ShowIntentions(bool showDamage = false)
     {
         if (dead) return;
         inRange = (position.y < attackRange);
         //Debug.Log("I am " + enemy.enemyName + " at " + position.x + "," + position.y + " and I am " + (inRange ? "in range" : "not in range"));
-        if (inRange) PaintAttack();
+        if (inRange) PaintAttack(showDamage);
         SortSprites();
     }
 

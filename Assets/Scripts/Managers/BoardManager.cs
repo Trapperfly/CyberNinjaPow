@@ -171,8 +171,6 @@ public class BoardManager : MonoBehaviour
 
     BoardSpace CheckMouseTargeting()
     {
-        if (heldCard == null) return null;
-
         Vector2 mousePos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
 
         Collider2D[] collidersUnderMouse = new Collider2D[4];
@@ -208,6 +206,16 @@ public class BoardManager : MonoBehaviour
 
         if (targetedPosition == targetSpace.position) return;
 
+        ClearSpaces();
+
+        EnemyUnit enemyOnSpace = CheckIfEnemyIsOnSpace(targetSpace.position);
+        Debug.Log("There is " + (enemyOnSpace ? "an enemy" : "no enemy") + " on this space");
+        if (enemyOnSpace)
+        {
+            Debug.Log("Showing intentions of " + enemyOnSpace.enemy.enemyName + " on space " + enemyOnSpace.position);
+            enemyOnSpace.ShowIntentions(true);
+        }
+
         targetedPosition = targetSpace.position;
 
         if (targetedPosition == new Vector2Int(-99, -99)) return;
@@ -215,9 +223,6 @@ public class BoardManager : MonoBehaviour
         if (!heldCard) return;
 
         Debug.Log("Checking card Targeting");
-
-
-        ClearSpaces();
 
         //TargetAdditionalCardEffects(heldCard);
 
