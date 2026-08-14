@@ -497,8 +497,8 @@ public class EnemyUnit : MonoBehaviour
 
     public bool CheckSpace(Vector2Int origin, int movement)
     {
-        bool occupied = enemyManager.CheckIfCellIsOccupied(origin - new Vector2Int(0, movement));
-        bool outside = enemyManager.CheckIfCellIsOutsideOfBoard(origin - new Vector2Int(0, movement));
+        bool occupied = enemyManager.CheckIfCellIsOccupied(origin + new Vector2Int(0, movement));
+        bool outside = enemyManager.CheckIfCellIsOutsideOfBoard(origin + new Vector2Int(0, movement));
 
         if (occupied || outside)
         {
@@ -531,7 +531,7 @@ public class EnemyUnit : MonoBehaviour
         Vector2Int pos = position;
         for (int i = 0; i < Mathf.Abs(enemy.movement); i++) 
         {
-            if (CheckSpace(pos, movement)) 
+            if (CheckSpace(pos, -movement)) 
             {
                 distance++;
                 pos = pos - new Vector2Int(0, movement);

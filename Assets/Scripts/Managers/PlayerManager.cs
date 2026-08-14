@@ -55,4 +55,8 @@ public class PlayerManager : MonoBehaviour
         }
         Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
     }
+    public void ResetBlock()
+    {
+        block = 0;
+    }
 }

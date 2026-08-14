@@ -89,6 +89,10 @@ public class GameManager : MonoBehaviour
         }
         AfterTimeProgress();
         yield return null;
+
+        Manager.Instance.playerManager.ResetBlock();
+
+        Manager.Instance.busy = false;
     }
 
     public void AfterTimeProgress()
@@ -100,7 +104,6 @@ public class GameManager : MonoBehaviour
             enemy.SetTimer();
         }
         enemyManager.timeOffset = 0;
-        Manager.Instance.busy = false;
 
         bool finished = CheckIfWaveIsFinished();
 
