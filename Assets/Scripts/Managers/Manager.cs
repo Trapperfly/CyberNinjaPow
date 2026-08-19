@@ -33,6 +33,7 @@ public class Manager : MonoBehaviour
     [HideInInspector] public ShopManager shopManager;
     [HideInInspector] public ItemManager itemManager;
     [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public TutorialManager tutorialManager;
 
     public bool busy = false;
 }
