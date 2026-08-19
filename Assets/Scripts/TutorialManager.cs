@@ -31,23 +31,32 @@ public class TutorialManager : MonoBehaviour
     public AnimationCurve tutorialOutAnimation;
 
     public List<Tutorial> tutorials;
-    public int currentTutorial = 0;
+
+    public List<Vector2Int> tutorialSizes;
 
     public void ToggleTutorials(bool toggle)
     {
         doNotShowTutorials = toggle;
     }
-    public void ShowTutorial()
+
+    public void ShowRandomTutorialForTesting()
+    {
+        Tutorial tutorial = tutorials[Random.Range(0, tutorials.Count)];
+        StartCoroutine(IFadeIn(tutorial));
+    }
+    public void ShowTutorial(Tutorials specificTutorial)
     {
         if (doNotShowTutorials) return;
 
-        StartCoroutine(IFadeIn(tutorials[currentTutorial]));
+        foreach (Tutorial tutorial in tutorials)
+        {
+            if (tutorial.shown) continue;
+            if (tutorial.specificTutorial == specificTutorial) StartCoroutine(IFadeIn(tutorial));
+        }
     }
     public void HideTutorial()
     {
         StartCoroutine(IHideTutorial());
-
-        currentTutorial += 1;
     }
 
     public IEnumerator IFadeIn(Tutorial tutorial)
@@ -68,6 +77,15 @@ public class TutorialManager : MonoBehaviour
         float i = 0;
         tutorialTitle.text = tutorial.tutorialName;
         tutorialInfo.text = tutorial.tutorialText;
+        RectTransform tutorialBorder = (RectTransform)tutorialBox.transform.GetChild(0).transform;
+        tutorialBorder.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x + 5, tutorialSizes[(int)tutorial.tutorialSize].y + 5);
+        RectTransform tutorialFill = (RectTransform)tutorialBox.transform.GetChild(1).transform;
+        tutorialFill.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x, tutorialSizes[(int)tutorial.tutorialSize].y);
+        RectTransform tutorialTextBox = (RectTransform)tutorialInfo.transform;
+        tutorialTextBox.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x - 55, tutorialSizes[(int)tutorial.tutorialSize].y - 35);
+
+        tutorial.shown = true;
+
         while (i < tutorialInAnimationTime)
         {
             i += Time.deltaTime;
@@ -109,9 +127,11 @@ public class TutorialManager : MonoBehaviour
     [System.Serializable]
     public class Tutorial
     {
+        public Tutorials specificTutorial;
         public string tutorialName;
         public string tutorialText;
         public TutorialSize tutorialSize;
+        public bool shown;
     }
 
     public enum TutorialSize
@@ -119,5 +139,19 @@ public class TutorialManager : MonoBehaviour
         Small,
         Medium,
         Large,
+    }
+
+    public enum Tutorials
+    {
+        None,
+        StartOfGame,
+        DrawCards,
+        WhenCardsAreDrawn,
+        WhenCardIsHovered,
+        WhenEnemyIsSpawned,
+        WhenEnemyTakesDamage,
+        WhenEnemyIsHovered,
+        WhenEnemyIsInMeleeRange,
+        WhenPlayerTakesDamage,
     }
 }

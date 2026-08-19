@@ -254,12 +254,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72474302}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1334429957}
+  m_Father: {fileID: 1141524171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -313,8 +313,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -326,13 +326,13 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 1
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 4
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1929,19 +1929,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533226083}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1128295294}
-  m_Father: {fileID: 1334429957}
+  m_Father: {fileID: 1141524171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 132.4, y: -149}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -23.255005, y: -18.949997}
   m_SizeDelta: {x: 88.69, y: 39.9}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0}
 --- !u!114 &533226085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2772,7 +2772,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1680244402}
+  - {fileID: 72474303}
+  - {fileID: 533226084}
+  - {fileID: 1526989346}
   m_Father: {fileID: 1334429957}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2903,7 +2907,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1900229857}
         m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
-        m_MethodName: ShowTutorial
+        m_MethodName: ShowRandomTutorialForTesting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3407,10 +3411,6 @@ RectTransform:
   m_Children:
   - {fileID: 411955027}
   - {fileID: 1141524171}
-  - {fileID: 1680244402}
-  - {fileID: 72474303}
-  - {fileID: 533226084}
-  - {fileID: 1526989346}
   m_Father: {fileID: 1168595558}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3930,20 +3930,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526989345}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 314166692}
   - {fileID: 1406611064}
-  m_Father: {fileID: 1334429957}
+  m_Father: {fileID: 1141524171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -115.9, y: -166.4}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 4.0999756, y: -26.400024}
   m_SizeDelta: {x: 160, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &1526989347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4408,18 +4408,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680244401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1334429957}
+  m_Father: {fileID: 1141524171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -156.4, y: 177.2}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -6.4000244, y: 57.200012}
   m_SizeDelta: {x: 442.86, y: 60}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1680244403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5700,6 +5700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
   doNotShowTutorials: 0
+  tutorialActive: 0
   background: {fileID: 835333025}
   tutorialBox: {fileID: 1334429956}
   tutorialTitle: {fileID: 1680244403}
@@ -5708,6 +5709,7 @@ MonoBehaviour:
   backgroundFadeMax: 0.9
   fadeInTime: 0.492
   fadeOutTime: 0.498
+  whenDuringFadeInShouldTutorialShowUp: 0.67
   tutorialInAnimationTime: 0.337
   tutorialInAnimation:
     serializedVersion: 2
@@ -5742,6 +5744,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  whenDuringAnimationShouldBackgroundFadeOut: 0
   tutorialOutAnimationTime: 0.22
   tutorialOutAnimation:
     serializedVersion: 2
@@ -5768,27 +5771,76 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   tutorials:
-  - tutorialName: Testing tutorial
-    tutorialText: This is a testing tutorial. Do not be alarmed, everything is going
-      exactly as planned.
+  - specificTutorial: 1
+    tutorialName: Start of Game
+    tutorialText: Welcome to [INSERT GAME NAME]! In this small tutorial, you will
+      learn about your options to deal with the enemy forces, and how to learn about
+      the various foes you might encounter.
     tutorialSize: 0
-  - tutorialName: Testing tutorial
-    tutorialText: This is a testing tutorial. Do not be alarmed, everything is going
-      exactly as planned.
+    shown: 0
+  - specificTutorial: 2
+    tutorialName: Drawing Cards
+    tutorialText: To begin, you must draw your hand. Maximum hand size is 5, and
+      this button here will draw up to hand size. This also costs time, which we
+      will talk about later.
     tutorialSize: 0
-  - tutorialName: Testing tutorial
-    tutorialText: This is a testing tutorial. Do not be alarmed, everything is going
-      exactly as planned.
+    shown: 0
+  - specificTutorial: 4
+    tutorialName: Cards
+    tutorialText: Cards consists of some information. Top left is cost in time, top
+      right is where the cards can be played, and bottom right is the tags attached
+      to the cards. Pay no attention to the tags for now. The card description should
+      make what the card does understandable. You can drag the card, or click and
+      point, to where you want the card to happen. If there is only non-aggressive
+      functions on the card, it will not display anything on the board.
     tutorialSize: 0
-  - tutorialName: Testing tutorial
-    tutorialText: This is a testing tutorial. Do not be alarmed, everything is going
-      exactly as planned.
+    shown: 0
+  - specificTutorial: 5
+    tutorialName: Enemies
+    tutorialText: 'Enemies are here! They have main features: action speed, and health.
+      Action speed is how fast they will act when there is reason to act, and health
+      is the amount of damage they can suffer before they die. Try hovering the enemy
+      now.'
     tutorialSize: 0
-  - tutorialName: Testing tutorial
-    tutorialText: This is a testing tutorial. Do not be alarmed, everything is going
-      exactly as planned.
+    shown: 0
+  - specificTutorial: 6
+    tutorialName: Health and gates
+    tutorialText: Enemies health can be split into different health pools with a
+      gate between them. When a pool is depleted, the gate will break, and the next
+      pool can be damaged.
     tutorialSize: 0
-  currentTutorial: 0
+    shown: 0
+  - specificTutorial: 7
+    tutorialName: Enemy Info
+    tutorialText: When an enemy is hovered, an info box with various info will appear.
+      It will show all information previously mentioned, but also their movement.
+      This movement is performed when a general move is triggered. More on that later;
+      try attacking the enemy.
+    tutorialSize: 0
+    shown: 0
+  - specificTutorial: 8
+    tutorialName: Enemy attacking
+    tutorialText: When enemies can attack the two lowest rows or lower (which is
+      where they can hit you), they will ready their attacks. This means that they
+      will hit you, if they are not stopped. Ranged enemies will try to send projectiles
+      downwards, and if that projectile goes past the lowest row, it will deal damage
+      to you. If a projectile hits something on the two lowest rows, it does not
+      hit you.
+    tutorialSize: 0
+    shown: 0
+  - specificTutorial: 9
+    tutorialName: Damaged!
+    tutorialText: When enemies damage the player, they will give you damage cards.
+      If your hand is full, you will have to discard a non-damage card to make space
+      for the damage card. If the player at any point have a full hand of damage
+      cards, they lose, and their run is over. Keep the deck damage free, and the
+      hand even freer, or it's game over.
+    tutorialSize: 0
+    shown: 0
+  tutorialSizes:
+  - {x: 500, y: 300}
+  - {x: 700, y: 450}
+  - {x: 900, y: 600}
 --- !u!1 &1908291308
 GameObject:
   m_ObjectHideFlags: 0
