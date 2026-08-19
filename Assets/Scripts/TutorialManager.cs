@@ -7,6 +7,7 @@ using TMPro;
 public class TutorialManager : MonoBehaviour
 {
     public bool doNotShowTutorials;
+    public bool tutorialActive;
 
     public Image background;
     public GameObject tutorialBox;
@@ -19,8 +20,12 @@ public class TutorialManager : MonoBehaviour
 
     [Range(0, 2)] public float fadeInTime, fadeOutTime;
 
+    [Range(0, 1)] public float whenDuringFadeInShouldTutorialShowUp;
+
     [Range(0, 2)] public float tutorialInAnimationTime;
     public AnimationCurve tutorialInAnimation;
+
+    [Range(0, 1)] public float whenDuringAnimationShouldBackgroundFadeOut;
 
     [Range(0, 2)] public float tutorialOutAnimationTime;
     public AnimationCurve tutorialOutAnimation;
@@ -36,7 +41,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (doNotShowTutorials) return;
 
-        StartCoroutine(IShowTutorial(tutorials[currentTutorial]));
+        StartCoroutine(IFadeIn(tutorials[currentTutorial]));
     }
     public void HideTutorial()
     {
@@ -44,19 +49,25 @@ public class TutorialManager : MonoBehaviour
 
         currentTutorial += 1;
     }
-    public IEnumerator IShowTutorial(Tutorial tutorial)
+
+    public IEnumerator IFadeIn(Tutorial tutorial)
     {
         float i = 0;
         while (i < fadeInTime)
         {
             i += Time.deltaTime;
             background.color = new(0, 0, 0, (i / fadeInTime) * backgroundFadeMax);
+
+            if (i > fadeInTime * whenDuringFadeInShouldTutorialShowUp && !tutorialActive) StartCoroutine(IShowTutorial(tutorial));
             yield return null;
         }
-
+    }
+    public IEnumerator IShowTutorial(Tutorial tutorial)
+    {
+        tutorialActive = true;
+        float i = 0;
         tutorialTitle.text = tutorial.tutorialName;
         tutorialInfo.text = tutorial.tutorialText;
-        i = 0;
         while (i < tutorialInAnimationTime)
         {
             i += Time.deltaTime;
@@ -67,7 +78,6 @@ public class TutorialManager : MonoBehaviour
 
         yield return null;
     }
-
     public IEnumerator IHideTutorial()
     {
         float i = 0;
@@ -77,10 +87,16 @@ public class TutorialManager : MonoBehaviour
 
             tutorialScale = tutorialOutAnimation.Evaluate(i / tutorialOutAnimationTime);
             tutorialBox.transform.localScale = new(tutorialScale, tutorialScale);
+
+            if (i > tutorialOutAnimationTime * whenDuringAnimationShouldBackgroundFadeOut && tutorialActive) StartCoroutine(IFadeOut());
             yield return null;
         }
+    }
 
-        i = fadeOutTime;
+    public IEnumerator IFadeOut()
+    {
+        tutorialActive = false;
+        float i = fadeOutTime;
         while (i > 0)
         {
             i -= Time.deltaTime;

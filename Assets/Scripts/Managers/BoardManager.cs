@@ -209,10 +209,10 @@ public class BoardManager : MonoBehaviour
         ClearSpaces();
 
         EnemyUnit enemyOnSpace = CheckIfEnemyIsOnSpace(targetSpace.position);
-        Debug.Log("There is " + (enemyOnSpace ? "an enemy" : "no enemy") + " on this space");
+        //Debug.Log("There is " + (enemyOnSpace ? "an enemy" : "no enemy") + " on this space");
         if (enemyOnSpace)
         {
-            Debug.Log("Showing intentions of " + enemyOnSpace.enemy.enemyName + " on space " + enemyOnSpace.position);
+            //Debug.Log("Showing intentions of " + enemyOnSpace.enemy.enemyName + " on space " + enemyOnSpace.position);
             enemyOnSpace.ShowIntentions(true);
         }
 
@@ -222,7 +222,7 @@ public class BoardManager : MonoBehaviour
 
         if (!heldCard) return;
 
-        Debug.Log("Checking card Targeting");
+        //Debug.Log("Checking card Targeting");
 
         //TargetAdditionalCardEffects(heldCard);
 
