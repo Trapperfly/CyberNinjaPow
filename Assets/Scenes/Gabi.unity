@@ -5793,7 +5793,7 @@ MonoBehaviour:
       make what the card does understandable. You can drag the card, or click and
       point, to where you want the card to happen. If there is only non-aggressive
       functions on the card, it will not display anything on the board.
-    tutorialSize: 0
+    tutorialSize: 1
     shown: 0
   - specificTutorial: 5
     tutorialName: Enemies
@@ -5801,7 +5801,7 @@ MonoBehaviour:
       Action speed is how fast they will act when there is reason to act, and health
       is the amount of damage they can suffer before they die. Try hovering the enemy
       now.'
-    tutorialSize: 0
+    tutorialSize: 1
     shown: 0
   - specificTutorial: 6
     tutorialName: Health and gates
@@ -5826,7 +5826,7 @@ MonoBehaviour:
       downwards, and if that projectile goes past the lowest row, it will deal damage
       to you. If a projectile hits something on the two lowest rows, it does not
       hit you.
-    tutorialSize: 0
+    tutorialSize: 1
     shown: 0
   - specificTutorial: 9
     tutorialName: Damaged!
