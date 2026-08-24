@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 public class GameManager : MonoBehaviour
 {
     EnemyManager enemyManager;
+    public string seed = "";
 
     public bool waveInProgress = false;
 
@@ -38,15 +39,17 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (seed != "") Random.InitState(seed.GetHashCode());
         enemyManager = Manager.Instance.enemyManager;
         AlterMoney(0);
-        StartWave();
+        //StartWave();
+        Manager.Instance.tutorialManager.ShowTutorial(Tutorials.StartOfGame);
         //for (int i = 0; i < Manager.Instance.boardManager.boardSize.x; i++)
         //{
         //    int timer = Random.Range(spawnDelay.x, spawnDelay.y + 1);
         //    spawnTimerForColumns.Add(timer);
         //}
-        
+
         //StartCoroutine(AdvanceBoard(startTimeTimes, startTimeProgress));
     }
 
@@ -186,6 +189,8 @@ public class GameManager : MonoBehaviour
 
     public void StartWave()
     {
+        if (waveInProgress) return;
+
         StartCoroutine(IStartWave());
     }
     public IEnumerator IStartWave()

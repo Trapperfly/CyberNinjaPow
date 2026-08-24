@@ -24,6 +24,7 @@ public class Manager : MonoBehaviour
         shopManager = GetComponent<ShopManager>();
         itemManager = GetComponent<ItemManager>();
         playerManager = GetComponent<PlayerManager>();
+        tutorialManager = GetComponent<TutorialManager>();
     }
     #endregion
     [HideInInspector] public GameManager gameManager;

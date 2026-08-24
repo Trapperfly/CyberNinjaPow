@@ -9,10 +9,16 @@ public class TutorialManager : MonoBehaviour
     public bool doNotShowTutorials;
     public bool tutorialActive;
 
+    public Tutorial currentTutorial;
+
     public Image background;
     public GameObject tutorialBox;
     public TMP_Text tutorialTitle;
     public TMP_Text tutorialInfo;
+
+    public GameObject nextButton;
+    public GameObject prevButton;
+    public GameObject finishButton;
 
     public float tutorialScale;
 
@@ -41,8 +47,8 @@ public class TutorialManager : MonoBehaviour
 
     public void ShowRandomTutorialForTesting()
     {
-        Tutorial tutorial = tutorials[Random.Range(0, tutorials.Count)];
-        StartCoroutine(IFadeIn(tutorial));
+        currentTutorial = tutorials[0];
+        StartCoroutine(IFadeIn());
     }
     public void ShowTutorial(Tutorials specificTutorial)
     {
@@ -51,7 +57,11 @@ public class TutorialManager : MonoBehaviour
         foreach (Tutorial tutorial in tutorials)
         {
             if (tutorial.shown) continue;
-            if (tutorial.specificTutorial == specificTutorial) StartCoroutine(IFadeIn(tutorial));
+            if (tutorial.specificTutorial == specificTutorial)
+            {
+                currentTutorial = tutorial;
+                StartCoroutine(IFadeIn());
+            }
         }
     }
     public void HideTutorial()
@@ -59,32 +69,34 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(IHideTutorial());
     }
 
-    public IEnumerator IFadeIn(Tutorial tutorial)
+    public IEnumerator IFadeIn()
     {
+        background.gameObject.SetActive(true);
         float i = 0;
         while (i < fadeInTime)
         {
             i += Time.deltaTime;
             background.color = new(0, 0, 0, (i / fadeInTime) * backgroundFadeMax);
 
-            if (i > fadeInTime * whenDuringFadeInShouldTutorialShowUp && !tutorialActive) StartCoroutine(IShowTutorial(tutorial));
+            if (i > fadeInTime * whenDuringFadeInShouldTutorialShowUp && !tutorialActive) StartCoroutine(IShowTutorial());
             yield return null;
         }
     }
-    public IEnumerator IShowTutorial(Tutorial tutorial)
+    public IEnumerator IShowTutorial()
     {
         tutorialActive = true;
         float i = 0;
-        tutorialTitle.text = tutorial.tutorialName;
-        tutorialInfo.text = tutorial.tutorialText;
-        RectTransform tutorialBorder = (RectTransform)tutorialBox.transform.GetChild(0).transform;
-        tutorialBorder.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x + 5, tutorialSizes[(int)tutorial.tutorialSize].y + 5);
-        RectTransform tutorialFill = (RectTransform)tutorialBox.transform.GetChild(1).transform;
-        tutorialFill.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x, tutorialSizes[(int)tutorial.tutorialSize].y);
-        RectTransform tutorialTextBox = (RectTransform)tutorialInfo.transform;
-        tutorialTextBox.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x - 55, tutorialSizes[(int)tutorial.tutorialSize].y - 35);
+        tutorialTitle.text = currentTutorial.tutorialName;
+        currentTutorial.currentStep = -1;
+        NextTutorialSlide(1);
+        //RectTransform tutorialBorder = (RectTransform)tutorialBox.transform.GetChild(0).transform;
+        //tutorialBorder.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x + 5, tutorialSizes[(int)tutorial.tutorialSize].y + 5);
+        //RectTransform tutorialFill = (RectTransform)tutorialBox.transform.GetChild(1).transform;
+        //tutorialFill.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x, tutorialSizes[(int)tutorial.tutorialSize].y);
+        //RectTransform tutorialTextBox = (RectTransform)tutorialInfo.transform;
+        //tutorialTextBox.sizeDelta = new Vector2Int(tutorialSizes[(int)tutorial.tutorialSize].x - 55, tutorialSizes[(int)tutorial.tutorialSize].y - 35);
 
-        tutorial.shown = true;
+        currentTutorial.shown = true;
 
         while (i < tutorialInAnimationTime)
         {
@@ -95,6 +107,35 @@ public class TutorialManager : MonoBehaviour
         }
 
         yield return null;
+    }
+    public void NextTutorialSlide(int direction)
+    {
+        currentTutorial.currentStep += direction;
+        tutorialInfo.text = currentTutorial.steps[currentTutorial.currentStep].tutorialText;
+
+        nextButton.SetActive(true);
+        prevButton.SetActive(true);
+        finishButton.SetActive(true);
+
+        if (currentTutorial.currentStep == 0) //Is the first step
+        {
+            prevButton.SetActive(false);
+        }
+        
+        if (currentTutorial.currentStep >= currentTutorial.steps.Count - 1) //On last step of tutorial
+        {
+            nextButton.SetActive(false);
+        }
+        else
+        {
+            finishButton.SetActive(false);
+        }
+
+        if (currentTutorial.steps.Count == 1) //Not single slide
+        {
+            prevButton.SetActive(false);
+            nextButton.SetActive(false);
+        }
     }
     public IEnumerator IHideTutorial()
     {
@@ -109,6 +150,7 @@ public class TutorialManager : MonoBehaviour
             if (i > tutorialOutAnimationTime * whenDuringAnimationShouldBackgroundFadeOut && tutorialActive) StartCoroutine(IFadeOut());
             yield return null;
         }
+        currentTutorial.currentStep = 0;
     }
 
     public IEnumerator IFadeOut()
@@ -122,6 +164,7 @@ public class TutorialManager : MonoBehaviour
             yield return null;
         }
         yield return null;
+        background.gameObject.SetActive(false);
     }
 
     [System.Serializable]
@@ -129,29 +172,27 @@ public class TutorialManager : MonoBehaviour
     {
         public Tutorials specificTutorial;
         public string tutorialName;
-        public string tutorialText;
-        public TutorialSize tutorialSize;
+        public List<TutorialStep> steps;
+        public int currentStep = 0;
         public bool shown;
     }
-
-    public enum TutorialSize
+    [System.Serializable]
+    public class TutorialStep
     {
-        Small,
-        Medium,
-        Large,
+        [TextArea(5, 10)] public string tutorialText;
+        public Vector2 pointAt;
     }
-
-    public enum Tutorials
-    {
-        None,
-        StartOfGame,
-        DrawCards,
-        WhenCardsAreDrawn,
-        WhenCardIsHovered,
-        WhenEnemyIsSpawned,
-        WhenEnemyTakesDamage,
-        WhenEnemyIsHovered,
-        WhenEnemyIsInMeleeRange,
-        WhenPlayerTakesDamage,
-    }
+}
+public enum Tutorials
+{
+    None,
+    StartOfGame,
+    DrawCards,
+    WhenCardsAreDrawn,
+    WhenCardIsHovered,
+    WhenEnemyIsSpawned,
+    WhenEnemyTakesDamage,
+    WhenEnemyIsHovered,
+    WhenEnemyIsInMeleeRange,
+    WhenPlayerTakesDamage,
 }

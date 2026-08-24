@@ -368,6 +368,8 @@ public class EnemyManager : MonoBehaviour
         unit.enemy = GetRandomEnemy();
 
         Manager.Instance.gameManager.ChangeThreat(unit.enemy.threat);
+
+        Manager.Instance.tutorialManager.ShowTutorial(Tutorials.WhenEnemyIsSpawned);
     }
 
     public void ClearEnemies()
