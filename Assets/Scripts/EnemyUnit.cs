@@ -224,6 +224,8 @@ public class EnemyUnit : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Manager.Instance.gameManager.HitAnEnemy(this);
+
         if (dead || damage == 0) { return; }
 
         Debug.Log(enemy.enemyName + " took " + damage + " damage");
@@ -257,7 +259,7 @@ public class EnemyUnit : MonoBehaviour
         phase++;
 
         damageTaken = 0;
-        spriteRenderer.sprite = enemy.sprite[phase];
+        if (enemy.sprite.Count - 1 <= phase) spriteRenderer.sprite = enemy.sprite[phase];
 
         ShowIntentions();
 

@@ -157,6 +157,8 @@ public class GameManager : MonoBehaviour
 
     public void KilledAnEnemy(float threat, EnemyStrength strength = EnemyStrength.none)
     {
+        Manager.Instance.boardManager.enemyKilled = true;
+
         ChangeThreat(-threat);
         switch (mainObjective)
         {
@@ -173,6 +175,11 @@ public class GameManager : MonoBehaviour
                 if (strength == EnemyStrength.Boss) mainObjectiveTracker += 1;
                 break;
         }
+    }
+
+    public void HitAnEnemy(EnemyUnit unit)
+    {
+        Manager.Instance.boardManager.enemyTakenDamage = true;
     }
 
     public void ProgressSpawn()

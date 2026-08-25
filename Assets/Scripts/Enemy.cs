@@ -14,6 +14,7 @@ public class Enemy : ScriptableObject
     public Damage damage;
     public int attacks = 1;
     public float threat = 0;
+    public EnemyClass enemyClass;
 }
 [System.Serializable]
 //public class Intention
@@ -66,4 +67,15 @@ public enum Damage
     Small,
     Medium,
     Large,
+}
+
+public enum EnemyClass
+{
+    None,
+    Melee,
+    Tank,
+    Ranged,
+    Sniper,
+    Support,
+    Healer
 }

@@ -25,6 +25,7 @@ public class Manager : MonoBehaviour
         itemManager = GetComponent<ItemManager>();
         playerManager = GetComponent<PlayerManager>();
         tutorialManager = GetComponent<TutorialManager>();
+        UIManager = GetComponent<UIManager>();
     }
     #endregion
     [HideInInspector] public GameManager gameManager;
@@ -35,6 +36,7 @@ public class Manager : MonoBehaviour
     [HideInInspector] public ItemManager itemManager;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public TutorialManager tutorialManager;
+    [HideInInspector] public UIManager UIManager;
 
     public bool busy = false;
 }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8fed7eb62b9d6f34ba648f6068979f2f
+guid: 4d1fcc48936e0654d815acac52ada808
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8398739913567040163
-    second: hazard-sign_0
+      213: 1539978358559953235
+    second: star-shuriken_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 469
+  spritePixelsToUnits: 600
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hazard-sign_0
+      name: star-shuriken_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 45
-        width: 472
-        height: 434
+        x: 21
+        y: 21
+        width: 470
+        height: 470
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d5d01fa0c8ea17b80800000000000000
-      internalID: -8398739913567040163
+      spriteID: 35151cf682a1f5510800000000000000
+      internalID: 1539978358559953235
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hazard-sign_0: -8398739913567040163
+      star-shuriken_0: 1539978358559953235
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

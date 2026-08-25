@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2112fd2a18cdcc94f80ff65b419a5c6e, type: 3}
   m_Name: Squaire
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyName: Squaire
+  enemyName: 82/A Templar
   health: 0200000002000000
   sprite:
-  - {fileID: 21300000, guid: 46faae46b8fdab34488f1dbeeedf8aad, type: 3}
-  - {fileID: 21300000, guid: 46faae46b8fdab34488f1dbeeedf8aad, type: 3}
+  - {fileID: 21300000, guid: 52a381cec24ec2a458ef568417474804, type: 3}
   movement: 1
   readySpeed: 4
   range: 1
   damage: 1
   attacks: 1
   threat: 2
+  enemyClass: 2

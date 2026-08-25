@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2112fd2a18cdcc94f80ff65b419a5c6e, type: 3}
   m_Name: Grapple
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyName: Grapple
+  enemyName: P109 Striker
   health: 02000000
   sprite:
-  - {fileID: 21300000, guid: 73a4b54624761954f8df30d0ace2984c, type: 3}
+  - {fileID: 21300000, guid: 88e6f5c68bed52740be65cf13980e8f3, type: 3}
   movement: 2
   readySpeed: 2
   range: 1
   damage: 0
   attacks: 1
   threat: 1
+  enemyClass: 1

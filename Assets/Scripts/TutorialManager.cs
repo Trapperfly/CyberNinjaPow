@@ -39,7 +39,6 @@ public class TutorialManager : MonoBehaviour
     public List<Tutorial> tutorials;
 
     public List<Vector2Int> tutorialSizes;
-
     public void ToggleTutorials(bool toggle)
     {
         doNotShowTutorials = toggle;
@@ -75,7 +74,7 @@ public class TutorialManager : MonoBehaviour
         float i = 0;
         while (i < fadeInTime)
         {
-            i += Time.deltaTime;
+            i += Time.unscaledDeltaTime;
             background.color = new(0, 0, 0, (i / fadeInTime) * backgroundFadeMax);
 
             if (i > fadeInTime * whenDuringFadeInShouldTutorialShowUp && !tutorialActive) StartCoroutine(IShowTutorial());
@@ -100,7 +99,7 @@ public class TutorialManager : MonoBehaviour
 
         while (i < tutorialInAnimationTime)
         {
-            i += Time.deltaTime;
+            i += Time.unscaledDeltaTime;
             tutorialScale = tutorialInAnimation.Evaluate(i / tutorialInAnimationTime);
             tutorialBox.transform.localScale = new(tutorialScale, tutorialScale);
             yield return null;
@@ -142,7 +141,7 @@ public class TutorialManager : MonoBehaviour
         float i = 0;
         while (i < tutorialOutAnimationTime)
         {
-            i += Time.deltaTime;
+            i += Time.unscaledDeltaTime;
 
             tutorialScale = tutorialOutAnimation.Evaluate(i / tutorialOutAnimationTime);
             tutorialBox.transform.localScale = new(tutorialScale, tutorialScale);
@@ -159,7 +158,7 @@ public class TutorialManager : MonoBehaviour
         float i = fadeOutTime;
         while (i > 0)
         {
-            i -= Time.deltaTime;
+            i -= Time.unscaledDeltaTime;
             background.color = new(0, 0, 0, (i / fadeOutTime) * backgroundFadeMax);
             yield return null;
         }
@@ -179,7 +178,7 @@ public class TutorialManager : MonoBehaviour
     [System.Serializable]
     public class TutorialStep
     {
-        [TextArea(5, 10)] public string tutorialText;
+        [TextArea(2, 5)] public string tutorialText;
         public Vector2 pointAt;
     }
 }
@@ -192,6 +191,7 @@ public enum Tutorials
     WhenCardIsHovered,
     WhenEnemyIsSpawned,
     WhenEnemyTakesDamage,
+    WhenEnemyIsKilled,
     WhenEnemyIsHovered,
     WhenEnemyIsInMeleeRange,
     WhenPlayerTakesDamage,

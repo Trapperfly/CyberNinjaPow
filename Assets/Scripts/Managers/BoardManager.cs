@@ -46,6 +46,9 @@ public class BoardManager : MonoBehaviour
     public GameObject damageNumberForTilePrefab;
     public Vector2 damageNumberOffset;
 
+    public bool enemyTakenDamage = false;
+    public bool enemyKilled = false;
+
     private void Start()
     {
         BuildBoard();
@@ -214,7 +217,9 @@ public class BoardManager : MonoBehaviour
         {
             //Debug.Log("Showing intentions of " + enemyOnSpace.enemy.enemyName + " on space " + enemyOnSpace.position);
             enemyOnSpace.ShowIntentions(true);
+            Manager.Instance.UIManager.DisplayEnemyInfo(enemyOnSpace);
         }
+        else Manager.Instance.UIManager.RemoveEnemyInfo();
 
         targetedPosition = targetSpace.position;
 
@@ -572,6 +577,12 @@ public class BoardManager : MonoBehaviour
             int cost = (heldCard.cost == -1) ? r : heldCard.cost; 
             FinishCardAction(cost);
         }
+
+        if (enemyTakenDamage) Manager.Instance.tutorialManager.ShowTutorial(Tutorials.WhenEnemyTakesDamage);
+        if (enemyKilled) Manager.Instance.tutorialManager.ShowTutorial(Tutorials.WhenEnemyIsKilled);
+        enemyTakenDamage = false;
+        enemyKilled = false;
+
         yield return null;
     }
 

@@ -69,6 +69,8 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
         if (!scaled) Scale();
         target = true;
+
+        Manager.Instance.tutorialManager.ShowTutorial(Tutorials.WhenCardIsHovered);
     }
 
     public void OnPointerExit(PointerEventData eventData)
