@@ -6577,7 +6577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5565fe9e7e0c7cb48a6ed05e76329776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  seed: StartSeed
+  seed: Test
   waveInProgress: 0
   playerHealth: 10
   playerHealthMax: 10
@@ -6735,6 +6735,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b752236147db4374c8cc39c0e7bc8821, type: 3}
   - {fileID: 21300000, guid: 1eb50b52d44b6e042b1346c3ec9672a6, type: 3}
   handIndexCounter: 0
+  damageCardHueShift: {r: 0.8584906, g: 0.6762638, b: 0.6898179, a: 1}
 --- !u!114 &1900229852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7177,6 +7178,7 @@ MonoBehaviour:
   iterations: 1
   textSpeed: 0.011
   removeTextSpeed: 0.008
+  removing: 0
 --- !u!1 &1903852090
 GameObject:
   m_ObjectHideFlags: 0

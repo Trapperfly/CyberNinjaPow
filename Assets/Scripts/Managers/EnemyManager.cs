@@ -395,7 +395,7 @@ public class EnemyManager : MonoBehaviour
         int i = 0;
         while (i < amount || funds > 0)
         {
-            EnemyInfo enemyCheck = enemyRepertoire[Random.Range(0, enemyRepertoire.Count - 1)];
+            EnemyInfo enemyCheck = enemyRepertoire[Manager.Instance.gameManager.gameSeed.Next(0, enemyRepertoire.Count - 1)];
             if (enemyCheck.cost <= funds) {
                 enemyList.Add(enemyCheck.enemy); 
                 i++;
@@ -415,7 +415,7 @@ public class EnemyManager : MonoBehaviour
 
         while (funds > 0)
         {
-            EnemyInfo enemyCheck = enemyRepertoire[Random.Range(0, enemyRepertoire.Count)];
+            EnemyInfo enemyCheck = enemyRepertoire[Manager.Instance.gameManager.gameSeed.Next(0, enemyRepertoire.Count)];
             if (enemyCheck.cost <= funds)
             {
                 enemy = enemyCheck.enemy;

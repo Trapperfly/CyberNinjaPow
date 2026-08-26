@@ -94,8 +94,8 @@ MonoBehaviour:
   dead: 0
   readyToShowIntentions: 0
   timerSpriteRenderer: {fileID: 4938997174166486607}
-  timerDot: {fileID: -354001906295559755, guid: e846c7da503d28b4aa3335e754844973, type: 3}
-  timerDanger: {fileID: -8398739913567040163, guid: 8fed7eb62b9d6f34ba648f6068979f2f, type: 3}
+  timerDot: {fileID: 21300000, guid: e846c7da503d28b4aa3335e754844973, type: 3}
+  timerDanger: {fileID: 21300000, guid: 8fed7eb62b9d6f34ba648f6068979f2f, type: 3}
   healthParent: {fileID: 4052850211596099171}
   healthbarSegmentPrefab: {fileID: 4217734725305714656, guid: dd47eca698c9008438b0cde5f51d9fe0, type: 3}
   healthbarGatePrefab: {fileID: 8278860449118153929, guid: e18b0c6a1e984e8489fc6725b5ec8c7b, type: 3}
@@ -187,12 +187,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 11
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -354001906295559755, guid: e846c7da503d28b4aa3335e754844973, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e846c7da503d28b4aa3335e754844973, type: 3}
   m_Color: {r: 0, g: 0.7184715, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 0, y: 1}
+  m_Size: {x: 1.0963597, y: 1.0963597}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -278,13 +278,13 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f72315da19e08034191a769437392336, type: 3}
   m_Color: {r: 0.6509434, g: 0.07315102, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.15625, y: 1.5}
+  m_Size: {x: 0.85333335, y: 0.85333335}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0

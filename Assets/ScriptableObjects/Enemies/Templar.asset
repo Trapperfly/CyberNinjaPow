@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2112fd2a18cdcc94f80ff65b419a5c6e, type: 3}
-  m_Name: Orambo
+  m_Name: Templar
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyName: RK-Wasp
-  health: 03000000
+  enemyName: 82/A Templar
+  health: 0200000002000000
   sprite:
-  - {fileID: 21300000, guid: 4d1fcc48936e0654d815acac52ada808, type: 3}
-  movement: -1
-  readySpeed: 5
-  range: 2
-  damage: 0
+  - {fileID: 21300000, guid: 52a381cec24ec2a458ef568417474804, type: 3}
+  movement: 1
+  readySpeed: 4
+  range: 1
+  damage: 1
   attacks: 1
-  threat: 1
-  enemyClass: 3
+  threat: 2
+  enemyClass: 2

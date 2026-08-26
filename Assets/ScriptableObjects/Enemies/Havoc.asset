@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2112fd2a18cdcc94f80ff65b419a5c6e, type: 3}
-  m_Name: Grapple
+  m_Name: Havoc
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyName: P109 Striker
-  health: 02000000
+  enemyName: VhP.18 Havoc
+  health: 0100000002000000
   sprite:
-  - {fileID: 21300000, guid: 88e6f5c68bed52740be65cf13980e8f3, type: 3}
-  movement: 2
-  readySpeed: 2
+  - {fileID: 21300000, guid: 00172d94f0d2c1c42a29c9a4af318d22, type: 3}
+  movement: 1
+  readySpeed: 3
   range: 1
-  damage: 0
+  damage: 2
   attacks: 1
-  threat: 1
+  threat: 3
   enemyClass: 1

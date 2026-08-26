@@ -259,7 +259,7 @@ public class EnemyUnit : MonoBehaviour
         phase++;
 
         damageTaken = 0;
-        if (enemy.sprite.Count - 1 <= phase) spriteRenderer.sprite = enemy.sprite[phase];
+        if (enemy.sprite.Count - 1 >= phase) spriteRenderer.sprite = enemy.sprite[phase];
 
         ShowIntentions();
 

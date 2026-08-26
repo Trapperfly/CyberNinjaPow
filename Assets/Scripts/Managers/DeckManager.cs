@@ -46,6 +46,8 @@ public class DeckManager : MonoBehaviour
 
     public int handIndexCounter = 0;
 
+    public Color damageCardHueShift = Color.white;
+
     [System.Serializable]
     public class TagVariant
     {
@@ -91,7 +93,7 @@ public class DeckManager : MonoBehaviour
         if (deck.cards.Count == 0) Debug.Log("Deck contained no cards.");
         while (deck.cards.Count > 0)
         {
-            int selected = Random.Range(0, deck.cards.Count);
+            int selected = Manager.Instance.gameManager.gameSeed.Next(0, deck.cards.Count);
             //Debug.Log("Added " + deck.cards[selected].cardName + " back to the deck.");
             draw.Add(deck.cards[selected]);
             deck.cards.RemoveAt(selected);
@@ -108,13 +110,13 @@ public class DeckManager : MonoBehaviour
 
     public void AddRandomCardToDeck()
     {
-        int i = Random.Range(0, deck.possibleCards.Count);
+        int i = Manager.Instance.gameManager.gameSeed.Next(0, deck.possibleCards.Count);
         deck.cards.Add(deck.possibleCards[i]);
         Debug.Log("Added " + deck.possibleCards[i].name + " to deck.");
     }
     public Card GetRandomCard()
     {
-        int i = Random.Range(0, deck.possibleCards.Count);
+        int i = Manager.Instance.gameManager.gameSeed.Next(0, deck.possibleCards.Count);
         Card card = deck.possibleCards[i];
         return card;
     }
@@ -167,6 +169,17 @@ public class DeckManager : MonoBehaviour
         cardObject.range.GetComponent<Image>().sprite = rangeSprites[(int)card.range];
         cardObject.tags.GetComponent<Image>().sprite = tagHolderSprites[card.extraTagSlots + card.cardTags.Count];
         cardObject.card = card;
+
+        foreach(CardTag tag in card.cardTags)
+        {
+            if (tag.tag == TagEnum.Damage)
+            {
+                cardObject.time.GetComponent<Image>().color = damageCardHueShift;
+                cardObject.range.GetComponent<Image>().color = damageCardHueShift;
+                cardObject.tags.GetComponent<Image>().color = damageCardHueShift;
+                break;
+            }
+        }
 
         int i = 0;
 
@@ -398,7 +411,7 @@ public class DeckManager : MonoBehaviour
     {
         while (discard.Count > 0)
         {
-            int selected = Random.Range(0, discard.Count);
+            int selected = Manager.Instance.gameManager.gameSeed.Next(0, discard.Count);
             draw.Add(discard[selected]);
             discard.RemoveAt(selected);
         }
@@ -426,14 +439,14 @@ public class DeckManager : MonoBehaviour
     //    {
     //        if (hand.Count <= 0) { return; }
 
-    //        Card drawnCard = hand[Random.Range(0, hand.Count)];
+    //        Card drawnCard = hand[Manager.Instance.gameManager.gameSeed.Next(0, hand.Count)];
     //        hand.Remove(drawnCard);
     //        discard.Add(drawnCard);
     //    }
     //}
     public void DiscardNextDraw()
     {
-        Card drawnCard = draw[Random.Range(0, draw.Count)];
+        Card drawnCard = draw[Manager.Instance.gameManager.gameSeed.Next(0, draw.Count)];
         draw.Remove(drawnCard);
         discard.Add(drawnCard);
     }

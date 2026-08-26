@@ -205,7 +205,7 @@ public class BoardManager : MonoBehaviour
     {
         if (Manager.Instance.busy) return;
 
-        if (!targetSpace) return;
+        if (!targetSpace) { Manager.Instance.UIManager.RemoveEnemyInfo(); return; }
 
         if (targetedPosition == targetSpace.position) return;
 

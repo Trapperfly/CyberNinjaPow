@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using JetBrains.Annotations;
+using System.Globalization;
 public class GameManager : MonoBehaviour
 {
     EnemyManager enemyManager;
@@ -37,16 +37,52 @@ public class GameManager : MonoBehaviour
     public int mainObjectiveTracker;
     public int mainObjectiveGoal;
 
+    public System.Random gameSeed = new();
+
+    private void Awake()
+    {
+
+        if (seed != "") gameSeed = new System.Random(seed.GetHashCode());
+
+    }
+    public float NextFloat(float lowerBound, float upperBound)
+    {
+        float result = NextFloat(lowerBound, upperBound, gameSeed);
+        return result;
+    }
+    static float NextFloat(float lowerBound, float upperBound, System.Random seed)
+    {
+        int tenths = 10000000;
+
+        float result = seed.Next(Mathf.RoundToInt(lowerBound * tenths), Mathf.RoundToInt(upperBound * tenths));
+
+        result /= tenths;
+        
+        return result;
+    }
+
+    //public static int DecimalSpaces(float value)
+    //{
+    //    string text = value.ToString("G10", CultureInfo.InvariantCulture);
+
+    //    text.TrimEnd('0');
+
+    //    int index = text.IndexOf('.');
+
+    //    if (index == -1) return 0;
+
+    //    return text.Length - index - 1;
+    //}
+
     private void Start()
     {
-        if (seed != "") Random.InitState(seed.GetHashCode());
         enemyManager = Manager.Instance.enemyManager;
         AlterMoney(0);
         //StartWave();
         Manager.Instance.tutorialManager.ShowTutorial(Tutorials.StartOfGame);
         //for (int i = 0; i < Manager.Instance.boardManager.boardSize.x; i++)
         //{
-        //    int timer = Random.Range(spawnDelay.x, spawnDelay.y + 1);
+        //    int timer = NextFloat(spawnDelay.x, spawnDelay.y + 1);
         //    spawnTimerForColumns.Add(timer);
         //}
 
@@ -145,7 +181,7 @@ public class GameManager : MonoBehaviour
     //                    Manager.Instance.enemyManager.SpawnEnemy(j);
     //                    //Manager.Instance.enemyManager.ShowIntentionsOfEnemies();
     //                }
-    //                spawnTimerForColumns[j] = Random.Range(spawnDelay.x, spawnDelay.y);
+    //                spawnTimerForColumns[j] = NextFloat(spawnDelay.x, spawnDelay.y);
     //            }
     //        }
     //    }
@@ -186,11 +222,11 @@ public class GameManager : MonoBehaviour
     {
         float spawningBias = Mathf.Pow(1f - (currentThreat / maxThreat), threatCalculation);
         //Debug.Log("Bias for spawning an enemy is " + spawningBias * 100 + "%");
-        if (Random.Range(0f,1f) < spawningBias)
+        if (NextFloat(0f,1f) < spawningBias)
         {
             Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
 
-            enemyManager.SpawnEnemy(Random.Range(0,5));
+            enemyManager.SpawnEnemy(gameSeed.Next(0,5));
         }
     }
 
@@ -245,8 +281,8 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < startEnemyCount; i++)
         {
-            int column = Random.Range(0, Manager.Instance.boardManager.boardSize.x);
-            int row = Random.Range(Manager.Instance.boardManager.boardSize.y - startEnemyYPosition, Manager.Instance.boardManager.boardSize.y);
+            int column = gameSeed.Next(0, Manager.Instance.boardManager.boardSize.x);
+            int row = gameSeed.Next(Manager.Instance.boardManager.boardSize.y - startEnemyYPosition, Manager.Instance.boardManager.boardSize.y);
 
             enemyManager.SpawnEnemy(column, row);
             yield return new WaitForSeconds(enemySpawnDelay);

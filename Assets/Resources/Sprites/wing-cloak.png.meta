@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: d8d30e38caab7314db44b3afa1155aa4
+guid: 0bd80ba62b5385443b03febac2bcd99e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2138007448698160486
-    second: plain-square_0
+      213: -3850151715661686369
+    second: wing-cloak_0
+  - first:
+      213: -4992009382788455738
+    second: wing-cloak_1
+  - first:
+      213: 3305659118580706294
+    second: wing-cloak_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: plain-square_0
+      name: wing-cloak_0
       rect:
         serializedVersion: 2
-        x: 22
-        y: 22
-        width: 468
-        height: 468
+        x: 17
+        y: 17
+        width: 229
+        height: 396
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +121,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6650bca627abbad10800000000000000
-      internalID: 2138007448698160486
+      spriteID: f99df90e963819ac0800000000000000
+      internalID: -3850151715661686369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wing-cloak_1
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 387
+        width: 73
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c22a774ae1d8bab0800000000000000
+      internalID: -4992009382788455738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wing-cloak_2
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 17
+        width: 230
+        height: 396
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fba887447f00ed20800000000000000
+      internalID: 3305659118580706294
       vertices: []
       indices: 
       edges: []
@@ -135,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      plain-square_0: 2138007448698160486
+      wing-cloak_0: -3850151715661686369
+      wing-cloak_1: -4992009382788455738
+      wing-cloak_2: 3305659118580706294
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

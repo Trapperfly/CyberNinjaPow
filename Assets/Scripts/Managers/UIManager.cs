@@ -17,12 +17,15 @@ public class UIManager : MonoBehaviour
     public float textSpeed = 1;
     public float removeTextSpeed = 1;
 
+    public bool removing;
     private void Start()
     {
         RemoveEnemyInfo();
     }
     public void DisplayEnemyInfo(EnemyUnit unit)
     {
+        //if (!removing) return;
+        removing = false;
         StopAllCoroutines();
         StartCoroutine(PrintWackyText(unitName, unit.enemy.enemyName, amount, iterations, textSpeed));
         StartCoroutine(PrintWackyText(unitMovement, "Movement: " + Mathf.Abs(unit.enemy.movement).ToString() + (unit.enemy.movement < 0 ? " up" : " down"), amount, iterations, textSpeed));
@@ -38,7 +41,8 @@ public class UIManager : MonoBehaviour
 
     public void RemoveEnemyInfo()
     {
-        if (unitName.text == "") return;
+        if (removing) return;
+        removing = true;
         StopAllCoroutines();
         StartCoroutine(RemoveWackyText(unitName, textSpeed));
         StartCoroutine(RemoveWackyText(unitMovement, textSpeed));
@@ -85,7 +89,7 @@ public class UIManager : MonoBehaviour
         string text = where.text;
         int progress = 0;
         //List<char> availableChars = new() { 'a', '/', '|', 'z', 'b', 'R', '-', 'v', 'Q', '4', '2', 'x', '^', '>', '@', '[' };
-        List<char> availableChars = new() { '_' };
+        //List<char> availableChars = new() { '_' };
         //for (int i = 0; i < progress; i++)
         //{
         //    result += what[i];
@@ -98,7 +102,7 @@ public class UIManager : MonoBehaviour
             //    result += " ";
             //}
             result += "_";
-            for (int i = progress; i < text.Length; i++)
+            for (int i = progress + 1; i < text.Length; i++)
             {
                 result += text[i];
             }
