@@ -383,19 +383,18 @@ public class EnemyManager : MonoBehaviour
         deadEnemies.Clear();
     }
 
-    public List<Enemy> GetRandomEnemies(int amount = 0, int funds = 0)
+    public List<Enemy> GetRandomEnemies(int amount = 1, int funds = 0)
     {
         List<Enemy> enemyList = new List<Enemy>();
 
         Vector2Int minMax = GetMinCostMaxCost();
 
         if (funds == 0) { funds = minMax.y; }
-        if (amount == 0) { amount = 1; }
 
         int i = 0;
         while (i < amount || funds > 0)
         {
-            EnemyInfo enemyCheck = enemyRepertoire[Manager.Instance.gameManager.gameSeed.Next(0, enemyRepertoire.Count - 1)];
+            EnemyInfo enemyCheck = enemyRepertoire[Manager.Instance.gameManager.gameSeed.Next(0, enemyRepertoire.Count)];
             if (enemyCheck.cost <= funds) {
                 enemyList.Add(enemyCheck.enemy); 
                 i++;

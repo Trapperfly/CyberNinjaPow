@@ -4735,7 +4735,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.2
+  orthographic size: 5.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6572,7 +6572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5565fe9e7e0c7cb48a6ed05e76329776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  seed: Test
+  seed: Test3
   waveInProgress: 0
   playerHealth: 10
   playerHealthMax: 10
@@ -6586,7 +6586,7 @@ MonoBehaviour:
   collisionDamage: 1
   money: 20
   currentThreat: 0
-  maxThreat: 10
+  maxThreat: 3
   threatCalculation: 1.5
   mainObjective: 3
   sideObjectives: []

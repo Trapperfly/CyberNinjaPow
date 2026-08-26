@@ -91,7 +91,7 @@ public class EnemyUnit : MonoBehaviour
             case Range.Ranged:
                 ProjectileData projectile = new ProjectileData();
                 projectile.direction = Direction.South;
-                projectile.projDamage = effect.damage = (int)enemy.damage + 1;
+                projectile.projDamage = (int)enemy.damage + 1;
                 effect.gridPosition = Vector2Int.down;
                 effect.projectiles.Add(projectile);
                 break;
@@ -545,6 +545,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void ForceMove(Vector2Int direction, int amount)
     {
+        Debug.Log("Forcing enemy to move");
         if (movementArrow != null)
             Destroy(movementArrow);
         for (int i = 0; i < amount; i++)
@@ -606,22 +607,22 @@ public class EnemyUnit : MonoBehaviour
     {
         readyToShowIntentions = false;
 
-        Debug.Log("Attacking");
+        //Debug.Log("Attacking");
         foreach (TileEffect a in attack)
         {
-            Debug.Log("one attack");
+            //Debug.Log("one attack");
             foreach (ProjectileData projectile in a.projectiles)
             {
-                Debug.Log("sending projectile");
+                //Debug.Log("sending projectile");
                 Manager.Instance.boardManager.EnemyProjectile(
                     true, 
                     position + a.gridPosition, 
                     projectile, 
                     enemyManager.damageCards[(int)enemy.damage]);
             }
-            Debug.Log("trying to damage specific tile");
-            DamageTile(position + a.gridPosition, a.damage);
-            PushTile(position + a.gridPosition, a.pushDirection, a.pushDistance);
+            //Debug.Log("trying to damage specific tile");
+            if (a.damage > 0) DamageTile(position + a.gridPosition, a.damage);
+            if (a.pushDistance > 0) PushTile(position + a.gridPosition, a.pushDirection, a.pushDistance);
         }
         Manager.Instance.boardManager.ClearSpaces();
         SortSprites();
