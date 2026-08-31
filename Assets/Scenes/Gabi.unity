@@ -997,7 +997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -250}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &168014032
@@ -2080,7 +2080,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -120, y: -250}
+  m_AnchoredPosition: {x: -141.5, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &530564107
@@ -2714,7 +2714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120, y: -250}
+  m_AnchoredPosition: {x: 141.5, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &733507164
@@ -3494,7 +3494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 42, y: 40}
+  m_AnchoredPosition: {x: 42, y: -150}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1016699110
@@ -5240,7 +5240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 240, y: -250}
+  m_AnchoredPosition: {x: 242.5, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1620275624
@@ -5981,7 +5981,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -240, y: -250}
+  m_AnchoredPosition: {x: -242.5, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1773617490
@@ -6572,7 +6572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5565fe9e7e0c7cb48a6ed05e76329776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  seed: Test3
+  seed: TutorialSeed
   waveInProgress: 0
   playerHealth: 10
   playerHealthMax: 10
@@ -6731,6 +6731,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1eb50b52d44b6e042b1346c3ec9672a6, type: 3}
   handIndexCounter: 0
   damageCardHueShift: {r: 0.8584906, g: 0.6762638, b: 0.6898179, a: 1}
+  damageColor: {r: 1, g: 0.16484332, b: 0, a: 1}
+  blockColor: {r: 0.13381095, g: 0.42093617, b: 0.9150943, a: 1}
+  drawColor: {r: 0.019579919, g: 0.8301887, b: 0.45384553, a: 1}
+  discardColor: {r: 0.6320754, g: 0.18453063, b: 0.08646317, a: 1}
+  addColor: {r: 0.36281735, g: 0.5660378, b: 0.08276967, a: 1}
+  pushColor: {r: 0.41509432, g: 0.34157687, b: 0.24474901, a: 1}
+  timeColor: {r: 0.52994543, g: 0.4206568, b: 0.6509434, a: 1}
+  classColor: {r: 0.6415094, g: 0.19668922, b: 0.38708475, a: 1}
+  burnColor: {r: 1, g: 0.37724015, b: 0.042452812, a: 1}
+  acidColor: {r: 0.06474723, g: 0.9150943, b: 0.09400666, a: 1}
+  hackColor: {r: 0.7388394, g: 0.18396229, b: 1, a: 1}
 --- !u!114 &1900229852
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Basic_Spear
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Spear
-  description: 
+  description: '[2]
+
+    [2]
+
+    [2]'
   artwork: {fileID: 0}
   cardTags: []
   cost: 2

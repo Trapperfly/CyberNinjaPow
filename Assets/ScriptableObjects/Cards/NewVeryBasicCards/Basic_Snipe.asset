@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Basic_Snipe
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Snipe
-  description: 
+  description: '[3]
+
+
+    High damage anywhere.'
   artwork: {fileID: 0}
   cardTags:
   - nonFunctional: 1

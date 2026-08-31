@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
-using System.Linq;
-using UnityEngine.Rendering;
+using Unity.VisualScripting;
 public enum WhereDoesTheCardGo
 {
     Nowhere,
@@ -47,6 +46,18 @@ public class DeckManager : MonoBehaviour
     public int handIndexCounter = 0;
 
     public Color damageCardHueShift = Color.white;
+
+    public Color damageColor = new();
+    public Color blockColor = new();
+    public Color drawColor = new();
+    public Color discardColor = new();
+    public Color addColor = new();
+    public Color pushColor = new();
+    public Color timeColor = new();
+    public Color classColor = new();
+    public Color burnColor = new();
+    public Color acidColor = new();
+    public Color hackColor = new();
 
     [System.Serializable]
     public class TagVariant
@@ -161,7 +172,7 @@ public class DeckManager : MonoBehaviour
         GameObject cardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
         CardObject cardObject = cardGO.GetComponent<CardObject>();
         cardObject.cardName.text = card.cardName;
-        cardObject.cardDescription.text = card.description;
+        cardObject.cardDescription.text = CreateRichTextDescription(card);
         cardObject.art.sprite = card.artwork;
         if (card.cost < 0) { cardObject.time.GetComponent<Image>().sprite = timeSprites[timeSprites.Count - 1]; }
         else
@@ -206,6 +217,149 @@ public class DeckManager : MonoBehaviour
             i++;
         }
         return cardGO;
+    }
+
+    public string CreateRichTextDescription(Card card)
+    {
+        string result = card.description + "\n\n";
+        if (card.description == "") result = "";
+
+        if (card.tileEffects.Count == 1)
+        {
+            if (card.tileEffects[0].projectiles.Count == 1)
+            {
+                result += "Shoot a " + Fancy(card.tileEffects[0].projectiles[0].projDamage, damageColor) 
+                    + " damage projectile " + card.tileEffects[0].projectiles[0].direction.ToString();
+            }
+            else
+            {
+                result += "[" + Fancy(card.tileEffects[0].damage, damageColor) + "]";
+            }
+        }
+        //else
+        //{
+        //    foreach (TileEffect effect in card.tileEffects)
+        //    {
+        //        if (effect.projectiles.Count == 0)
+        //        {
+        //            result += "[" + Fancy(effect.damage, damageColor) + "]";
+        //        }
+                
+        //    }
+        //}
+
+            bool targetCard = false;
+        if (card.tileEffects.Count > 0) targetCard = true;
+        if (card.targetAll.doThis) targetCard = true;
+
+        foreach (CardTag tag in card.cardTags)
+        {
+            if (tag.nonFunctional) continue;
+            switch (tag.tag)
+            {
+                case TagEnum.None:
+                    break;
+                case TagEnum.Damage:
+                    break;
+                case TagEnum.Basic:
+                    break;
+                case TagEnum.Flame:
+                    if (targetCard) result += "Inflict " + Fancy("Burning", burnColor) + ".";
+                    //else result += "Deal " + Fancy(effect.amount * effect.doXTimes, burnColor) + " damage to all " + Fancy("Burning", burnColor) + " enemies.";
+                    break;
+                case TagEnum.Acid:
+                    if (targetCard) result += "Inflict " + Fancy("Acid", acidColor) + ".";
+                    //else result += ;
+                    break;
+                case TagEnum.Hacking:
+                    if (targetCard) result += "Inflict " + Fancy("Hack", hackColor) + ".";
+                    //else result += ;
+                    break;
+                case TagEnum.Explosive:
+                    if (targetCard) result += Fancy("Push ", pushColor) + Fancy(1, pushColor) + " North.";
+                    //else result += ;
+                    break;
+                //case TagEnum.Cards:
+                //    if (targetCard) result += ;
+                //    else result += ;
+                //    break;
+                //case TagEnum.Swift:
+                //    if (targetCard) result += ;
+                //    else result += ;
+                //    break;
+                //case TagEnum.Flexible:
+                //    if (targetCard) result += ;
+                //    else result += ;
+                //    break;
+                //case TagEnum.Power:
+                //    if (targetCard) result += ;
+                //    else result += ;
+                //    break;
+                default:
+                    break;
+            }
+        }
+
+        foreach (AdditionalCardEffect effect in card.additionalCardEffects)
+        {
+            switch (effect.otherEffect)
+            {
+                case OtherCardEffects.None:
+                    break;
+                case OtherCardEffects.Block:
+                    result += "Block " + Fancy(effect.amount, blockColor) + " attacks for " + Fancy(card.cost, timeColor) + " time.";
+                    break;
+                case OtherCardEffects.Parry:
+                    result += "Block " + Fancy(effect.amount, blockColor) + " attacks for " + Fancy(card.cost, timeColor) + " time.";
+                    break;
+                case OtherCardEffects.DrawCards:
+                    result += "Draw " + Fancy(effect.amount * effect.doXTimes, drawColor) + " cards.";
+                    break;
+                case OtherCardEffects.DiscardCards:
+                    result += "Discard " + Fancy(effect.amount * effect.doXTimes, discardColor) + " cards.";
+                    break;
+                case OtherCardEffects.AddClassResource:
+                    result += "Gain " + Fancy(effect.amount * effect.doXTimes, classColor) + " class resource.";
+                    break;
+                case OtherCardEffects.AddCardToHand:
+                    result += "Add " + Fancy(effect.amount * effect.doXTimes, addColor) + " " + Fancy(effect.card.cardName, drawColor) + " to your hand.";
+                    break;
+                case OtherCardEffects.AddCardToDiscard:
+                    result += "Add " + Fancy(effect.amount * effect.doXTimes, addColor) + " " + Fancy(effect.card.cardName, drawColor) + " to your discard.";
+                    break;
+                case OtherCardEffects.AddCardToDraw:
+                    result += "Add " + Fancy(effect.amount * effect.doXTimes, addColor) + " " + Fancy(effect.card.cardName, drawColor) + " to your draw.";
+                    break;
+                case OtherCardEffects.ActivateBurn:
+                    result += "Deal " + Fancy(effect.amount * effect.doXTimes, burnColor) + " damage to all " + Fancy("Burning", burnColor) + " enemies.";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result;
+    }
+    public string Fancy(int text, Color color, bool bold = true)
+    {
+        string result = Fancy(text.ToString(), color.ToHexString(), bold);
+
+        return result;
+    }
+    public string Fancy(string text, Color color, bool bold = true)
+    {
+        string result = Fancy(text, color.ToHexString(), bold);
+
+        return result;
+    }
+
+    public string Fancy(string text, string hex = "ffffff", bool bold = true)
+    {
+        string result = "<color=#" + hex + ">" + text + "</color>";
+
+        if (bold) result = "<b>" + result + "</b>";
+
+        return result;
     }
 
     public Tag CreateTagFromEnum(TagEnum tag)

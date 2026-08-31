@@ -65,6 +65,7 @@ public class BoardManager : MonoBehaviour
             BoardSpace boardSpace = space.GetComponent<BoardSpace>();
             boardSpace.position = key;
             spaces.TryAdd(key, boardSpace);
+
             key.x += 1;
             if (key.x == boardSize.x)
             {

@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Basic_Shove
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Shove
-  description: 
+  description: '[0][0][0]
+
+
+    Push 1 North.'
   artwork: {fileID: 0}
   cardTags:
   - nonFunctional: 1

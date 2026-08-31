@@ -7,6 +7,7 @@ public class Card : ScriptableObject
 {
     [Header("Identity")]
     public string cardName;
+    [TextArea(1,3)]
     public string description;
     public Sprite artwork;
     public List<CardTag> cardTags = new();
