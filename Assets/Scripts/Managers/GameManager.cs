@@ -123,7 +123,11 @@ public class GameManager : MonoBehaviour
             }
 
             yield return StartCoroutine(enemyManager.IProgressTime());
+
             yield return new WaitForSeconds(0.1f);
+
+            Manager.Instance.UIManager.Grade(-2);
+
             yield return null;
         }
         AfterTimeProgress();
@@ -186,6 +190,11 @@ public class GameManager : MonoBehaviour
     //        }
     //    }
     //}
+    public void AddMaxThreat(float change)
+    {
+        maxThreat += change;
+        Manager.Instance.UIManager.Threat(maxThreat);
+    }
     public void ChangeThreat(float change)
     {
         currentThreat += change;
@@ -194,6 +203,10 @@ public class GameManager : MonoBehaviour
     public void KilledAnEnemy(float threat, EnemyStrength strength = EnemyStrength.none)
     {
         Manager.Instance.boardManager.enemyKilled = true;
+
+        Manager.Instance.UIManager.Score((int)threat);
+
+        Manager.Instance.UIManager.Grade((int)threat * 10);
 
         ChangeThreat(-threat);
         switch (mainObjective)

@@ -89,6 +89,22 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
+    public void MoveAllEnemiesToSimulatePlayerMovement()
+    {
+        for (int y = 0; y < Manager.Instance.boardManager.boardSize.y; y++)
+        {
+            for (int x = 0; x < Manager.Instance.boardManager.boardSize.x; x++)
+            {
+                foreach (EnemyUnit enemy in enemies)
+                {
+                    if (enemy.position == new Vector2Int(x, y))
+                    {
+                        enemy.ForceMove(new(0, -1), 1);
+                    }
+                }
+            }
+        }
+    }
 
     public IEnumerator TriggerStatusesOnAllEnemies(StatusEffect statusEffect = StatusEffect.None)
     {
@@ -139,6 +155,7 @@ public class EnemyManager : MonoBehaviour
         if (currentEnemyMoveTracker >= enemyMoveInterval)
         {
             MoveAllEnemies();
+            Manager.Instance.gameManager.AddMaxThreat(1);
             yield return new WaitForSeconds(moveAnimTime);
             currentEnemyMoveTracker = 0;
             Debug.Log("Moving all enemies");

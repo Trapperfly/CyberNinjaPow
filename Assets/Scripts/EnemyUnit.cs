@@ -630,14 +630,19 @@ public class EnemyUnit : MonoBehaviour
     }
     void DamageTile(Vector2Int targetTile, int damage, List<StatusEffect> statusEffects = null)
     {
-        if (targetTile.y < 0)
+        EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
+        if (unit)
+        {
+            unit.TakeDamage(damage);
+            //unit.AddStatus(statusEffects);
+            return;
+        }
+
+        if (targetTile.y < 2)
         {
             Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, enemyManager.damageCards[(int)enemy.damage]);
         }
-        EnemyUnit unit = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(targetTile);
-        if (unit == null) return;
-        //unit.AddStatus(statusEffects);
-        unit.TakeDamage(damage);
+        
     }
 
     void PushTile(Vector2Int targetTile, Direction direction, int amount)

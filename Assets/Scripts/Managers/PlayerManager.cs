@@ -54,9 +54,15 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
+        Manager.Instance.UIManager.Grade(-20);
     }
     public void ResetBlock()
     {
         block = 0;
+    }
+
+    public void PlayerMove()
+    {
+        Manager.Instance.enemyManager.MoveAllEnemiesToSimulatePlayerMovement();
     }
 }

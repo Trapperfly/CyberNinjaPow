@@ -59,6 +59,8 @@ public class DeckManager : MonoBehaviour
     public Color acidColor = new();
     public Color hackColor = new();
 
+    public Card lightDamageForTesting;
+
     [System.Serializable]
     public class TagVariant
     {
@@ -131,7 +133,10 @@ public class DeckManager : MonoBehaviour
         Card card = deck.possibleCards[i];
         return card;
     }
-
+    public void TakeLightDamage()
+    {
+        AddCardTo(WhereDoesTheCardGo.Hand, lightDamageForTesting);
+    }
 
     public void AddCardTo(WhereDoesTheCardGo where, Card card)
     {
@@ -141,13 +146,14 @@ public class DeckManager : MonoBehaviour
                 break;
             case WhereDoesTheCardGo.Hand:
                 //Discard one card first if not enough space in hand.
+                Debug.Log("Hand size is " + handSize + " and hand count is " + hand.Count);
+                if (hand.Count >= handSize) DiscardRandomHandCard();
+                //Add card
                 hand.Add(card);
                 GameObject cardGO = CreateCard(card);
                 cardGO.transform.SetParent(handTransform);
                 cardGO.transform.localScale = Vector3.one;
                 handCards.Add(cardGO.transform);
-
-                AlignCards();
                 break;
             case WhereDoesTheCardGo.Draw:
                 draw.Add(card);
@@ -161,7 +167,8 @@ public class DeckManager : MonoBehaviour
             default:
                 break;
         }
-        if (where == WhereDoesTheCardGo.Hand) AlignCards();
+        AlignCards();
+        AlignCardsAsSiblings();
     }
 
     public GameObject CreateCard(Card card)
@@ -491,9 +498,13 @@ public class DeckManager : MonoBehaviour
         int count = hand.Count;
         float spread = Mathf.Min(cardSpread, count * 150f);
 
+        Debug.Log("Hand count is " + count);
+
         for (int i = 0; i < count; i++)
         {
-            RectTransform card = handTransform.GetChild(i) as RectTransform;
+            RectTransform card = handCards[i] as RectTransform;
+
+            Debug.Log("Aligning " + card.GetComponent<CardObject>().card.cardName);
 
             if (card == null) continue;
 
@@ -575,7 +586,7 @@ public class DeckManager : MonoBehaviour
         discard.Add(editedCard.original);
 
         handCards.Remove(physicalCardHeld.transform);
-        Debug.Log(editedCard.original);
+        //Debug.Log(editedCard.original);
         hand.Remove(editedCard.original);
 
         physicalCardHeld.gameObject.SetActive(false);
@@ -587,20 +598,30 @@ public class DeckManager : MonoBehaviour
         if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(cost);
     }
 
-    //public void DiscardRandomHandCard(int amount = 1)
-    //{
-    //    for (int i = 0; i < amount; i++)
-    //    {
-    //        if (hand.Count <= 0) { return; }
+    public void DiscardRandomHandCard(int amount = 1)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if (hand.Count <= 0) { return; }
 
-    //        Card drawnCard = hand[Manager.Instance.gameManager.gameSeed.Next(0, hand.Count)];
-    //        hand.Remove(drawnCard);
-    //        discard.Add(drawnCard);
-    //    }
-    //}
+            int cardIndex = Manager.Instance.gameManager.gameSeed.Next(0, hand.Count);
+            
+            discard.Add(hand[cardIndex]);
+            hand.Remove(hand[cardIndex]);
+
+            Transform handCard = handCards[cardIndex];
+            handCards.Remove(handCard);
+            handCard.SetParent(null);
+            handCard.gameObject.SetActive(false);
+            Destroy(handCard.gameObject);
+
+            AlignCards();
+            AlignCardsAsSiblings();
+        }
+    }
     public void DiscardNextDraw()
     {
-        Card drawnCard = draw[Manager.Instance.gameManager.gameSeed.Next(0, draw.Count)];
+        Card drawnCard = draw[0];
         draw.Remove(drawnCard);
         discard.Add(drawnCard);
     }
