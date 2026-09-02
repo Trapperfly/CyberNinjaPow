@@ -146,7 +146,7 @@ public class DeckManager : MonoBehaviour
                 break;
             case WhereDoesTheCardGo.Hand:
                 //Discard one card first if not enough space in hand.
-                Debug.Log("Hand size is " + handSize + " and hand count is " + hand.Count);
+                //Debug.Log("Hand size is " + handSize + " and hand count is " + hand.Count);
                 if (hand.Count >= handSize) DiscardRandomHandCard();
                 //Add card
                 hand.Add(card);
@@ -498,13 +498,13 @@ public class DeckManager : MonoBehaviour
         int count = hand.Count;
         float spread = Mathf.Min(cardSpread, count * 150f);
 
-        Debug.Log("Hand count is " + count);
+        //Debug.Log("Hand count is " + count);
 
         for (int i = 0; i < count; i++)
         {
             RectTransform card = handCards[i] as RectTransform;
 
-            Debug.Log("Aligning " + card.GetComponent<CardObject>().card.cardName);
+            //Debug.Log("Aligning " + card.GetComponent<CardObject>().card.cardName);
 
             if (card == null) continue;
 

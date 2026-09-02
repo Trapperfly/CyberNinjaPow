@@ -89,7 +89,7 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
-    public void MoveAllEnemiesToSimulatePlayerMovement()
+    public void MoveAllEnemiesToSimulatePlayerMovement(int movement, int time)
     {
         for (int y = 0; y < Manager.Instance.boardManager.boardSize.y; y++)
         {
@@ -99,11 +99,18 @@ public class EnemyManager : MonoBehaviour
                 {
                     if (enemy.position == new Vector2Int(x, y))
                     {
-                        enemy.ForceMove(new(0, -1), 1);
+                        if (y < movement)
+                        {
+                            movement -= y;
+                            if (movement <= 0 || y == 0) return;
+                            enemy.ForceMove(new(0, -1), movement);
+                        }
+                        enemy.ForceMove(new(0, -1), movement);
                     }
                 }
             }
         }
+        Manager.Instance.gameManager.ProgressTime(time);
     }
 
     public IEnumerator TriggerStatusesOnAllEnemies(StatusEffect statusEffect = StatusEffect.None)

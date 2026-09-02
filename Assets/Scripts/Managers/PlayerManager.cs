@@ -9,6 +9,9 @@ public class PlayerManager : MonoBehaviour
     public GameObject ammoPrefab;
 
     public int block;
+
+    public int playerMove = 1;
+    public int playerMoveCost = 1;
     public bool UseResource(int value)
     {
         if (playerResource < value) return false;
@@ -63,6 +66,6 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayerMove()
     {
-        Manager.Instance.enemyManager.MoveAllEnemiesToSimulatePlayerMovement();
+        Manager.Instance.enemyManager.MoveAllEnemiesToSimulatePlayerMovement(playerMove, playerMoveCost);
     }
 }

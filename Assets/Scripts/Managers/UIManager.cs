@@ -29,7 +29,14 @@ public class UIManager : MonoBehaviour
     public int gradeMax = 100;
     public int grade = 0;
     public TMP_Text gradeLetter;
-
+    public List<Rank> ranks;
+    [System.Serializable]
+    public class Rank
+    {
+        public float threshold = 0;
+        public int multiplier = 1;
+        public string letter = "F";
+    }
     [Space]
 
     public int amount = 1;
@@ -57,48 +64,18 @@ public class UIManager : MonoBehaviour
         if (grade < 0) { grade = 0; }
         if (grade > gradeMax) { grade = gradeMax; }
 
-        if (grade < gradeMax * 0.25f && scoreMultiplier != 1)
+        Rank currentRank = new();
+        foreach (Rank rank in ranks)
         {
-            scoreMultiplier = 1;
-            StartCoroutine(RemoveWackyText(scoreMulti, removeTextSpeed));
-            //StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "F", amount, iterations, textSpeed));
+            if (grade > rank.threshold && rank.threshold > currentRank.threshold) currentRank = rank;
         }
-        else if (grade > gradeMax * 0.9f && scoreMultiplier != 20)
+        if (currentRank.multiplier != scoreMultiplier)
         {
-            scoreMultiplier = 20;
-            StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "Z!", amount, iterations, textSpeed));
-        }
-        else if (grade > gradeMax * 0.8f && scoreMultiplier != 10)
-        {
-            scoreMultiplier = 10;
-            StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "A", amount, iterations, textSpeed));
-        }
-        else if (grade > gradeMax * 0.75f && scoreMultiplier != 6)
-        {
-            scoreMultiplier = 6;
-            StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "B", amount, iterations, textSpeed));
-        }
-        else if (grade > gradeMax * 0.6f && scoreMultiplier != 4)
-        {
-            scoreMultiplier = 4;
-            StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "C", amount, iterations, textSpeed));
-        }
-        else if (grade > gradeMax * 0.45f && scoreMultiplier != 3)
-        {
-            scoreMultiplier = 3;
-            StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "D", amount, iterations, textSpeed));
-        }
-        else if (grade > gradeMax * 0.25f && scoreMultiplier != 2)
-        {
-            scoreMultiplier = 2;
-            StartCoroutine(PrintWackyText(scoreMulti, "X" + scoreMultiplier.ToString(), amount, iterations, textSpeed));
-            StartCoroutine(PrintWackyText(gradeLetter, "E", amount, iterations, textSpeed));
+            Debug.Log("Grading a new grade");
+            scoreMultiplier = currentRank.multiplier;
+            if (currentRank.multiplier == 1) StartCoroutine(RemoveWackyText(scoreMulti, removeTextSpeed));
+            else StartCoroutine(PrintWackyText(scoreMulti, "X" + currentRank.multiplier.ToString(), amount, iterations, textSpeed));
+            StartCoroutine(PrintWackyText(gradeLetter, currentRank.letter, amount, iterations, textSpeed));
         }
     }
     public void Score(int scoreChange)

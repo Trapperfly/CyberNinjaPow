@@ -548,17 +548,21 @@ public class EnemyUnit : MonoBehaviour
         Debug.Log("Forcing enemy to move");
         if (movementArrow != null)
             Destroy(movementArrow);
+        int possibleMove = 0;
         for (int i = 0; i < amount; i++)
         {
-            EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + direction);
+            Debug.Log("Checking if " + (position + direction * (possibleMove + 1)) + " is occupied");
+            EnemyUnit potentialCrash = enemyManager.CheckIfCellIsOccupied(position + direction * (possibleMove + 1));
             if (potentialCrash != null)
             {
-                StartCoroutine(Crash(direction, potentialCrash));
+                Debug.Log("Crashing");
+                StartCoroutine(Crash(possibleMove + 1, direction, potentialCrash));
                 return;
             }
-            if (enemyManager.CheckIfCellIsOutsideOfBoard(position + direction)) return;
+            if (enemyManager.CheckIfCellIsOutsideOfBoard(position + (direction * (possibleMove + 1)))) break;
+            possibleMove++;
         }
-        StartCoroutine(MoveUnit(1, direction, true));
+        StartCoroutine(MoveUnit(possibleMove, direction, true));
     }
 
     public IEnumerator MoveUnit(int movement, Vector2Int? direction = null, bool forced = false)
@@ -579,12 +583,12 @@ public class EnemyUnit : MonoBehaviour
         SortSprites();
         yield return null;
     }
-    public IEnumerator Crash(Vector2Int moveTo, EnemyUnit crashInto)
+    public IEnumerator Crash(int movement, Vector2Int moveTo, EnemyUnit crashInto)
     {
         float seconds = Manager.Instance.enemyManager.collideAnimTime;
         float i = 0;
         Vector2 originalPos = transform.position;
-        Manager.Instance.boardManager.spaces.TryGetValue(position + moveTo, out BoardSpace targetSpace);
+        Manager.Instance.boardManager.spaces.TryGetValue(position + (moveTo * movement), out BoardSpace targetSpace);
         Vector2 targetPos =  targetSpace.transform.position;
         while (i < seconds)
         {
@@ -597,7 +601,8 @@ public class EnemyUnit : MonoBehaviour
 
         if (!dead)
         {
-            transform.position = originalPos;
+            position = crashInto.position + (moveTo * -1);
+            transform.localPosition = Manager.Instance.boardManager.spaces[position].transform.position;
         }
         Manager.Instance.boardManager.ClearSpaces();
         yield return null;

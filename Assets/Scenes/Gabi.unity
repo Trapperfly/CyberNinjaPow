@@ -8417,6 +8417,8 @@ MonoBehaviour:
   classResourceAmmo: {fileID: 1674500300}
   ammoPrefab: {fileID: 6473908022112061586, guid: 948684f2353c1d441b78ff5aec3de5bc, type: 3}
   block: 0
+  playerMove: 1
+  playerMoveCost: 1
 --- !u!114 &1900229857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8699,6 +8701,28 @@ MonoBehaviour:
   gradeMax: 100
   grade: 0
   gradeLetter: {fileID: 308875397}
+  ranks:
+  - threshold: 90
+    multiplier: 20
+    letter: Z!
+  - threshold: 80
+    multiplier: 10
+    letter: A
+  - threshold: 65
+    multiplier: 8
+    letter: B
+  - threshold: 50
+    multiplier: 6
+    letter: C
+  - threshold: 35
+    multiplier: 4
+    letter: D
+  - threshold: 15
+    multiplier: 2
+    letter: E
+  - threshold: 0
+    multiplier: 1
+    letter: F
   amount: 2
   iterations: 1
   textSpeed: 0.011
