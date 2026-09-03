@@ -511,7 +511,9 @@ public class DeckManager : MonoBehaviour
             if (card == null) continue;
 
             float x = count > 1 ? (spread / (count - 1) * i) - spread / 2f : 0f;
-            card.localPosition = new Vector3(x, card.localPosition.y, 0);
+
+            if (card.GetComponent<CardObject>().target) card.localPosition = new Vector3(x, card.localPosition.y, 0);
+            else card.localPosition = new Vector3(x, 0, 0);
         }
     }
 

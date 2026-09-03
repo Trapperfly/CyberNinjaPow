@@ -45,6 +45,8 @@ public class BoardSpace : MonoBehaviour
                 renderer.sprite = Manager.Instance.boardManager.targetingSprites[3];
 
                 targetDisplay.SetActive(true);
+
+                Clear();
                 break;
             default:
                 break;

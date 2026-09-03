@@ -84,27 +84,75 @@ public class BoardManager : MonoBehaviour
         if (clickingCard)
         {
             if (!Input.GetMouseButtonDown(0)) return;
-            //Debug.Log("Letting go of clicked card!");
-            //If the player was hovering the discard when clicked
-            if (hoveringDiscard) { Discard(); return; }
-            //If the player has clicked a card and is clicking a tile
-            if (CheckMouseTargeting() != null || heldCard.tileEffects.Count == 0) DoCardAction();
 
-            //If the player has clicked a card and is clicking outside of the board
-            else ResetCards();
+            UseCardOnBoard();
         }
         else if (draggingCard)
         {
             if (!Input.GetMouseButtonUp(0)) return;
-            //Debug.Log("Letting go of dragged card!");
-            //If the player was hovering the discard when letting go
-            if (hoveringDiscard) { Discard(); return; }
-            //If the player is dragging a card and letting go on a tile
-            if (CheckMouseTargeting() != null || heldCard.tileEffects.Count == 0) DoCardAction();
 
-            //If the player is dragging a card and letting go outside of the board
-            else ResetCards();
+            UseCardOnBoard();
         }
+    }
+
+    void UseCardOnBoard()
+    {
+        if (hoveringDiscard) { Discard(); return; }
+
+        if (CheckIfPlayerIsHoveringTheCard()) { ResetCards(); return; }
+
+        BoardSpace space = CheckMouseTargeting();
+
+        if (space != null)
+        {
+            if (CheckIfCardIsWithinRange(heldCard, space) == false) { ResetCards(); return; }
+
+            DoCardAction();
+
+            return;
+        }
+        else if (heldCard.tileEffects.Count == 0)
+        {
+            DoCardAction();
+
+            return;
+        }
+        ResetCards();
+    }
+
+    bool CheckIfCardIsWithinRange(Card card, BoardSpace targetSpace)
+    {
+        if (targetSpace == null) return false;
+        switch (card.range)
+        {
+            case Range.Anywhere:
+                return true;
+            case Range.Melee:
+                if (targetSpace.position.y < Manager.Instance.playerManager.meleeRange) return true;
+                break;
+            case Range.Ranged:
+                if (targetSpace.position.y < Manager.Instance.playerManager.projectileRange) return true;
+                break;
+            case Range.Rear:
+                break;
+            case Range.Projectile:
+                if (targetSpace.position.y < Manager.Instance.playerManager.projectileRange) return true;
+                break;
+            case Range.NotTarget:
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    bool CheckIfPlayerIsHoveringTheCard()
+    {
+        foreach (var item in Manager.Instance.deckManager.handCards)
+        {
+            if (item.GetComponent<CardObject>().target) return true;
+        }
+        return false;
     }
 
     void Discard()
@@ -178,7 +226,10 @@ public class BoardManager : MonoBehaviour
         {
             CardObject co = card.GetComponent<CardObject>();
             if (!co.target)
+            {
                 card.localScale = Vector3.one;
+                co.scaled = false;
+            }
         }
     }
 
@@ -236,6 +287,27 @@ public class BoardManager : MonoBehaviour
         if (targetedPosition == new Vector2Int(-99, -99)) return;
 
         if (!heldCard) return;
+
+        switch (heldCard.range)
+        {
+            case Range.Anywhere:
+                break;
+            case Range.Melee:
+                if (targetSpace.position.y > Manager.Instance.playerManager.meleeRange - 1) return;
+                break;
+            case Range.Ranged:
+                if (targetSpace.position.y > Manager.Instance.playerManager.projectileRange - 1) return;
+                break;
+            case Range.Rear:
+                break;
+            case Range.Projectile:
+                if (targetSpace.position.y > Manager.Instance.playerManager.projectileRange - 1) return;
+                break;
+            case Range.NotTarget:
+                break;
+            default:
+                break;
+        }
 
         //Debug.Log("Checking card Targeting");
 
@@ -723,21 +795,21 @@ public class BoardManager : MonoBehaviour
         {
             keyValue.Value.Colorize(GridSpaceSelection.None);
 
-            if (!heldCard) continue;
+            if (!heldCard) {  continue; }
 
             switch (heldCard.range)
             {
                 case Range.Anywhere:
                     break;
                 case Range.Melee:
-                    if (keyValue.Key.y <= 1) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    if (keyValue.Key.y <= Manager.Instance.playerManager.meleeRange - 1) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
                     break;
                 case Range.Ranged:
                     break;
                 case Range.Rear:
                     break;
                 case Range.Projectile:
-                    if (keyValue.Key.y == 0) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
+                    if (keyValue.Key.y == Manager.Instance.playerManager.projectileRange - 1) keyValue.Value.Colorize(GridSpaceSelection.CardAvailableTargeting);
                     break;
                 default:
                     keyValue.Value.Colorize(GridSpaceSelection.None);

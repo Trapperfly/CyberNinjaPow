@@ -14,6 +14,9 @@ public class PlayerManager : MonoBehaviour
     public int playerMoveCost = 1;
 
     public int damageCardsInHand;
+
+    public int meleeRange = 2;
+    public int projectileRange = 1;
     public bool CheckIfPlayerIsDefeated()
     {
         if (Manager.Instance.deckManager.GetDamageCardsInHand().Count >= Manager.Instance.deckManager.handSize)
