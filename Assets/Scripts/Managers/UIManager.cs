@@ -181,6 +181,6 @@ public class UIManager : MonoBehaviour
     public void ShowLoss()
     {
         lossCanvas.gameObject.SetActive(true);
-        PrintWackyText(lossScore, score.ToString(), amount, iterations, textSpeed);
+        StartCoroutine(PrintWackyText(lossScore, score.ToString(), amount, iterations, textSpeed));
     }
 }
