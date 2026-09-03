@@ -147,7 +147,7 @@ public class DeckManager : MonoBehaviour
             case WhereDoesTheCardGo.Hand:
                 //Discard one card first if not enough space in hand.
                 //Debug.Log("Hand size is " + handSize + " and hand count is " + hand.Count);
-                if (hand.Count >= handSize) DiscardRandomHandCard();
+                if (hand.Count >= handSize) DiscardRandomNonDamageHandCard();
                 //Add card
                 hand.Add(card);
                 GameObject cardGO = CreateCard(card);
@@ -619,10 +619,59 @@ public class DeckManager : MonoBehaviour
             AlignCardsAsSiblings();
         }
     }
+
+    public void DiscardRandomNonDamageHandCard(int amount = 1)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if (hand.Count <= 0) { return; }
+
+            List<int> indexOfNonDamageCards = new();
+
+            int index = 0;
+            foreach (Card card in hand)
+            {
+                bool damage = false;
+                foreach (CardTag tag in card.cardTags)
+                {
+                    if (tag.tag == TagEnum.Damage) damage = true;
+                    break;
+                }
+                if (!damage) indexOfNonDamageCards.Add(index);
+                index++;
+            }
+
+            int cardIndex = indexOfNonDamageCards[Manager.Instance.gameManager.gameSeed.Next(0, indexOfNonDamageCards.Count)];
+
+            discard.Add(hand[cardIndex]);
+            hand.Remove(hand[cardIndex]);
+
+            Transform handCard = handCards[cardIndex];
+            handCards.Remove(handCard);
+            handCard.SetParent(null);
+            handCard.gameObject.SetActive(false);
+            Destroy(handCard.gameObject);
+
+            AlignCards();
+            AlignCardsAsSiblings();
+        }
+    }
     public void DiscardNextDraw()
     {
         Card drawnCard = draw[0];
         draw.Remove(drawnCard);
         discard.Add(drawnCard);
+    }
+    public List<Card> GetDamageCardsInHand()
+    {
+        List<Card> cards = new();
+
+        foreach (Card card in hand)
+        {
+            foreach (CardTag tag in card.cardTags)
+                if (tag.tag == TagEnum.Damage) cards.Add(card);
+        }
+
+        return cards;
     }
 }

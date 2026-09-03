@@ -12,6 +12,22 @@ public class PlayerManager : MonoBehaviour
 
     public int playerMove = 1;
     public int playerMoveCost = 1;
+
+    public int damageCardsInHand;
+    public bool CheckIfPlayerIsDefeated()
+    {
+        if (Manager.Instance.deckManager.GetDamageCardsInHand().Count >= Manager.Instance.deckManager.handSize)
+        {
+            Loss();
+            return true;
+        }
+        return false;
+    }
+
+    public void Loss()
+    {
+        Manager.Instance.UIManager.ShowLoss();
+    }
     public bool UseResource(int value)
     {
         if (playerResource < value) return false;
@@ -57,7 +73,7 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
-        Manager.Instance.UIManager.Grade(-20);
+        Manager.Instance.UIManager.Grade(-50);
     }
     public void ResetBlock()
     {

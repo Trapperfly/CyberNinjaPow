@@ -45,6 +45,9 @@ public class UIManager : MonoBehaviour
     public float removeTextSpeed = 1;
 
     public bool removing;
+    [Space]
+    public Canvas lossCanvas;
+    public TMP_Text lossScore;
     private void Start()
     {
         RemoveEnemyInfo();
@@ -173,5 +176,11 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(removeTextSpeed);
         }
         where.text = "";
+    }
+
+    public void ShowLoss()
+    {
+        lossCanvas.gameObject.SetActive(true);
+        PrintWackyText(lossScore, score.ToString(), amount, iterations, textSpeed);
     }
 }

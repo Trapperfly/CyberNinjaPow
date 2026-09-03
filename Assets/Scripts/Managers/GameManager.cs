@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using System.Globalization;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     EnemyManager enemyManager;
@@ -148,9 +148,9 @@ public class GameManager : MonoBehaviour
         }
         enemyManager.timeOffset = 0;
 
-        bool finished = CheckIfWaveIsFinished();
+        if (Manager.Instance.playerManager.CheckIfPlayerIsDefeated()) { return; }
 
-        if (finished) { FinishWave(); return; }
+        if (CheckIfWaveIsFinished()) { FinishWave(); return; }
 
         //If not finished
         ProgressSpawn();
