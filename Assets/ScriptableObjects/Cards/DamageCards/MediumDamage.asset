@@ -16,7 +16,7 @@ MonoBehaviour:
   description: 
   artwork: {fileID: 0}
   cardTags:
-  - nonFunctional: 1
+  - nonFunctional: 0
     tag: 1
   cost: 3
   classResourceCost: 0

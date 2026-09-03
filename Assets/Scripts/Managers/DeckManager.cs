@@ -176,7 +176,8 @@ public class DeckManager : MonoBehaviour
         Card oldCard = card;
         card = AddTagEffectsToCard(Instantiate(card));
         card.original = oldCard;
-        GameObject cardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
+        GameObject cardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, handTransform);
+        cardGO.transform.localPosition = Vector3.zero;
         CardObject cardObject = cardGO.GetComponent<CardObject>();
         cardObject.cardName.text = card.cardName;
         cardObject.cardDescription.text = CreateRichTextDescription(card);
@@ -267,6 +268,7 @@ public class DeckManager : MonoBehaviour
                 case TagEnum.None:
                     break;
                 case TagEnum.Damage:
+                    result += "Is removed instead of discarded when used.";
                     break;
                 case TagEnum.Basic:
                     break;
@@ -509,7 +511,7 @@ public class DeckManager : MonoBehaviour
             if (card == null) continue;
 
             float x = count > 1 ? (spread / (count - 1) * i) - spread / 2f : 0f;
-            card.localPosition = new Vector3(x, 0, 0);
+            card.localPosition = new Vector3(x, card.localPosition.y, 0);
         }
     }
 
@@ -519,7 +521,8 @@ public class DeckManager : MonoBehaviour
 
         for (int i = 0; i < handCards.Count; i++)
         {
-            handCards[i].SetSiblingIndex(i);
+            if (handCards[i].GetComponent<CardObject>().target) handCards[i].SetSiblingIndex(10);
+            else handCards[i].SetSiblingIndex(i);
         }
 
         //CardObject[] cardObjects = handTransform.GetComponentsInChildren<CardObject>();
@@ -581,10 +584,8 @@ public class DeckManager : MonoBehaviour
             discard.RemoveAt(selected);
         }
     }
-    public void DiscardOrUseCard(Card editedCard, int cost, bool discardTheCard = false)
+    public void DealWithUsedCard(Card editedCard, int cost, bool isDiscarded = false, WhereDoesTheCardGo whereDoesTheCardGo = WhereDoesTheCardGo.Discard)
     {
-        discard.Add(editedCard.original);
-
         handCards.Remove(physicalCardHeld.transform);
         //Debug.Log(editedCard.original);
         hand.Remove(editedCard.original);
@@ -592,10 +593,28 @@ public class DeckManager : MonoBehaviour
         physicalCardHeld.gameObject.SetActive(false);
         Destroy(physicalCardHeld.gameObject);
 
+        switch (whereDoesTheCardGo)
+        {
+            case WhereDoesTheCardGo.Nowhere:
+                break;
+            case WhereDoesTheCardGo.Hand:
+                AddCardTo(WhereDoesTheCardGo.Hand, editedCard.original);
+                break;
+            case WhereDoesTheCardGo.Draw:
+                draw.Add(editedCard.original);
+                break;
+            case WhereDoesTheCardGo.Discard:
+                discard.Add(editedCard.original);
+                break;
+            default:
+                discard.Add(editedCard.original);
+                break;
+        }
+
         AlignCards();
         AlignCardsAsSiblings();
 
-        if (!discardTheCard) Manager.Instance.gameManager.ProgressTime(cost);
+        if (!isDiscarded) Manager.Instance.gameManager.ProgressTime(cost);
     }
 
     public void DiscardRandomHandCard(int amount = 1)

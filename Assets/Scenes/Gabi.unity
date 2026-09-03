@@ -9265,7 +9265,7 @@ MonoBehaviour:
   classResourceAmmo: {fileID: 1674500300}
   ammoPrefab: {fileID: 6473908022112061586, guid: 948684f2353c1d441b78ff5aec3de5bc, type: 3}
   block: 0
-  playerMove: 1
+  playerMove: 2
   playerMoveCost: 1
   damageCardsInHand: 0
 --- !u!114 &1900229857

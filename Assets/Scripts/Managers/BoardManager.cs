@@ -109,7 +109,7 @@ public class BoardManager : MonoBehaviour
 
     void Discard()
     {
-        Manager.Instance.deckManager.DiscardOrUseCard(Manager.Instance.boardManager.heldCard, 0, true);
+        Manager.Instance.deckManager.DealWithUsedCard(Manager.Instance.boardManager.heldCard, 0, true);
         ResetCards();
     }
 
@@ -143,8 +143,17 @@ public class BoardManager : MonoBehaviour
         {
             cost = heldCard.cost;
         }
-        Manager.Instance.deckManager.DiscardOrUseCard(heldCard, cost);
+
+        if (CheckIfCardIsDamage(heldCard)) Manager.Instance.deckManager.DealWithUsedCard(heldCard, cost, false, WhereDoesTheCardGo.Nowhere);
+        else Manager.Instance.deckManager.DealWithUsedCard(heldCard, cost);
         ResetCards();
+    }
+
+    public bool CheckIfCardIsDamage(Card card)
+    {
+        foreach (var cardTag in card.cardTags) 
+            if (cardTag.tag == TagEnum.Damage) return true;
+        return false;
     }
 
     void ResetCards()

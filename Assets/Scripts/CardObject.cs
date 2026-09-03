@@ -50,11 +50,9 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         scaled = true;
         transform.localScale = scale * Vector3.one;
         transform.localPosition += new Vector3(0, offset, 0);
-        if (!display)
-        {
-            Manager.Instance.deckManager.AlignCardsAsSiblings();
-            transform.SetAsLastSibling(); // always on top, after alignment
-        }
+        if (display) return;
+        Manager.Instance.deckManager.AlignCardsAsSiblings();
+        transform.SetAsLastSibling(); // always on top, after alignment
     }
 
     void Unscale()
@@ -62,22 +60,23 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         scaled = false;
         transform.localScale = Vector3.one;
         transform.localPosition += new Vector3(0, -offset, 0);
-        if (!display) Manager.Instance.deckManager.AlignCardsAsSiblings(); // restores correct order
+        if (display) return;
+        Manager.Instance.deckManager.AlignCardsAsSiblings(); // restores correct order
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
+        target = true;
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
         if (!scaled) Scale();
-        target = true;
 
         Manager.Instance.tutorialManager.ShowTutorial(Tutorials.WhenCardIsHovered);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        target = false;
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
         if (scaled) Unscale();
-        target = false;
     }
     public void OnPointerDown(PointerEventData eventData)
     {

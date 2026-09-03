@@ -104,7 +104,6 @@ public class GameManager : MonoBehaviour
 
     public void ProgressTime(int time)
     {
-
         StartCoroutine(IProgressTimeProgressively(time));
     }
 

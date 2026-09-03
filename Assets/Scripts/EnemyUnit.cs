@@ -543,7 +543,7 @@ public class EnemyUnit : MonoBehaviour
         return distance * movement;
     }
 
-    public void ForceMove(Vector2Int direction, int amount)
+    public void ForceMove(Vector2Int direction, int amount, bool crashable = true)
     {
         Debug.Log("Forcing enemy to move");
         if (movementArrow != null)
@@ -556,8 +556,12 @@ public class EnemyUnit : MonoBehaviour
             if (potentialCrash != null)
             {
                 Debug.Log("Crashing");
-                StartCoroutine(Crash(possibleMove + 1, direction, potentialCrash));
-                return;
+                if (crashable)
+                {
+                    StartCoroutine(Crash(possibleMove + 1, direction, potentialCrash));
+                    return;
+                }
+                else break;
             }
             if (enemyManager.CheckIfCellIsOutsideOfBoard(position + (direction * (possibleMove + 1)))) break;
             possibleMove++;
@@ -572,13 +576,13 @@ public class EnemyUnit : MonoBehaviour
         float i = 0;
         Vector2 originalPos = transform.position;
         Vector2 targetPos = Manager.Instance.boardManager.spaces[position + movement * (Vector2Int)direction].transform.position;
+        position = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].position;
         while (i < seconds)
         {
             i += Time.deltaTime;
             transform.localPosition = Vector3.Lerp(originalPos, new Vector3(targetPos.x, targetPos.y + enemyManager.yOffset, 0), i / seconds);
             yield return null;
         }
-        position = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].position;
         Manager.Instance.boardManager.ClearSpaces();
         SortSprites();
         yield return null;

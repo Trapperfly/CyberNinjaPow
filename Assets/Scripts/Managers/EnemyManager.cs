@@ -91,6 +91,11 @@ public class EnemyManager : MonoBehaviour
     }
     public void MoveAllEnemiesToSimulatePlayerMovement(int movement, int time)
     {
+        StartCoroutine(IMoveAllEnemiesToSimulatePlayerMovement(movement, time));
+    }
+
+    IEnumerator IMoveAllEnemiesToSimulatePlayerMovement(int movement, int time)
+    {
         for (int y = 0; y < Manager.Instance.boardManager.boardSize.y; y++)
         {
             for (int x = 0; x < Manager.Instance.boardManager.boardSize.x; x++)
@@ -102,15 +107,17 @@ public class EnemyManager : MonoBehaviour
                         if (y < movement)
                         {
                             movement -= y;
-                            if (movement <= 0 || y == 0) return;
-                            enemy.ForceMove(new(0, -1), movement);
+                            if (movement <= 0 || y == 0) yield break;
+                            enemy.ForceMove(new(0, -1), movement, false);
                         }
-                        enemy.ForceMove(new(0, -1), movement);
+                        enemy.ForceMove(new(0, -1), movement, false);
                     }
                 }
             }
         }
+        yield return new WaitForSeconds(moveAnimTime);
         Manager.Instance.gameManager.ProgressTime(time);
+        yield return null;
     }
 
     public IEnumerator TriggerStatusesOnAllEnemies(StatusEffect statusEffect = StatusEffect.None)
