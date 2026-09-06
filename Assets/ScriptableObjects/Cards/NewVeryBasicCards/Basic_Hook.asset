@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fde5775bd3d7bb34f8aac311c9fdab00, type: 3}
+  m_Name: Basic_Hook
+  m_EditorClassIdentifier: Assembly-CSharp::Card
+  cardName: Hook
+  description: Pull hit enemy all the way.
+  artwork: {fileID: 0}
+  cardTags:
+  - nonFunctional: 1
+    tag: 2
+  cost: 1
+  classResourceCost: 0
+  repeats: 1
+  range: 4
+  extraTagSlots: 1
+  rarity: 1
+  original: {fileID: 0}
+  tileEffects:
+  - gridPosition: {x: 0, y: 0}
+    damage: 0
+    projectiles:
+    - projDamage: 0
+      direction: 1
+      pierce: 0
+    pushDistance: 10
+    pushDirection: 2
+    statusEffects: []
+    repeating: 0
+    repeatCount: 0
+    repeatInterval: 0
+  targetAll:
+    doThis: 0
+    effect:
+      gridPosition: {x: 0, y: 0}
+      damage: 0
+      projectiles: []
+      pushDistance: 0
+      pushDirection: 0
+      statusEffects: []
+      repeating: 0
+      repeatCount: 0
+      repeatInterval: 0
+    condition: 0
+    number: 0
+    statusEffect: 0
+  playAdditionalCardAfterThisOne: {fileID: 0}
+  additionalCardEffects: []

@@ -662,6 +662,11 @@ public class DeckManager : MonoBehaviour
                 index++;
             }
 
+            if (indexOfNonDamageCards.Count <= 0)
+            {
+                Debug.LogWarning("There was no non damage card to remove");
+                return;
+            }
             int cardIndex = indexOfNonDamageCards[Manager.Instance.gameManager.gameSeed.Next(0, indexOfNonDamageCards.Count)];
 
             discard.Add(hand[cardIndex]);

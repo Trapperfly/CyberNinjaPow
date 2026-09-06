@@ -146,10 +146,19 @@ public class EnemyUnit : MonoBehaviour
             }
             else
             {
-                if ((position + target.gridPosition).y < 0)
+                EnemyUnit enemy = Manager.Instance.boardManager.CheckIfEnemyIsOnSpace(position + target.gridPosition);
+
+                if ((position + target.gridPosition).y < 2)
                 {
-                    //dangerSymbolsParent.GetChild(position.x + target.gridPosition.x).gameObject.SetActive(true);
-                    continue;
+                    if ((position + target.gridPosition).y < 0)
+                    {
+                        Manager.Instance.boardManager.dangerSymbolsParent.GetChild(position.x + target.gridPosition.x).gameObject.SetActive(true);
+                        continue;
+                    }
+                    if (enemy == null)
+                    {
+                        Manager.Instance.boardManager.dangerSymbolsParent.GetChild(position.x + target.gridPosition.x).gameObject.SetActive(true);
+                    }
                 }
                 Manager.Instance.boardManager.spaces.TryGetValue(position + target.gridPosition, out BoardSpace targetSpace);
                 if (targetSpace == null) continue;
@@ -162,6 +171,7 @@ public class EnemyUnit : MonoBehaviour
 
     public GameObject PaintAttackArrow(TileEffect target)
     {
+
         Transform arrow = Instantiate(Manager.Instance.enemyManager.attackArrowPrefab, Vector3.zero, Quaternion.identity, null).transform;
         arrow.position =
             Vector3.Lerp(
@@ -191,16 +201,29 @@ public class EnemyUnit : MonoBehaviour
 
     public void ShowIntentions(bool showDamage = false)
     {
+
         if (dead) return;
         inRange = (position.y < attackRange);
         //Debug.Log("I am " + enemy.enemyName + " at " + position.x + "," + position.y + " and I am " + (inRange ? "in range" : "not in range"));
         if (inRange) PaintAttack(showDamage);
+        else
+        {
+            for (int i = 0; i < attackArrows.Count; i++)
+            {
+                Destroy(attackArrows[i]);
+            }
+            attackArrows.Clear();
+        }
         SortSprites();
     }
 
     public void SortSprites()
     {
         int i = 0;
+        foreach (GameObject attackArrow in attackArrows)
+        {
+            attackArrow.GetComponent<SpriteRenderer>().sortingOrder = 1000 - position.y * 100 + i++;
+        }
         foreach (Transform child in transform)
         {
             if (child.childCount > 0)
@@ -274,7 +297,7 @@ public class EnemyUnit : MonoBehaviour
     public void Die(bool rewards = true)
     {
         if (rewards) Manager.Instance.gameManager.AlterMoney((int)enemy.threat);
-        Manager.Instance.gameManager.KilledAnEnemy(enemy.threat);
+        Manager.Instance.gameManager.KilledAnEnemy(this);
         //Destroy(movementArrow);
         for (int i = 0; i < attackArrows.Count; i++) {
             Destroy(attackArrows[i]);
@@ -576,7 +599,7 @@ public class EnemyUnit : MonoBehaviour
         float i = 0;
         Vector2 originalPos = transform.position;
         Vector2 targetPos = Manager.Instance.boardManager.spaces[position + movement * (Vector2Int)direction].transform.position;
-        position = Manager.Instance.boardManager.spaces[position + (new Vector2Int(0, movement) * (Vector2Int)direction)].position;
+        position = Manager.Instance.boardManager.spaces[position + (movement * (Vector2Int)direction)].position;
         while (i < seconds)
         {
             i += Time.deltaTime;

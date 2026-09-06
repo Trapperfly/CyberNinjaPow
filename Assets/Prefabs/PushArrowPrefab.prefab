@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2986250652425722348}
   - component: {fileID: -535267110966390346}
   m_Layer: 0
-  m_Name: AttackArrowPrefab
+  m_Name: PushArrowPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -4255202984054012565, guid: 9a51092bba0e83f4eb24992a32a1061e, type: 3}
+  m_Sprite: {fileID: -751537100470678213, guid: 9d34c5a6a84a3f940bfb500758e27453, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

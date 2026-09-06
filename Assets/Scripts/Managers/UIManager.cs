@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
 
     public int gradeMax = 100;
     public int grade = 0;
+    public int gradeDecay = -1;
+    public int gradeLossOnDamage = -50;
     public TMP_Text gradeLetter;
     public List<Rank> ranks;
     [System.Serializable]
@@ -48,6 +50,12 @@ public class UIManager : MonoBehaviour
     [Space]
     public Canvas lossCanvas;
     public TMP_Text lossScore;
+    [Space]
+    public Canvas mainCanvas;
+    public AnimationCurve enemyDeathMovement;
+    public float enemyDeathSpeed;
+    public float enemyDeathVariance;
+    public GameObject enemyDeathScorePrefab;
     private void Start()
     {
         RemoveEnemyInfo();
@@ -70,7 +78,7 @@ public class UIManager : MonoBehaviour
         Rank currentRank = new();
         foreach (Rank rank in ranks)
         {
-            if (grade > rank.threshold && rank.threshold > currentRank.threshold) currentRank = rank;
+            if (grade > rank.threshold * gradeMax && rank.threshold > currentRank.threshold) currentRank = rank;
         }
         if (currentRank.multiplier != scoreMultiplier)
         {
@@ -182,5 +190,30 @@ public class UIManager : MonoBehaviour
     {
         lossCanvas.gameObject.SetActive(true);
         StartCoroutine(PrintWackyText(lossScore, score.ToString(), amount, iterations, textSpeed));
+    }
+
+    public void EnemyDiedScore(EnemyUnit enemy)
+    {
+        StartCoroutine(IScoreEnemyDeath(enemy));
+    }
+    public IEnumerator IScoreEnemyDeath(EnemyUnit enemy)
+    {
+        Vector3 variance = new(Random.Range(-enemyDeathVariance, enemyDeathVariance), Random.Range(-enemyDeathVariance, enemyDeathVariance),0);
+        GameObject go = Instantiate(enemyDeathScorePrefab, Camera.main.WorldToScreenPoint(enemy.transform.position) + variance, Quaternion.identity, mainCanvas.transform);
+        Vector3 startPos = go.transform.position;
+
+        go.GetComponent<TMP_Text>().text = (enemy.enemy.threat * scoreMultiplier).ToString();
+
+        float i = 0;
+        while (i < 1)
+        {
+            i += Time.deltaTime * enemyDeathSpeed;
+            go.transform.position = Vector3.LerpUnclamped(startPos, scoreText.transform.position, enemyDeathMovement.Evaluate(i));
+            yield return null;
+        }
+
+        Score((int)enemy.enemy.threat);
+        Destroy(go);
+        yield return null;
     }
 }

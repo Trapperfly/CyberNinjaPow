@@ -30,6 +30,11 @@ public class BoardManager : MonoBehaviour
 
     public List<Sprite> targetingSprites = new();
     public List<Sprite> projectileDisplays = new();
+    public Dictionary<Vector2Int ,Sprite> pushArrowSprites = new();
+
+    public List<GameObject> pushArrows = new();
+
+    public GameObject pushArrowPrefab;
 
     public GameObject discard;
     public bool hoveringDiscard;
@@ -49,8 +54,16 @@ public class BoardManager : MonoBehaviour
     public bool enemyTakenDamage = false;
     public bool enemyKilled = false;
 
+
     private void Start()
     {
+        var loaded = Resources.LoadAll<Sprite>("Sprites/UI/Grid/Indicators/melee_sheet_all");
+        foreach (Sprite sprite in loaded)
+        {
+            int x = Mathf.RoundToInt(sprite.rect.x / 22);
+            int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 22) / 22);
+            pushArrowSprites.Add(new Vector2Int(x, y), sprite);
+        }
         BuildBoard();
     }
 
@@ -247,6 +260,7 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
+            if (targetedPosition == new Vector2Int(-99, -99)) return null;
             targetedPosition = new(-99, -99);
             ClearSpaces();
             return null;
@@ -349,7 +363,7 @@ public class BoardManager : MonoBehaviour
             if (effect.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in effect.projectiles)
-                    PlayerProjectile(false, space, projectile, heldCard);
+                    PlayerProjectile(false, space, projectile, effect, heldCard);
             }
             else
             {
@@ -359,6 +373,7 @@ public class BoardManager : MonoBehaviour
                     response = Manager.Instance.itemManager.TriggerOnHit(enemy);
                 cardTargetedSpace.Colorize(GridSpaceSelection.CardTargeting, effect.damage + response.integer);
             }
+            pushArrows.Add(PaintPushArrow(effect, space));
         }
     }
 
@@ -371,7 +386,7 @@ public class BoardManager : MonoBehaviour
             if (effect.projectiles.Count > 0)
             {
                 foreach (ProjectileData projectile in effect.projectiles)
-                    PlayerProjectile(true, space, projectile, heldCard);
+                    PlayerProjectile(true, space, projectile, effect, heldCard);
             }
             else
             {
@@ -389,6 +404,53 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public GameObject PaintPushArrow(TileEffect effect, Vector2Int space)
+    {
+        Vector2Int direction = GetVector2IntFromDirection(effect.pushDirection);
+        spaces.TryGetValue(space + direction, out BoardSpace pushOnto);
+        if (pushOnto == null) return null;
+        Transform arrow = Instantiate(pushArrowPrefab, Vector3.zero, Quaternion.identity, null).transform;
+        arrow.position =
+            Vector3.Lerp(
+                spaces[space].transform.position,
+                spaces[space + direction].transform.position, 0.7f);
+        SpriteRenderer renderer = arrow.GetComponent<SpriteRenderer>();
+        Sprite sprite = null;
+        switch (effect.pushDirection)
+        {
+            case Direction.None:
+                break;
+            case Direction.North:
+                pushArrowSprites.TryGetValue(new(0, 4), out sprite);
+                break;
+            case Direction.South:
+                pushArrowSprites.TryGetValue(new(4, 4), out sprite);
+                break;
+            case Direction.East:
+                pushArrowSprites.TryGetValue(new(2, 4), out sprite);
+                break;
+            case Direction.West:
+                pushArrowSprites.TryGetValue(new(6, 4), out sprite);
+                break;
+            case Direction.NorthEast:
+                pushArrowSprites.TryGetValue(new(1, 4), out sprite);
+                break;
+            case Direction.NorthWest:
+                pushArrowSprites.TryGetValue(new(7, 4), out sprite);
+                break;
+            case Direction.SouthEast:
+                pushArrowSprites.TryGetValue(new(3, 4), out sprite);
+                break;
+            case Direction.SouthWest:
+                pushArrowSprites.TryGetValue(new(5, 4), out sprite);
+                break;
+            default:
+                break;
+        }
+        renderer.sprite = sprite;
+        return renderer.gameObject;
     }
 
     public Vector2Int GetVector2IntFromDirection(Direction direction)
@@ -431,7 +493,7 @@ public class BoardManager : MonoBehaviour
         else return Direction.South;
     }
 
-    public void PlayerProjectile (bool fire, Vector2Int origin, ProjectileData projectile, Card card = null)
+    public void PlayerProjectile (bool fire, Vector2Int origin, ProjectileData projectile, TileEffect baseEffect, Card card = null)
     {
         Vector2Int space = origin;
         ProjectileData data = new();
@@ -458,7 +520,6 @@ public class BoardManager : MonoBehaviour
             EnemyUnit enemy = CheckIfEnemyIsOnSpace(space);
             if (enemy)
             {
-
                 ItemResponse response = new();
                 response = Manager.Instance.itemManager.TriggerOnHit(enemy);
 
@@ -466,11 +527,17 @@ public class BoardManager : MonoBehaviour
                 {
                     int bonusDamage = OnHit(data.projDamage + response.integer, card, enemy);
                     //Debug.Log("Dealing " + data.projDamage + " plus item " + response.integer + " plus card " + bonusDamage + " damage");
-                    enemy.TakeDamage(data.projDamage);
+                    enemy.TakeDamage(data.projDamage + bonusDamage);
+                    if (baseEffect.pushDirection != Direction.None)
+                    {
+                        Vector2Int pushDir = GetVector2IntFromDirection(baseEffect.pushDirection);
+                        enemy.ForceMove(pushDir, baseEffect.pushDistance);
+                    }
                 }
                 else
                 {
                     targetedSpace.Colorize(GridSpaceSelection.CardTargeting, data.projDamage + response.integer);
+                    pushArrows.Add(PaintPushArrow(baseEffect, enemy.position));
                 }
                 if (data.pierce == 0) break;
                 else data.pierce--;
@@ -712,7 +779,7 @@ public class BoardManager : MonoBehaviour
         if (effect.projectiles.Count > 0)
         {
             foreach (ProjectileData projectile in effect.projectiles)
-                PlayerProjectile(true, space, projectile, card);
+                PlayerProjectile(true, space, projectile, effect, card);
         }
         else
         {
@@ -787,6 +854,11 @@ public class BoardManager : MonoBehaviour
 
     public void ClearSpaces()
     {
+        for (int i = 0; i < pushArrows.Count; i++)
+        {
+            Destroy(pushArrows[i]);
+        }
+        pushArrows.Clear();
         foreach (Transform child in dangerSymbolsParent)
         {
             child.gameObject.SetActive(false);

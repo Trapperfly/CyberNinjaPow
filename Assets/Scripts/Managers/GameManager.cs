@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
 
-            Manager.Instance.UIManager.Grade(-2);
+            Manager.Instance.UIManager.Grade(Manager.Instance.UIManager.gradeDecay);
 
             yield return null;
         }
@@ -199,15 +199,16 @@ public class GameManager : MonoBehaviour
         currentThreat += change;
     }
 
-    public void KilledAnEnemy(float threat, EnemyStrength strength = EnemyStrength.none)
+    public void KilledAnEnemy(EnemyUnit unit, EnemyStrength strength = EnemyStrength.none)
     {
         Manager.Instance.boardManager.enemyKilled = true;
 
-        Manager.Instance.UIManager.Score((int)threat);
+        //Manager.Instance.UIManager.Score((int)threat);
+        Manager.Instance.UIManager.EnemyDiedScore(unit);
 
-        Manager.Instance.UIManager.Grade((int)threat * 10);
+        Manager.Instance.UIManager.Grade((int)unit.enemy.threat);
 
-        ChangeThreat(-threat);
+        ChangeThreat(-unit.enemy.threat);
         switch (mainObjective)
         {
             case Objective.KillCertainAmountOfEnemies:

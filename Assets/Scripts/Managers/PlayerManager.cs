@@ -76,7 +76,7 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, damageCard);
-        Manager.Instance.UIManager.Grade(-50);
+        Manager.Instance.UIManager.Grade(Manager.Instance.UIManager.gradeLossOnDamage);
     }
     public void ResetBlock()
     {

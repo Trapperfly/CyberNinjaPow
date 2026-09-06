@@ -24,6 +24,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9dcb1b2c201668243bf4af846288d874, type: 2}
   - {fileID: 11400000, guid: d8f99b87c08506a428b84b96ba647c76, type: 2}
   - {fileID: 11400000, guid: 75034010814ad7d469d16ab942b44ec8, type: 2}
+  - {fileID: 11400000, guid: 7855637a2c03ca441a49ce00f96c9e2f, type: 2}
+  - {fileID: 11400000, guid: 35891d5dfce41be4794a8263db536e1e, type: 2}
   possibleCards:
   - {fileID: 11400000, guid: 75034010814ad7d469d16ab942b44ec8, type: 2}
   - {fileID: 11400000, guid: 9dcb1b2c201668243bf4af846288d874, type: 2}
@@ -32,3 +34,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e4a83fd6aefaa574689cf8ec314776ae, type: 2}
   - {fileID: 11400000, guid: 0410aa0cdf5c1f44db2eb6262c31a85e, type: 2}
   - {fileID: 11400000, guid: ab678c65cf8dec0488231dbdbbbbb77b, type: 2}
+  - {fileID: 11400000, guid: 7855637a2c03ca441a49ce00f96c9e2f, type: 2}

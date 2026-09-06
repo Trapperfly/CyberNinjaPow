@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine.UIElements;
 using Unity.Behavior;
 using System.Threading;
+using TMPro;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class EnemyManager : MonoBehaviour
 
     public int enemyMoveInterval;
     public int currentEnemyMoveTracker;
-    public TMPro.TMP_Text enemyMoveText;
+    public Transform enemyMoveParent;
 
     private void Start()
     {
@@ -66,7 +67,13 @@ public class EnemyManager : MonoBehaviour
             int y = Mathf.RoundToInt((loaded[0].texture.height - sprite.rect.y - 22) / 22);
             attackSprites.Add(new Vector2Int(x, y), sprite);
         }
-        enemyMoveText.text = currentEnemyMoveTracker + " / " + enemyMoveInterval;
+        SetEnemyMoveText();
+    }
+
+    public void SetEnemyMoveText()
+    {
+        enemyMoveParent.GetChild(0).GetComponent<TMP_Text>().text = (enemyMoveInterval - currentEnemyMoveTracker).ToString();
+        enemyMoveParent.GetChild(1).GetComponent<TMP_Text>().text = "/ " + enemyMoveInterval.ToString();
     }
 
     public EnemyUnit GetBlackBoardVariable(GameObject gameObject)
@@ -175,7 +182,7 @@ public class EnemyManager : MonoBehaviour
             Debug.Log("Moving all enemies");
         }
         else currentEnemyMoveTracker++;
-        enemyMoveText.text = currentEnemyMoveTracker + " / " + enemyMoveInterval;
+        SetEnemyMoveText();
         //yield return new WaitForSeconds(timeAnim);
         yield return null;
     }
