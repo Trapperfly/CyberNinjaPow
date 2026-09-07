@@ -534,16 +534,17 @@ public class DeckManager : MonoBehaviour
         //    co.transform.SetSiblingIndex(co.handIndex);
         //}
     }
-    public void DrawCard(int amount = 1)
+    public void DrawCard(int amount = 1, int time = 0, bool cardIsUsed = false)
     {
-        StartCoroutine(IDrawCard(amount));
+        StartCoroutine(IDrawCard(amount, time, cardIsUsed));
     }
-    public IEnumerator IDrawCard(int amount, int time = 0)
+    public IEnumerator IDrawCard(int amount, int time = 0, bool cardIsUsed = false)
     {
         Manager.Instance.busy = true;
+        int handSizeTemp = cardIsUsed ? handSize + 1 : handSize;
         for (int i = 0; i < amount; i++)
         {
-            if (hand.Count >= handSize) { break; }
+            if (hand.Count >= handSizeTemp) { break; }
 
             DrawCardToHand();
 
@@ -555,7 +556,7 @@ public class DeckManager : MonoBehaviour
 
     public void DrawPile()
     {
-        StartCoroutine(IDrawCard(handSize, drawCost));
+        DrawCard(handSize, drawCost);
     }
 
     public Card DrawCardToHand()

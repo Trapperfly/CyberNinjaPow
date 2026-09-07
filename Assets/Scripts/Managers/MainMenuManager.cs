@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public GameState gameState;
     public void ContinueGame()
     {
 
@@ -23,5 +24,13 @@ public class MainMenuManager : MonoBehaviour
     public void GoToMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void SetGameState(bool tutorial)
+    {
+        if (tutorial)
+            gameState.SetToTutorialGame();
+        else
+            gameState.SetToRandomGame();
     }
 }

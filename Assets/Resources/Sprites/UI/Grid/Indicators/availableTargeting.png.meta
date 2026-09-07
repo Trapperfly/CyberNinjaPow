@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: faf00dde5e0b4a543958060fbafde5c6
+guid: 54503a80d3b4a644996efef6aa558bda
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2947844903660849265
-    second: range_5_0
+      213: 215615450042716276
+    second: availableTargeting_0
+  - first:
+      213: 2489192140806162476
+    second: availableTargeting_1
+  - first:
+      213: -6657189762232283402
+    second: availableTargeting_2
+  - first:
+      213: -437589173513382810
+    second: availableTargeting_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:

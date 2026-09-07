@@ -93,6 +93,8 @@ public class BoardManager : MonoBehaviour
         if (Manager.Instance.busy) return;
         //Debug.Log("Not busy!");
         if (heldCard == null) return;
+
+        if (Input.GetMouseButtonDown(1)) { ResetCards(); return; }
         //Debug.Log("Holding card!");
         if (clickingCard)
         {
@@ -185,6 +187,7 @@ public class BoardManager : MonoBehaviour
         cardTargetingLine = Instantiate(cardTargetingLinePrefab, Vector3.zero, Quaternion.identity, null);
         cardTargetingLine.GetComponent<CardTargetingLine>().startPos = cardPos;
         cardTargetingLine.gameObject.SetActive(true);
+        ClearSpaces();
     }
 
     public void EndCardTargeting()
@@ -621,7 +624,7 @@ public class BoardManager : MonoBehaviour
                     case OtherCardEffects.Parry://REWORK THIS INTO BASE CARD EFFECT
                         break;
                     case OtherCardEffects.DrawCards:
-                        StartCoroutine(Manager.Instance.deckManager.IDrawCard(cardEffect.amount));
+                        Manager.Instance.deckManager.DrawCard(cardEffect.amount, 0, true);
                         break;
                     case OtherCardEffects.DiscardCards:
                         //Bring up some UI telling the player to discard cards and the ability to cancel, not discard any cards if applicable, and display information about why to discard. 

@@ -47,7 +47,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Scale()
     {
-        Debug.Log((scaled ? "Scaled. " : "Not scaled. ") + "Scaling " + card.cardName + ". It is " + (target ? "the targeted card." : "not the targeted card."));
+        //Debug.Log((scaled ? "Scaled. " : "Not scaled. ") + "Scaling " + card.cardName + ". It is " + (target ? "the targeted card." : "not the targeted card."));
         if (scaled) return;
         scaled = true;
         transform.localScale = scale * Vector3.one;
@@ -59,7 +59,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Unscale()
     {
-        Debug.Log((scaled ? "Scaled. " : "Not scaled. ") + "Unscaling " + card.cardName + ". It is " + (target ? "the targeted card." : "not the targeted card."));
+        //Debug.Log((scaled ? "Scaled. " : "Not scaled. ") + "Unscaling " + card.cardName + ". It is " + (target ? "the targeted card." : "not the targeted card."));
         if (!scaled) return;
         scaled = false;
         transform.localScale = Vector3.one;
@@ -94,12 +94,13 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         Manager.Instance.deckManager.cardRedied = true;
 
-        Manager.Instance.boardManager.BeginCardTargeting(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
         Manager.Instance.boardManager.heldCard = card;
         Manager.Instance.deckManager.physicalCardHeld = this;
 
         clicked = true;
+
+        Manager.Instance.boardManager.BeginCardTargeting(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 
     public void OnPointerUp(PointerEventData eventData)

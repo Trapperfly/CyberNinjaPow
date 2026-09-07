@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     EnemyManager enemyManager;
+    public GameState gameState;
     public string seed = "";
 
     public bool waveInProgress = false;
@@ -41,9 +42,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!gameState.setSeed) gameSeed = new System.Random(Time.realtimeSinceStartupAsDouble.GetHashCode());
+        else gameSeed = new System.Random(seed.GetHashCode());
 
-        if (seed != "") gameSeed = new System.Random(seed.GetHashCode());
-
+        if (!gameState.showTutorials)
+        {
+            Manager.Instance.tutorialManager.doNotShowTutorials = true;
+            Manager.Instance.tutorialManager.reviewTutorialsButton.SetActive(false);
+        }
     }
     public float NextFloat(float lowerBound, float upperBound)
     {

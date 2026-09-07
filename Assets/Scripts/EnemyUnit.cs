@@ -672,7 +672,7 @@ public class EnemyUnit : MonoBehaviour
 
         if (targetTile.y < 2)
         {
-            Manager.Instance.deckManager.AddCardTo(WhereDoesTheCardGo.Hand, enemyManager.damageCards[(int)enemy.damage]);
+            Manager.Instance.playerManager.TakeDamage(enemyManager.damageCards[(int)enemy.damage]);
         }
         
     }
