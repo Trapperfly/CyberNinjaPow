@@ -11372,6 +11372,9 @@ MonoBehaviour:
     - tutorialText: You have now taken your first damage. Damage cards have a red
         hue.
       pointAt: {x: 0, y: 0}
+    - tutorialText: If your hand is full when gaining a damage card, it will discard
+        a random non-damage card.
+      pointAt: {x: 0, y: 0}
     - tutorialText: These cards do nothing good for you. If your entire hand is full
         of damage cards, you lose.
       pointAt: {x: 0, y: 0}
