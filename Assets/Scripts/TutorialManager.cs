@@ -195,4 +195,11 @@ public enum Tutorials
     WhenEnemyIsHovered,
     WhenEnemyIsInMeleeRange,
     WhenPlayerTakesDamage,
+    Discard,
+    DrawCardsButton,
+    MoveButton,
+    WaitButton,
+    Score,
+    EnemyInfo,
+
 }

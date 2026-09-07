@@ -523,7 +523,7 @@ public class DeckManager : MonoBehaviour
 
         for (int i = 0; i < handCards.Count; i++)
         {
-            if (handCards[i].GetComponent<CardObject>().target) handCards[i].SetSiblingIndex(10);
+            if (handCards[i].GetComponent<CardObject>().target) handCards[i].SetAsLastSibling();
             else handCards[i].SetSiblingIndex(i);
         }
 

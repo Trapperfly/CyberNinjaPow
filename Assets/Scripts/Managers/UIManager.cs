@@ -40,6 +40,8 @@ public class UIManager : MonoBehaviour
         public string letter = "F";
     }
     [Space]
+    public Image gradientImage;
+    [Space]
 
     public int amount = 1;
     public int iterations = 1;
@@ -56,6 +58,7 @@ public class UIManager : MonoBehaviour
     public float enemyDeathSpeed;
     public float enemyDeathVariance;
     public GameObject enemyDeathScorePrefab;
+
     private void Start()
     {
         RemoveEnemyInfo();
@@ -71,6 +74,8 @@ public class UIManager : MonoBehaviour
     public void Grade(int gradeChange)
     {
         grade += gradeChange;
+
+        Gradient((float)grade / (float)gradeMax);
 
         if (grade < 0) { grade = 0; }
         if (grade > gradeMax) { grade = gradeMax; }
@@ -88,6 +93,10 @@ public class UIManager : MonoBehaviour
             else StartCoroutine(PrintWackyText(scoreMulti, "X" + currentRank.multiplier.ToString(), amount, iterations, textSpeed));
             StartCoroutine(PrintWackyText(gradeLetter, currentRank.letter, amount, iterations, textSpeed));
         }
+    }
+    public void Gradient(float percent)
+    {
+        gradientImage.fillAmount = percent;
     }
     public void Score(int scoreChange)
     {

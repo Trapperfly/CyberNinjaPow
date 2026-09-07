@@ -45,8 +45,10 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     //    }
     //}
 
-    void Scale()
+    public void Scale()
     {
+        Debug.Log((scaled ? "Scaled. " : "Not scaled. ") + "Scaling " + card.cardName + ". It is " + (target ? "the targeted card." : "not the targeted card."));
+        if (scaled) return;
         scaled = true;
         transform.localScale = scale * Vector3.one;
         transform.localPosition += new Vector3(0, offset, 0);
@@ -55,11 +57,13 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         transform.SetAsLastSibling(); // always on top, after alignment
     }
 
-    void Unscale()
+    public void Unscale()
     {
+        Debug.Log((scaled ? "Scaled. " : "Not scaled. ") + "Unscaling " + card.cardName + ". It is " + (target ? "the targeted card." : "not the targeted card."));
+        if (!scaled) return;
         scaled = false;
         transform.localScale = Vector3.one;
-        transform.localPosition += new Vector3(0, -offset, 0);
+        transform.localPosition = new Vector3(transform.localPosition.x, 0, 0);
         if (display) return;
         Manager.Instance.deckManager.AlignCardsAsSiblings(); // restores correct order
     }
@@ -67,7 +71,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         target = true;
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
-        if (!scaled) Scale();
+        Scale();
 
         Manager.Instance.tutorialManager.ShowTutorial(Tutorials.WhenCardIsHovered);
     }
@@ -76,7 +80,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         target = false;
         if (Manager.Instance.deckManager.cardRedied || Manager.Instance.busy) return;
-        if (scaled) Unscale();
+        Unscale();
     }
     public void OnPointerDown(PointerEventData eventData)
     {

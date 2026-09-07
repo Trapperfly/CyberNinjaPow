@@ -181,8 +181,10 @@ public class BoardManager : MonoBehaviour
 
     public void BeginCardTargeting(Vector2 cardPos)
     {
+        if (cardTargetingLine != null) { Destroy(cardTargetingLine); }
         cardTargetingLine = Instantiate(cardTargetingLinePrefab, Vector3.zero, Quaternion.identity, null);
         cardTargetingLine.GetComponent<CardTargetingLine>().startPos = cardPos;
+        cardTargetingLine.gameObject.SetActive(true);
     }
 
     public void EndCardTargeting()
@@ -238,10 +240,15 @@ public class BoardManager : MonoBehaviour
         foreach (Transform card in Manager.Instance.deckManager.handTransform)
         {
             CardObject co = card.GetComponent<CardObject>();
-            if (!co.target)
+            co.Unscale();
+            co.clicked = false;
+        }
+        foreach (Transform card in Manager.Instance.deckManager.handTransform)
+        {
+            CardObject co = card.GetComponent<CardObject>();
+            if (co.target)
             {
-                card.localScale = Vector3.one;
-                co.scaled = false;
+                co.Scale();
             }
         }
     }
