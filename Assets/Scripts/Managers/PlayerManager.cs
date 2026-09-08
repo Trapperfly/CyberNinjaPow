@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     public int playerMove = 1;
     public int playerMoveCost = 1;
 
+    public int waitTime = 1;
+
     public int damageCardsInHand;
 
     public int meleeRange = 2;
@@ -87,6 +89,8 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayerMove()
     {
+        if (Manager.Instance.busy) return;
+        Manager.Instance.busy = true;
         Manager.Instance.enemyManager.MoveAllEnemiesToSimulatePlayerMovement(playerMove, playerMoveCost);
     }
 }

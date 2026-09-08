@@ -10653,8 +10653,8 @@ MonoBehaviour:
   collisionDamage: 1
   money: 20
   currentThreat: 0
-  maxThreat: 10
-  threatCalculation: 1.5
+  maxThreat: 15
+  threatCalculation: 1.1
   mainObjective: 0
   sideObjectives: []
   mainObjectiveTracker: 0
@@ -10842,7 +10842,7 @@ MonoBehaviour:
   targetedPosition: {x: 0, y: 0}
   board: {fileID: 1807019440}
   waitBetweenCardActions: 0
-  cardAnimExtraTime: 0.5
+  cardAnimExtraTime: 0.15
   cardExtraEffectAnimTime: 0
   inCardAction: 0
   additionalCardQueue: []
@@ -10918,9 +10918,9 @@ MonoBehaviour:
   yOffset: 0
   timeOffset: 0
   timeAnim: 0.1
-  moveAnimTime: 0.5
-  collideAnimTime: 0.3
-  attackAnimTime: 0.5
+  moveAnimTime: 0.3
+  collideAnimTime: 0.2
+  attackAnimTime: 0.3
   addTimeAnim: 0
   bobbing: 0.05
   bobbingSpeed: 4
@@ -10978,6 +10978,7 @@ MonoBehaviour:
   block: 0
   playerMove: 2
   playerMoveCost: 1
+  waitTime: 1
   damageCardsInHand: 0
   meleeRange: 2
   projectileRange: 1
@@ -12641,7 +12642,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 100

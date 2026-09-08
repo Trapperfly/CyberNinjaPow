@@ -556,6 +556,7 @@ public class DeckManager : MonoBehaviour
 
     public void DrawPile()
     {
+        if (Manager.Instance.busy) return;
         DrawCard(handSize, drawCost);
     }
 

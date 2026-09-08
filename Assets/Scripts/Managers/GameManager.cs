@@ -108,6 +108,12 @@ public class GameManager : MonoBehaviour
         Manager.Instance.shopManager.moneyText.text = money.ToString() + "$";
     }
 
+    public void Wait(int time)
+    {
+        if (Manager.Instance.busy) return;
+        ProgressTime(Manager.Instance.playerManager.waitTime);
+    }
+
     public void ProgressTime(int time)
     {
         StartCoroutine(IProgressTimeProgressively(time));
@@ -240,7 +246,7 @@ public class GameManager : MonoBehaviour
     public void ProgressSpawn()
     {
         float spawningBias = Mathf.Pow(1f - (currentThreat / maxThreat), threatCalculation);
-        //Debug.Log("Bias for spawning an enemy is " + spawningBias * 100 + "%");
+        Debug.Log("Bias for spawning an enemy is " + spawningBias * 100 + "%");
         if (NextFloat(0f,1f) < spawningBias)
         {
             Debug.Log("Spawning an enemy. It was " + spawningBias * 100 + "% chance for it to spawn.");
