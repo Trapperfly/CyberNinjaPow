@@ -24,6 +24,8 @@ MonoBehaviour:
   cardTags:
   - nonFunctional: 1
     tag: 6
+  - nonFunctional: 1
+    tag: 2
   cost: 3
   classResourceCost: 0
   repeats: 1

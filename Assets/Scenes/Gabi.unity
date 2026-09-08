@@ -10647,7 +10647,7 @@ MonoBehaviour:
   spawnDelay: {x: 8, y: 25}
   startEnemyYPosition: 2
   enemySpawnDelay: 0.2
-  startEnemyCount: 1
+  startEnemyCount: 10
   startTimeProgress: 0
   startTimeTimes: 0
   collisionDamage: 1
@@ -10898,11 +10898,13 @@ MonoBehaviour:
   - enemy: {fileID: 11400000, guid: fbe0a103d1d99d549a1539e0f26df6fd, type: 2}
     cost: 1
   - enemy: {fileID: 11400000, guid: c8615fd8a7d941040a4516d3f854307c, type: 2}
-    cost: 2
+    cost: 1
   - enemy: {fileID: 11400000, guid: acd5a3d1f5e8dbf488bbf0de0b8ad259, type: 2}
-    cost: 3
+    cost: 1
   - enemy: {fileID: 11400000, guid: b9666533f4f5ef0468207ee73b147851, type: 2}
-    cost: 4
+    cost: 1
+  - enemy: {fileID: 11400000, guid: b1ab303d3a10ba74baacf7b466016467, type: 2}
+    cost: 1
   enemyQueue: []
   enemies: []
   actingEnemies: []
